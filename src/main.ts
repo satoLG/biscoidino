@@ -37,72 +37,74 @@ class BiscoidinApp {
         <header class="header">
           <div class="logo">
             <h1><img src="/biscoidino_logo.png" alt="BISCOIDINO" class="header-logo"> BISCOIDINO</h1>
-            <p class="tagline">Handmade Biscuits with Love</p>
+            <p class="tagline">Biscoitos amanteigados caseiros</p>
           </div>
           <nav class="nav">
-            <a href="#home" class="nav-link active">Home</a>
-            <a href="#menu" class="nav-link">Menu</a>
-            <a href="#about" class="nav-link">About</a>
-            <a href="#contact" class="nav-link">Contact</a>
+            <a href="#home" class="nav-link active">Início</a>
+            <a href="#menu" class="nav-link">Cardápio</a>
+            <a href="#about" class="nav-link">Sobre</a>
+            <a href="#contact" class="nav-link">Contato</a>
           </nav>
         </header>
 
         <main class="main">
-          <section id="home" class="hero">
+          <section id="home" class="hero active">
             <div class="hero-content">
-              <h2>Welcome to BISCOIDINO</h2>
-              <p>Experience the finest handmade biscuits crafted with traditional recipes and premium ingredients.</p>
-              <button class="cta-button">View Our Menu</button>
+              <h2>Bem-vindos ao BISCOIDINO</h2>
+              <p>Experimente os melhores biscoitos amanteigados caseiros feitos com receitas próprias e ingredientes premium.</p>
+              <button class="cta-button">Ver Nosso Cardápio</button>
             </div>
             <div class="hero-image">
-              <img src="/biscoidino_biscuit.png" alt="BISCOIDINO" class="biscuit-placeholder">
+              <div class="floating-biscuits">
+                <img src="/biscoidino_biscuit.png" alt="BISCOIDINO" class="biscuit-placeholder main-biscuit">
+                <img src="/flower_baunilha_biscuit.png" alt="Flor Baunilha" class="biscuit-placeholder flower-biscuit">
+                <img src="/heart_baunilha_biscuit.png" alt="Coração Baunilha" class="biscuit-placeholder heart-biscuit">
+                <img src="/parmesao_biscuit.png" alt="Parmesão" class="biscuit-placeholder parmesao-biscuit">
+              </div>
             </div>
           </section>
 
           <section id="menu" class="menu-section">
-            <h2>Our Delicious Menu</h2>
+            <h2>Nosso Delicioso Cardápio</h2>
             <div class="menu-grid" id="menuGrid">
               <!-- Menu items will be loaded here -->
             </div>
           </section>
 
           <section id="about" class="about-section">
-            <h2>About BISCOIDINO</h2>
+            <h2>Sobre a BISCOIDINO</h2>
             <div class="about-content">
-              <p>BISCOIDINO was founded with a passion for creating the perfect biscuit. Our traditional recipes have been passed down through generations, ensuring every bite is filled with authentic flavor and love.</p>
+              <p>A BISCOIDINO foi criada por Micaela, uma mãe que queria fazer biscoitos de dinossauro para seu filho Lucas. Sem querer, acabou levando para outras pessoas provarem e descobriu que sua receita seria um sucesso.</p>
               <div class="features">
                 <div class="feature">
-                  <span class="feature-icon">🌾</span>
-                  <h3>Premium Ingredients</h3>
-                  <p>We use only the finest ingredients sourced from trusted suppliers.</p>
+                  <span class="feature-emoji">🌾</span>
+                  <h3>Ingredientes Premium</h3>
+                  <p>Usamos apenas os melhores ingredientes de fornecedores de confiança.</p>
                 </div>
                 <div class="feature">
-                  <span class="feature-icon">👨‍🍳</span>
-                  <h3>Handmade Process</h3>
-                  <p>Every biscuit is carefully crafted by hand using traditional methods.</p>
+                  <span class="feature-emoji">👨‍🍳</span>
+                  <h3>Processo Artesanal</h3>
+                  <p>Cada biscoito é cuidadosamente feito à mão usando métodos tradicionais.</p>
                 </div>
                 <div class="feature">
-                  <span class="feature-icon">📜</span>
-                  <h3>Traditional Recipes</h3>
-                  <p>Time-tested recipes that have delighted families for generations.</p>
+                  <span class="feature-emoji">📜</span>
+                  <h3>Receitas Próprias</h3>
+                  <p>Receitas testadas até alcançarem o sabor ideal.</p>
                 </div>
               </div>
             </div>
           </section>
 
           <section id="contact" class="contact-section">
-            <h2>Get In Touch</h2>
+            <h2>Entre em Contato</h2>
             <div class="contact-info">
-              <p>📍 Address: 123 Bakery Street, Sweet City</p>
-              <p>📞 Phone: +1 (555) 123-BISCUIT</p>
-              <p>📧 Email: hello@biscoidino.com</p>
-              <p>⏰ Hours: Mon-Sat 8AM-6PM, Sun 9AM-4PM</p>
+              <p><img src="/whatsapp.jpeg" alt="WhatsApp" class="contact-icon"> WhatsApp: (11) 95382-6504</p>
             </div>
           </section>
         </main>
 
         <footer class="footer">
-          <p>&copy; 2025 BISCOIDINO. Made with ❤️ for biscuit lovers everywhere.</p>
+          <p>&copy; 2025 BISCOIDINO. Feito com <img src="/biscoidino_biscuit.png" alt="amor" class="footer-icon"> para amantes de biscoitos em todo lugar.</p>
         </footer>
       </div>
     `;
@@ -114,40 +116,16 @@ class BiscoidinApp {
   private loadMenu(): void {
     const menuItems = [
       {
-        name: "Classic Butter Biscuits",
-        description: "Traditional butter biscuits with a perfect golden crust",
-        price: "$12.99",
-        emoji: "🧈"
+        name: "Biscoitos de Baunilha",
+        description: "Deliciosos biscoitos artesanais com sabor suave de baunilha",
+        price: "R$ 12,00",
+        image: "/baunilha_package.png"
       },
       {
-        name: "Chocolate Chip Delights",
-        description: "Crispy biscuits loaded with premium chocolate chips",
-        price: "$14.99",
-        emoji: "🍫"
-      },
-      {
-        name: "Oatmeal Raisin",
-        description: "Hearty oatmeal biscuits with sweet raisins",
-        price: "$13.99",
-        emoji: "🌾"
-      },
-      {
-        name: "Honey Almond Crunch",
-        description: "Sweet honey biscuits with crunchy almonds",
-        price: "$15.99",
-        emoji: "🍯"
-      },
-      {
-        name: "Double Chocolate",
-        description: "Rich chocolate biscuits with dark chocolate coating",
-        price: "$16.99",
-        emoji: "🍫"
-      },
-      {
-        name: "Vanilla Dream",
-        description: "Delicate vanilla biscuits with a soft, melt-in-mouth texture",
-        price: "$13.99",
-        emoji: "🌙"
+        name: "Biscoitos de Parmesão",
+        description: "Biscoitos salgados crocantes com queijo parmesão premium",
+        price: "R$ 15,00",
+        image: "/parmesao_package.png"
       }
     ];
 
@@ -155,11 +133,11 @@ class BiscoidinApp {
     if (menuGrid) {
       menuGrid.innerHTML = menuItems.map(item => `
         <div class="menu-item">
-          <div class="menu-item-emoji">${item.emoji}</div>
+          <img src="${item.image}" alt="${item.name}" class="menu-item-image">
           <h3>${item.name}</h3>
           <p>${item.description}</p>
           <div class="price">${item.price}</div>
-          <button class="order-button">Add to Order</button>
+          <button class="order-button">Adicionar ao Pedido</button>
         </div>
       `).join('');
     }

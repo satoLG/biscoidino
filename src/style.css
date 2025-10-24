@@ -85,7 +85,7 @@ body {
 
 .splash-subtitle {
   font-size: 1.2rem;
-  color: var(--secondary-color);
+  color: #231d16;
   margin: 0;
   font-style: italic;
   opacity: 0;
@@ -248,7 +248,7 @@ body {
 }
 
 /* Hero Section */
-.hero {
+.hero.active {
   display: flex;
   align-items: center;
   gap: 3rem;
@@ -302,12 +302,53 @@ body {
   align-items: center;
 }
 
+.floating-biscuits {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 400px;
+  height: 350px;
+}
+
 .biscuit-placeholder {
-  width: 300px;
-  height: 300px;
   object-fit: contain;
   opacity: 0.8;
+  position: absolute;
+}
+
+.main-biscuit {
+  width: 280px;
+  height: 280px;
+  z-index: 3;
   animation: bounce 2s infinite ease-in-out;
+}
+
+.flower-biscuit {
+  width: 220px;
+  height: 220px;
+  z-index: 2;
+  left: -60px;
+  top: 30px;
+  animation: bounce 2.3s infinite ease-in-out;
+}
+
+.heart-biscuit {
+  width: 200px;
+  height: 200px;
+  z-index: 1;
+  right: -50px;
+  top: -20px;
+  animation: bounce 2.7s infinite ease-in-out;
+}
+
+.parmesao-biscuit {
+  width: 80px;
+  height: 80px;
+  z-index: 2;
+  left: 20px;
+  bottom: -30px;
+  animation: bounce 2.5s infinite ease-in-out;
 }
 
 @keyframes bounce {
@@ -321,8 +362,7 @@ section {
   animation: fadeIn 0.5s ease-in-out;
 }
 
-section.active,
-section#home {
+section.active {
   display: block;
 }
 
@@ -373,10 +413,13 @@ section#home {
 }
 
 .menu-item-image {
-  width: 80px;
-  height: 80px;
-  object-fit: contain;
-  margin-bottom: 1rem;
+    background-color: #ffb6bf;
+    border-radius: 50%;
+    padding: 10px;
+    width: 150px;
+    height: 150px;
+    object-fit: contain;
+    margin-bottom: 1rem;
 }
 
 .menu-item h3 {
@@ -445,12 +488,11 @@ section#home {
   transform: translateY(-3px);
 }
 
-.feature-icon {
-  width: 60px;
-  height: 60px;
-  object-fit: contain;
+.feature-emoji {
+  font-size: 5rem;
   display: block;
   margin: 0 auto 1rem auto;
+  text-align: center;
 }
 
 .feature h3 {
@@ -499,6 +541,14 @@ section#home {
   margin-top: auto;
 }
 
+.footer-icon {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+  display: inline;
+  vertical-align: middle;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
   .header {
@@ -520,9 +570,28 @@ section#home {
     font-size: 2rem;
   }
   
-  .biscuit-placeholder {
-    width: 200px;
-    height: 200px;
+  .floating-biscuits {
+    width: 250px;
+    height: 220px;
+  }
+  
+  .main-biscuit {
+    width: 180px;
+    height: 180px;
+  }
+  
+  .flower-biscuit {
+    width: 140px;
+    height: 140px;
+    left: -40px;
+    top: 20px;
+  }
+  
+  .heart-biscuit {
+    width: 120px;
+    height: 120px;
+    right: -30px;
+    top: -10px;
   }
   
   .main {
@@ -541,6 +610,10 @@ section#home {
   
   .features {
     grid-template-columns: 1fr;
+  }
+  
+  .feature-emoji {
+    font-size: 4rem;
   }
   
   /* Responsive Splash Screen */
