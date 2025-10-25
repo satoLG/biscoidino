@@ -514,8 +514,8 @@ function createPhysicsWorld(productType: 'baunilha' | 'parmesao') {
           render: {
             sprite: {
               texture: config.image,
-              xScale: 0.6, // Adjust scale based on radius
-              yScale: 0.6
+              xScale: 0.15, // Adjust scale based on radius
+              yScale: 0.15
             }
           },
           restitution: 0.3,
