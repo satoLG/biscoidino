@@ -500,9 +500,9 @@ function createPhysicsWorld(productType: 'baunilha' | 'parmesao') {
   if (productType === 'baunilha') {
     // 1 dinosaur, 6 hearts, 6 flowers
     const biscuitConfigs = [
-      { count: 1, radius: 30, type: 'dinosaur', image: '/biscoidino_biscuit.png' },
-      { count: 7, radius: 30, type: 'heart', image: '/heart_baunilha_biscuit.png' },
-      { count: 6, radius: 30, type: 'flower', image: '/flower_baunilha_biscuit.png' }
+      { count: 1, radius: 35, type: 'dinosaur', image: '/biscoidino_biscuit.png' },
+      { count: 7, radius: 35, type: 'heart', image: '/heart_baunilha_biscuit.png' },
+      { count: 6, radius: 35, type: 'flower', image: '/flower_baunilha_biscuit.png' }
     ];
     
     biscuitConfigs.forEach(config => {
