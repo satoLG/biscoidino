@@ -1,4 +1,4 @@
-import './style.css'
+import './style.css?v=2'
 
 // BISCOIDINO - Main Application
 class BiscoidinApp {
@@ -98,7 +98,10 @@ class BiscoidinApp {
           <section id="contact" class="contact-section">
             <h2>Entre em Contato</h2>
             <div class="contact-info">
-              <p><img src="/whatsapp.jpeg" alt="WhatsApp" class="contact-icon"> WhatsApp: (11) 95382-6504</p>
+              <a href="https://wa.me/5511953826504?text=Olá,%20gostaria%20de%20encomendar%20biscoitos!" target="_blank" class="whatsapp-link">
+                <img src="/whatsapp.jpeg" alt="WhatsApp" class="contact-icon">
+                <span>(11) 95382-6504</span>
+              </a>
             </div>
           </section>
         </main>
@@ -160,7 +163,6 @@ class BiscoidinApp {
           <h3>${item.name}</h3>
           <p>${item.description}</p>
           <div class="price">${item.price}</div>
-          <button class="order-button">Encomendar</button>
         </div>
       `).join('');
     }
@@ -225,24 +227,26 @@ preloadLogo.src = '/biscoidino_logo.png';
         </div>
         <div class="carousel-container">
           <div class="carousel">
-            <div class="carousel-images" id="carouselImages">
+            <div class="carousel-images" id="carouselImages" title="Arraste para navegar ou use as setas">
               ${product.images.map((img: string, idx: number) => `
-                <img src="${img}" alt="${product.name}" class="carousel-image ${idx === 0 ? 'active' : ''}" />
+                <div class="carousel-slide ${idx === 0 ? 'active' : ''}">
+                  <img src="${img}" alt="${product.name}" class="carousel-image" style="transform: scale(1) translate(0px, 0px);" />
+                </div>
               `).join('')}
             </div>
-            <button class="carousel-btn prev" onclick="changeCarouselImage(-1)">‹</button>
-            <button class="carousel-btn next" onclick="changeCarouselImage(1)">›</button>
+            <button class="carousel-btn prev" onclick="changeCarouselImage(-1)" title="Imagem anterior">‹</button>
+            <button class="carousel-btn next" onclick="changeCarouselImage(1)" title="Próxima imagem">›</button>
+            <div class="zoom-controls">
+              <button class="zoom-btn" onclick="zoomImage(-0.2)" title="Diminuir zoom">🔍-</button>
+              <button class="zoom-btn" onclick="zoomImage(0.2)" title="Aumentar zoom">🔍+</button>
+              <button class="zoom-btn" onclick="resetZoom()" title="Resetar zoom">⌂</button>
+            </div>
           </div>
           <div class="carousel-dots" id="carouselDots">
             ${product.images.map((_: string, idx: number) => `
               <span class="dot ${idx === 0 ? 'active' : ''}" onclick="currentCarouselImage(${idx + 1})"></span>
             `).join('')}
           </div>
-        </div>
-        <div class="product-info">
-          <p>${product.description}</p>
-          <div class="price-large">${product.price}</div>
-          <button class="order-button-large">Encomendar Agora</button>
         </div>
       </div>
     </div>
@@ -251,12 +255,23 @@ preloadLogo.src = '/biscoidino_logo.png';
   // Add modal to body
   document.body.insertAdjacentHTML('beforeend', modalHTML);
   
-  // Store current image index
+  // Store current image index and zoom state
   (window as any).currentImageIndex = 0;
   (window as any).totalImages = product.images.length;
+  (window as any).currentZoom = 1;
+  (window as any).imagePosition = { x: 0, y: 0 };
+  
+  // Setup carousel dragging after modal is added to DOM
+  setTimeout(() => setupCarouselDrag(), 50);
 };
 
 (window as any).closeProductModal = function() {
+  // Cleanup carousel drag events
+  if ((window as any).cleanupCarouselDrag) {
+    (window as any).cleanupCarouselDrag();
+    (window as any).cleanupCarouselDrag = null;
+  }
+  
   const modal = document.getElementById('productModal');
   if (modal) {
     modal.remove();
@@ -264,35 +279,41 @@ preloadLogo.src = '/biscoidino_logo.png';
 };
 
 (window as any).changeCarouselImage = function(direction: number) {
-  const images = document.querySelectorAll('.carousel-image');
+  const slides = document.querySelectorAll('.carousel-slide');
   const dots = document.querySelectorAll('.dot');
   
-  // Remove active class from current image and dot
-  images[(window as any).currentImageIndex].classList.remove('active');
+  // Remove active class from current slide and dot
+  slides[(window as any).currentImageIndex].classList.remove('active');
   dots[(window as any).currentImageIndex].classList.remove('active');
   
   // Update index
   (window as any).currentImageIndex = ((window as any).currentImageIndex + direction + (window as any).totalImages) % (window as any).totalImages;
   
-  // Add active class to new image and dot
-  images[(window as any).currentImageIndex].classList.add('active');
+  // Add active class to new slide and dot
+  slides[(window as any).currentImageIndex].classList.add('active');
   dots[(window as any).currentImageIndex].classList.add('active');
+  
+  // Reset zoom when changing images
+  (window as any).resetZoom();
 };
 
 (window as any).currentCarouselImage = function(imageIndex: number) {
-  const images = document.querySelectorAll('.carousel-image');
+  const slides = document.querySelectorAll('.carousel-slide');
   const dots = document.querySelectorAll('.dot');
   
-  // Remove active class from current image and dot
-  images[(window as any).currentImageIndex].classList.remove('active');
+  // Remove active class from current slide and dot
+  slides[(window as any).currentImageIndex].classList.remove('active');
   dots[(window as any).currentImageIndex].classList.remove('active');
   
   // Update index
   (window as any).currentImageIndex = imageIndex - 1;
   
-  // Add active class to new image and dot
-  images[(window as any).currentImageIndex].classList.add('active');
+  // Add active class to new slide and dot
+  slides[(window as any).currentImageIndex].classList.add('active');
   dots[(window as any).currentImageIndex].classList.add('active');
+  
+  // Reset zoom when changing images
+  (window as any).resetZoom();
 };
 
 (window as any).openPhysicsView = function(productType: 'baunilha' | 'parmesao') {
@@ -323,6 +344,12 @@ preloadLogo.src = '/biscoidino_logo.png';
   if ((window as any).physicsCleanupInteraction) {
     (window as any).physicsCleanupInteraction();
     (window as any).physicsCleanupInteraction = null;
+  }
+  
+  // Cleanup boundary check interval
+  if ((window as any).physicsBoundaryCheckInterval) {
+    clearInterval((window as any).physicsBoundaryCheckInterval);
+    (window as any).physicsBoundaryCheckInterval = null;
   }
   
   // Stop physics engine
@@ -366,7 +393,9 @@ function setupPhysicsInteraction(canvas: HTMLCanvasElement, engine: any) {
   const mouseConstraint = MouseConstraint.create(engine, {
     mouse: mouse,
     constraint: {
-      stiffness: 0.2,
+      stiffness: 0.1, // Lower stiffness for gentler dragging
+      damping: 0.9,   // Add damping to reduce violent movements
+      length: 0,      // Keep constraint length at zero
       render: {
         visible: false
       }
@@ -457,6 +486,53 @@ function applyForceAtPosition(x: number, y: number) {
   });
 }
 
+function setupBoundaryCheck(canvas: HTMLCanvasElement, biscuits: any[]) {
+  const Matter = (window as any).Matter;
+  
+  // Create boundary check interval
+  const boundaryCheckInterval = setInterval(() => {
+    if (!(window as any).physicsEngine || !biscuits.length) {
+      clearInterval(boundaryCheckInterval);
+      return;
+    }
+    
+    biscuits.forEach((biscuit: any) => {
+      const pos = biscuit.position;
+      const margin = 10; // Safety margin from edges
+      let needsReset = false;
+      let newX = pos.x;
+      let newY = pos.y;
+      
+      // Check if biscuit is outside canvas bounds
+      if (pos.x < margin) {
+        newX = margin + Math.random() * 50; // Random position near left edge
+        needsReset = true;
+      } else if (pos.x > canvas.width - margin) {
+        newX = canvas.width - margin - Math.random() * 50; // Random position near right edge
+        needsReset = true;
+      }
+      
+      if (pos.y < margin) {
+        newY = margin + Math.random() * 50; // Random position near top
+        needsReset = true;
+      } else if (pos.y > canvas.height - margin) {
+        newY = canvas.height - margin - Math.random() * 50; // Random position near bottom
+        needsReset = true;
+      }
+      
+      // Reset position and velocity if biscuit escaped
+      if (needsReset) {
+        Matter.Body.setPosition(biscuit, { x: newX, y: newY });
+        Matter.Body.setVelocity(biscuit, { x: 0, y: 0 });
+        Matter.Body.setAngularVelocity(biscuit, 0);
+      }
+    });
+  }, 100); // Check every 100ms
+  
+  // Store interval for cleanup
+  (window as any).physicsBoundaryCheckInterval = boundaryCheckInterval;
+}
+
 function createPhysicsWorld(productType: 'baunilha' | 'parmesao') {
   const Matter = (window as any).Matter;
   const Engine = Matter.Engine;
@@ -472,7 +548,7 @@ function createPhysicsWorld(productType: 'baunilha' | 'parmesao') {
   
   // Create engine
   const engine = Engine.create();
-  engine.world.gravity.y = 0.8;
+  engine.world.gravity.y = 0.5;
   
   // Create renderer
   const render = Render.create({
@@ -486,12 +562,17 @@ function createPhysicsWorld(productType: 'baunilha' | 'parmesao') {
     }
   });
   
-  // Create boundaries (invisible walls)
+  // Create boundaries (thicker invisible walls to prevent escape)
+  const wallThickness = 50; // Much thicker walls
   const walls = [
-    Bodies.rectangle(canvas.width / 2, 0, canvas.width, 10, { isStatic: true, render: { visible: false } }),
-    Bodies.rectangle(canvas.width / 2, canvas.height, canvas.width, 10, { isStatic: true, render: { visible: false } }),
-    Bodies.rectangle(0, canvas.height / 2, 10, canvas.height, { isStatic: true, render: { visible: false } }),
-    Bodies.rectangle(canvas.width, canvas.height / 2, 10, canvas.height, { isStatic: true, render: { visible: false } })
+    // Top wall
+    Bodies.rectangle(canvas.width / 2, -wallThickness/2, canvas.width + wallThickness*2, wallThickness, { isStatic: true, render: { visible: false } }),
+    // Bottom wall
+    Bodies.rectangle(canvas.width / 2, canvas.height + wallThickness/2, canvas.width + wallThickness*2, wallThickness, { isStatic: true, render: { visible: false } }),
+    // Left wall
+    Bodies.rectangle(-wallThickness/2, canvas.height / 2, wallThickness, canvas.height + wallThickness*2, { isStatic: true, render: { visible: false } }),
+    // Right wall
+    Bodies.rectangle(canvas.width + wallThickness/2, canvas.height / 2, wallThickness, canvas.height + wallThickness*2, { isStatic: true, render: { visible: false } })
   ];
   
   // Create biscuits based on product type
@@ -558,6 +639,9 @@ function createPhysicsWorld(productType: 'baunilha' | 'parmesao') {
   // Add mouse/touch interaction
   setupPhysicsInteraction(canvas, engine);
   
+  // Add boundary check system
+  setupBoundaryCheck(canvas, biscuits);
+  
   // Start simulation
   Engine.run(engine);
   Render.run(render);
@@ -588,3 +672,154 @@ function createPhysicsWorld(productType: 'baunilha' | 'parmesao') {
     });
   }
 };
+
+// Zoom and carousel drag functions
+(window as any).zoomImage = function(delta: number) {
+  (window as any).currentZoom = Math.max(0.5, Math.min(3, (window as any).currentZoom + delta));
+  updateImageTransform();
+};
+
+(window as any).resetZoom = function() {
+  (window as any).currentZoom = 1;
+  (window as any).imagePosition = { x: 0, y: 0 };
+  updateImageTransform();
+};
+
+function updateImageTransform() {
+  const activeSlide = document.querySelector('.carousel-slide.active');
+  if (activeSlide) {
+    const img = activeSlide.querySelector('.carousel-image') as HTMLImageElement;
+    if (img) {
+      const zoom = (window as any).currentZoom;
+      const pos = (window as any).imagePosition;
+      img.style.transform = `scale(${zoom}) translate(${pos.x}px, ${pos.y}px)`;
+      img.style.cursor = zoom > 1 ? 'grab' : 'default';
+    }
+  }
+}
+
+function setupCarouselDrag() {
+  const carouselContainer = document.getElementById('carouselImages');
+  if (!carouselContainer) return;
+  
+  let isDragging = false;
+  let isImageDrag = false;
+  let startX = 0;
+  let startY = 0;
+  let endX = 0;
+  let initialImagePos = { x: 0, y: 0 };
+  
+  // Handle mouse and touch events for carousel dragging
+  const handleStart = (e: MouseEvent | TouchEvent) => {
+    isDragging = true;
+    
+    const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
+    const clientY = 'touches' in e ? e.touches[0].clientY : e.clientY;
+    
+    startX = clientX;
+    startY = clientY;
+    endX = clientX;
+    
+    // Check if we're dragging a zoomed image
+    const activeImg = document.querySelector('.carousel-slide.active .carousel-image') as HTMLElement;
+    if (activeImg && (window as any).currentZoom > 1) {
+      isImageDrag = true;
+      initialImagePos = { ...(window as any).imagePosition };
+      activeImg.style.cursor = 'grabbing';
+    } else {
+      isImageDrag = false;
+      carouselContainer.style.cursor = 'grabbing';
+    }
+    
+    e.preventDefault();
+  };
+  
+  const handleMove = (e: MouseEvent | TouchEvent) => {
+    if (!isDragging) return;
+    
+    const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
+    const clientY = 'touches' in e ? e.touches[0].clientY : e.clientY;
+    
+    endX = clientX; // Track current position for end calculation
+    
+    if (isImageDrag && (window as any).currentZoom > 1) {
+      // Drag zoomed image
+      const deltaX = (clientX - startX) / (window as any).currentZoom;
+      const deltaY = (clientY - startY) / (window as any).currentZoom;
+      
+      (window as any).imagePosition = {
+        x: initialImagePos.x + deltaX,
+        y: initialImagePos.y + deltaY
+      };
+      
+      updateImageTransform();
+    }
+    
+    e.preventDefault();
+  };
+  
+  const handleEnd = () => {
+    if (!isDragging) return;
+    
+    isDragging = false;
+    
+    const activeImg = document.querySelector('.carousel-slide.active .carousel-image') as HTMLElement;
+    if (activeImg) {
+      activeImg.style.cursor = (window as any).currentZoom > 1 ? 'grab' : 'default';
+    }
+    carouselContainer.style.cursor = 'grab';
+    
+    // Handle carousel navigation if not dragging zoomed image
+    if (!isImageDrag) {
+      const dragDistance = endX - startX;
+      const threshold = 50; // Minimum drag distance to change slides
+      
+      if (Math.abs(dragDistance) > threshold) {
+        if (dragDistance > 0) {
+          // Dragged right -> go to previous image
+          (window as any).changeCarouselImage(-1);
+        } else {
+          // Dragged left -> go to next image
+          (window as any).changeCarouselImage(1);
+        }
+      }
+    }
+    
+    isImageDrag = false;
+  };
+  
+  // Set initial cursor style to indicate draggable
+  carouselContainer.style.cursor = 'grab';
+  
+  // Add event listeners
+  carouselContainer.addEventListener('mousedown', handleStart);
+  carouselContainer.addEventListener('touchstart', handleStart, { passive: false });
+  
+  document.addEventListener('mousemove', handleMove);
+  document.addEventListener('touchmove', handleMove, { passive: false });
+  
+  document.addEventListener('mouseup', handleEnd);
+  document.addEventListener('touchend', handleEnd);
+  
+  // Prevent drag on images to avoid browser's default drag behavior
+  const images = carouselContainer.querySelectorAll('img');
+  images.forEach(img => {
+    img.addEventListener('dragstart', (e) => e.preventDefault());
+    img.style.userSelect = 'none';
+    img.style.webkitUserSelect = 'none';
+  });
+  
+  // Store cleanup function
+  (window as any).cleanupCarouselDrag = () => {
+    carouselContainer.removeEventListener('mousedown', handleStart);
+    carouselContainer.removeEventListener('touchstart', handleStart);
+    document.removeEventListener('mousemove', handleMove);
+    document.removeEventListener('touchmove', handleMove);
+    document.removeEventListener('mouseup', handleEnd);
+    document.removeEventListener('touchend', handleEnd);
+    
+    images.forEach(img => {
+      img.removeEventListener('dragstart', (e) => e.preventDefault());
+    });
+  };
+}
