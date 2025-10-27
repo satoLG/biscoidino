@@ -1291,6 +1291,12 @@ function createHeroPhysicsWorld() {
   Engine.run(engine);
   Render.run(render);
   
+  // Setup resize listener for responsive canvas (only once)
+  if (!(window as any).heroResizeSetup) {
+    setupHeroCanvasResize();
+    (window as any).heroResizeSetup = true;
+  }
+  
   console.log('✅ Hero physics initialized successfully');
 }
 
@@ -1503,4 +1509,73 @@ function applyHeroForceAtPosition(x: number, y: number) {
       Matter.Body.applyForce(biscuit, biscuit.position, force);
     }
   });
+}
+
+// Hero Canvas Resize Handler
+function setupHeroCanvasResize() {
+  let resizeTimeout: number;
+  
+  const handleResize = () => {
+    // Only resize if hero section is active and canvas exists
+    const canvas = document.getElementById('heroPhysicsCanvas') as HTMLCanvasElement;
+    const heroSection = document.querySelector('.hero.active');
+    
+    if (!canvas || !heroSection) {
+      return;
+    }
+    
+    // Debounce the resize to avoid too many calls
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(() => {
+      console.log('🔄 Resizing hero physics canvas...');
+      
+      // Cleanup existing physics world
+      if ((window as any).heroPhysicsEngine) {
+        const Matter = (window as any).Matter;
+        
+        // Stop the engine
+        Matter.Engine.clear((window as any).heroPhysicsEngine);
+        
+        // Stop and cleanup renderer
+        if ((window as any).heroPhysicsRender) {
+          Matter.Render.stop((window as any).heroPhysicsRender);
+          (window as any).heroPhysicsRender = null;
+        }
+        
+        // Clean up mouse constraint
+        if ((window as any).heroPhysicsMouseConstraint) {
+          Matter.World.remove((window as any).heroPhysicsEngine.world, (window as any).heroPhysicsMouseConstraint);
+          (window as any).heroPhysicsMouseConstraint = null;
+        }
+        
+        (window as any).heroPhysicsEngine = null;
+        (window as any).heroPhysicsBiscuits = null;
+      }
+      
+      // Recreate physics world with new dimensions (but don't setup resize again)
+      const originalSetup = (window as any).heroResizeSetup;
+      (window as any).heroResizeSetup = true; // Prevent recursive setup
+      createHeroPhysicsWorld();
+      (window as any).heroResizeSetup = originalSetup;
+      
+    }, 300); // Wait 300ms after resize stops
+  };
+  
+  // Cleanup any existing resize listener first
+  if ((window as any).heroResizeCleanup) {
+    (window as any).heroResizeCleanup();
+  }
+  
+  // Add resize event listener
+  window.addEventListener('resize', handleResize);
+  
+  // Store cleanup function globally
+  (window as any).heroResizeCleanup = () => {
+    window.removeEventListener('resize', handleResize);
+    if (resizeTimeout) {
+      clearTimeout(resizeTimeout);
+    }
+  };
+  
+  console.log('📐 Hero canvas resize listener setup complete');
 }
