@@ -1218,6 +1218,12 @@ function createHeroPhysicsWorld() {
     ctx.scale(pixelRatio, pixelRatio);
   }
   
+  // Store initial canvas size for resize detection
+  (window as any).heroLastCanvasSize = { 
+    width: Math.round(containerRect.width), 
+    height: Math.round(containerRect.height) 
+  };
+  
   console.log('📐 Hero physics canvas:', { 
     displayWidth: containerRect.width, 
     displayHeight: containerRect.height,
@@ -1464,6 +1470,9 @@ function setupHeroPhysicsInteraction(canvas: HTMLCanvasElement, engine: any) {
   
   // Add click/touch interaction for impulse effects
   const handleInteractionStart = (event: MouseEvent | TouchEvent) => {
+    // Mark that we're in a touch interaction to prevent resize conflicts
+    (window as any).heroTouchActive = true;
+    
     const rect = canvas.getBoundingClientRect();
     const clientX = 'touches' in event ? event.touches[0].clientX : event.clientX;
     const clientY = 'touches' in event ? event.touches[0].clientY : event.clientY;
@@ -1474,9 +1483,19 @@ function setupHeroPhysicsInteraction(canvas: HTMLCanvasElement, engine: any) {
     applyHeroForceAtPosition(x, y);
   };
   
+  const handleInteractionEnd = () => {
+    // Clear touch interaction flag after a delay
+    setTimeout(() => {
+      (window as any).heroTouchActive = false;
+    }, 100);
+  };
+  
   // Add event listeners
   canvas.addEventListener('mousedown', handleInteractionStart);
+  canvas.addEventListener('mouseup', handleInteractionEnd);
   canvas.addEventListener('touchstart', handleInteractionStart, { passive: true });
+  canvas.addEventListener('touchend', handleInteractionEnd);
+  canvas.addEventListener('touchcancel', handleInteractionEnd);
   
   // Prevent context menu
   canvas.addEventListener('contextmenu', (e) => e.preventDefault());
@@ -1516,15 +1535,45 @@ function setupHeroCanvasResize() {
   let resizeTimeout: number;
   
   const handleResize = () => {
-    // Only resize if hero section is active and canvas exists
-    const canvas = document.getElementById('heroPhysicsCanvas') as HTMLCanvasElement;
-    const heroSection = document.querySelector('.hero.active');
-    
-    if (!canvas || !heroSection) {
+    // Skip resize if we're in the middle of a touch interaction
+    if ((window as any).heroTouchActive) {
+      console.log('📱 Skipping resize during touch interaction');
       return;
     }
     
-    // Debounce the resize to avoid too many calls
+    // Only resize if hero section is active and canvas exists
+    const canvas = document.getElementById('heroPhysicsCanvas') as HTMLCanvasElement;
+    const heroSection = document.querySelector('.hero.active');
+    const container = document.getElementById('heroImageContainer') as HTMLElement;
+    
+    if (!canvas || !heroSection || !container) {
+      return;
+    }
+    
+    // Get stored canvas size (initialized when physics world is created)
+    const lastCanvasSize = (window as any).heroLastCanvasSize || { width: 0, height: 0 };
+    
+    // Check if size actually changed to prevent unnecessary resize on mobile interactions
+    const containerRect = container.getBoundingClientRect();
+    const currentWidth = Math.round(containerRect.width);
+    const currentHeight = Math.round(containerRect.height);
+    
+    // Only proceed if size actually changed by more than 10px (to account for mobile browser quirks)
+    if (Math.abs(currentWidth - lastCanvasSize.width) < 10 && 
+        Math.abs(currentHeight - lastCanvasSize.height) < 10) {
+      console.log('📱 Size change too small, ignoring resize event');
+      return;
+    }
+    
+    console.log('📏 Size changed from', lastCanvasSize, 'to', { width: currentWidth, height: currentHeight });
+    
+    // Update stored size
+    (window as any).heroLastCanvasSize = { width: currentWidth, height: currentHeight };
+    
+    // Debounce the resize to avoid too many calls (longer delay for mobile)
+    const isMobile = /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    const debounceDelay = isMobile ? 500 : 300; // Longer delay on mobile to avoid interaction conflicts
+    
     clearTimeout(resizeTimeout);
     resizeTimeout = setTimeout(() => {
       console.log('🔄 Resizing hero physics canvas...');
@@ -1558,7 +1607,7 @@ function setupHeroCanvasResize() {
       createHeroPhysicsWorld();
       (window as any).heroResizeSetup = originalSetup;
       
-    }, 300); // Wait 300ms after resize stops
+    }, debounceDelay); // Wait longer on mobile to avoid interaction conflicts
   };
   
   // Cleanup any existing resize listener first
