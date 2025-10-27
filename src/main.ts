@@ -40,39 +40,60 @@ class BiscoidinApp {
             <p class="tagline">Biscoitos amanteigados caseiros</p>
           </div>
           <nav class="nav">
-            <a href="#home" class="nav-link active">Início</a>
-            <a href="#menu" class="nav-link">Cardápio</a>
-            <a href="#about" class="nav-link">Sobre</a>
-            <a href="#contact" class="nav-link">Contato</a>
+            <a href="#home" class="nav-link active">
+              <svg class="nav-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M3 9L12 2L21 9V20C21 20.5304 20.7893 21.0391 20.4142 21.4142C20.0391 21.7893 19.5304 22 19 22H5C4.46957 22 3.96086 21.7893 3.58579 21.4142C3.21071 21.0391 3 20.5304 3 20V9Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M9 22V12H15V22" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <span class="nav-text">Início</span>
+            </a>
+            <a href="#menu" class="nav-link">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chef-hat-icon lucide-chef-hat"><path d="M17 21a1 1 0 0 0 1-1v-5.35c0-.457.316-.844.727-1.041a4 4 0 0 0-2.134-7.589 5 5 0 0 0-9.186 0 4 4 0 0 0-2.134 7.588c.411.198.727.585.727 1.041V20a1 1 0 0 0 1 1Z"/><path d="M6 17h12"/>
+            </svg>
+              <span class="nav-text">Cardápio</span>
+            </a>
+            <a href="#about" class="nav-link">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-book-open-text-icon lucide-book-open-text"><path d="M12 7v14"/><path d="M16 12h2"/><path d="M16 8h2"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/><path d="M6 12h2"/><path d="M6 8h2"/>
+              </svg>
+              <span class="nav-text">Sobre</span>
+            </a>
+            <a href="#gallery" class="nav-link">
+              <svg class="nav-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="3" y="3" width="18" height="18" rx="2" ry="2" stroke="currentColor" stroke-width="2"/>
+                <circle cx="8.5" cy="8.5" r="1.5" stroke="currentColor" stroke-width="2"/>
+                <path d="M21 15L16 10L5 21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <span class="nav-text">Galeria</span>
+            </a>
+            <a href="#contact" class="nav-link">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-phone-icon lucide-phone"><path d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384"/>
+              </svg>
+              <span class="nav-text">Contato</span>
+            </a>
           </nav>
         </header>
 
         <main class="main">
           <section id="home" class="hero active">
             <div class="hero-content">
-              <h2>Bem-vindos ao BISCOIDINO</h2>
+              <h2>Seja Bem-vindo(a)</h2>
               <p>Experimente os melhores biscoitos amanteigados caseiros feitos com receitas próprias e ingredientes premium.</p>
-              <button class="cta-button">Ver Nosso Cardápio</button>
+              <button class="cta-button">Ver nosso cardápio</button>
             </div>
-            <div class="hero-image">
-              <div class="floating-biscuits">
-                <img src="/biscoidino_biscuit.png" alt="BISCOIDINO" class="biscuit-placeholder main-biscuit">
-                <img src="/flower_baunilha_biscuit.png" alt="Flor Baunilha" class="biscuit-placeholder flower-biscuit">
-                <img src="/heart_baunilha_biscuit.png" alt="Coração Baunilha" class="biscuit-placeholder heart-biscuit">
-                <img src="/parmesao_biscuit.png" alt="Parmesão" class="biscuit-placeholder parmesao-biscuit">
-              </div>
+            <div class="hero-image" id="heroImageContainer">
+              <canvas id="heroPhysicsCanvas"></canvas>
             </div>
           </section>
 
           <section id="menu" class="menu-section">
-            <h2>Nosso Delicioso Cardápio</h2>
+            <h2>Nosso Cardápio</h2>
             <div class="menu-grid" id="menuGrid">
               <!-- Menu items will be loaded here -->
             </div>
           </section>
 
           <section id="about" class="about-section">
-            <h2>Sobre a BISCOIDINO</h2>
+            <h2>Nossa História</h2>
             <div class="about-content">
               <p>A BISCOIDINO foi criada por Micaela, uma mãe que queria fazer biscoitos de dinossauro para seu filho Lucas. Sem querer, acabou levando para outras pessoas provarem e descobriu que sua receita seria um sucesso.</p>
               <div class="features">
@@ -95,8 +116,14 @@ class BiscoidinApp {
             </div>
           </section>
 
+          <section id="gallery" class="gallery-section">
+            <h2>Galeria</h2>
+            <p class="gallery-subtitle">Veja alguns de nossos clientes satisfeitos e os bastidores dos biscoidinos!</p>
+            ${this.renderGalleryCarousel()}
+          </section>
+
           <section id="contact" class="contact-section">
-            <h2>Entre em Contato</h2>
+            <h2>Contatos</h2>
             <div class="contact-info">
               <a href="https://wa.me/5511953826504?text=Olá,%20gostaria%20de%20encomendar%20biscoitos!" target="_blank" class="whatsapp-link">
                 <img src="/whatsapp.jpeg" alt="WhatsApp" class="contact-icon">
@@ -114,6 +141,18 @@ class BiscoidinApp {
 
     this.loadMenu();
     this.setupNavigation();
+    
+    setTimeout(() => {
+      initHeroPhysics();
+    }, 100);
+
+    // Initialize gallery carousel after DOM is ready (backup initialization)
+    setTimeout(() => {
+      console.log('🚀 Initial gallery setup...');
+      if (document.querySelector('.gallery-slide')) {
+        updateGallerySlide(); // Ensure initial state is correct
+      }
+    }, 200);
   }
 
   private loadMenu(): void {
@@ -175,16 +214,25 @@ class BiscoidinApp {
     navLinks.forEach(link => {
       link.addEventListener('click', (e) => {
         e.preventDefault();
-        const targetId = (e.target as HTMLAnchorElement).getAttribute('href')?.substring(1);
+        const currentLink = e.currentTarget as HTMLAnchorElement;
+        const targetId = currentLink.getAttribute('href')?.substring(1);
         
         // Update active nav link
         navLinks.forEach(nav => nav.classList.remove('active'));
-        (e.target as HTMLElement).classList.add('active');
+        currentLink.classList.add('active');
         
         // Show/hide sections
         sections.forEach(section => {
           if (section.id === targetId) {
             section.classList.add('active');
+            
+            // Initialize gallery when gallery section becomes active
+            if (targetId === 'gallery') {
+              setTimeout(() => {
+                console.log('🎭 Gallery section activated, initializing carousel...');
+                initializeGalleryCarousel();
+              }, 50);
+            }
           } else {
             section.classList.remove('active');
           }
@@ -200,6 +248,63 @@ class BiscoidinApp {
         menuLink?.click();
       });
     }
+  }
+
+  private renderGalleryCarousel(): string {
+    // Mapear automaticamente as imagens da pasta public/gallery
+    const galleryData = [
+      {
+        image: '/gallery/galeria1.jpeg',
+        text: 'Parmesão e Baunilha!',
+      },
+      {
+        image: '/gallery/galeria2.jpeg',
+        text: 'Produção de biscoitos!',
+      },
+      {
+        image: '/gallery/galeria3.jpeg',
+        text: 'Perfeito para a hora do chá!',
+      },
+      {
+        image: '/gallery/galeria4.jpeg',
+        text: 'Pacotes de baunilha!',
+      },
+      {
+        image: '/gallery/galeria5.jpeg',
+        text: 'Biscoitos prontos para festa!',
+      },
+      {
+        image: '/gallery/galeria6.jpeg',
+        text: 'Mini biscoidinos para festa!',
+      },
+      {
+        image: '/gallery/galeria7.jpeg',
+        text: 'Hmm, parmesão, que delícia!',
+      }
+    ];
+
+    return `
+      <div class="gallery-carousel-container">
+        <div class="gallery-carousel">
+          <div class="gallery-slides-container" id="gallerySlides">
+            ${galleryData.map((item, index) => `
+              <div class="gallery-slide ${index === 0 ? 'active' : ''}" data-image-src="${item.image}" data-slide-index="${index}">
+                <div class="gallery-slide-overlay">
+                  <p class="gallery-text">"${item.text}"</p>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+          <button class="gallery-nav-btn prev" onclick="galleryPrevSlide()">‹</button>
+          <button class="gallery-nav-btn next" onclick="galleryNextSlide()">›</button>
+          <div class="gallery-indicators" id="galleryIndicators">
+            ${galleryData.map((_, index) => `
+              <span class="gallery-indicator ${index === 0 ? 'active' : ''}" onclick="galleryGoToSlide(${index})"></span>
+            `).join('')}
+          </div>
+        </div>
+      </div>
+    `;
   }
 }
 
@@ -822,4 +927,580 @@ function setupCarouselDrag() {
       img.removeEventListener('dragstart', (e) => e.preventDefault());
     });
   };
+}
+
+// Gallery Carousel Functions
+let currentGallerySlide = 0;
+const totalGallerySlides = 7;
+
+(window as any).galleryNextSlide = function() {
+  currentGallerySlide = (currentGallerySlide + 1) % totalGallerySlides;
+  updateGallerySlide();
+};
+
+(window as any).galleryPrevSlide = function() {
+  currentGallerySlide = (currentGallerySlide - 1 + totalGallerySlides) % totalGallerySlides;
+  updateGallerySlide();
+};
+
+(window as any).galleryGoToSlide = function(index: number) {
+  currentGallerySlide = index;
+  updateGallerySlide();
+};
+
+function updateGallerySlide() {
+  const slides = document.querySelectorAll('.gallery-slide');
+  const indicators = document.querySelectorAll('.gallery-indicator');
+  
+  if (slides.length === 0) return;
+  
+  // Calcular índices do carrossel infinito
+  const prevSlideIndex = (currentGallerySlide - 1 + totalGallerySlides) % totalGallerySlides;
+  const nextSlideIndex = (currentGallerySlide + 1) % totalGallerySlides;
+  
+  console.log('🎯 Updating gallery slide:', {
+    current: currentGallerySlide,
+    prev: prevSlideIndex,
+    next: nextSlideIndex,
+    totalSlides: slides.length
+  });
+  
+  // Resetar todos os slides primeiro
+  slides.forEach((slideElement) => {
+    const slide = slideElement as HTMLElement;
+    slide.classList.remove('active', 'prev-slide', 'next-slide');
+    slide.style.display = 'none';
+  });
+  
+  // Mostrar apenas os 3 slides necessários
+  slides.forEach((slideElement, index) => {
+    const slide = slideElement as HTMLElement;
+    
+    if (index === currentGallerySlide) {
+      // Slide ativo (centro)
+      slide.style.display = 'block';
+      slide.classList.add('active');
+    } else if (index === prevSlideIndex) {
+      // Slide anterior (esquerda)
+      slide.style.display = 'block';
+      slide.classList.add('prev-slide');
+    } else if (index === nextSlideIndex) {
+      // Próximo slide (direita)
+      slide.style.display = 'block';
+      slide.classList.add('next-slide');
+    }
+  });
+  
+  // Atualizar indicadores
+  indicators.forEach((indicator, index) => {
+    if (index === currentGallerySlide) {
+      indicator.classList.add('active');
+    } else {
+      indicator.classList.remove('active');
+    }
+  });
+}
+
+// Gallery Drag/Swipe Functions - COPIADO DO MODAL DOS PRODUTOS
+function setupGalleryDrag() {
+  const galleryContainer = document.querySelector('.gallery-slides-container') as HTMLElement;
+  if (!galleryContainer) return;
+  
+  let isDragging = false;
+  let startX = 0;
+  let endX = 0;
+  
+  // Handle mouse and touch events for gallery dragging
+  const handleStart = (e: MouseEvent | TouchEvent) => {
+    isDragging = true;
+    
+    const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
+    
+    startX = clientX;
+    endX = clientX;
+    
+    galleryContainer.style.cursor = 'grabbing';
+    e.preventDefault();
+  };
+  
+  const handleMove = (e: MouseEvent | TouchEvent) => {
+    if (!isDragging) return;
+    
+    const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
+    endX = clientX; // Track current position for end calculation
+    e.preventDefault();
+  };
+  
+  const handleEnd = () => {
+    if (!isDragging) return;
+    
+    isDragging = false;
+    galleryContainer.style.cursor = 'grab';
+    
+    // Handle gallery navigation
+    const dragDistance = endX - startX;
+    const threshold = 50; // Minimum drag distance to change slides
+    
+    if (Math.abs(dragDistance) > threshold) {
+      if (dragDistance > 0) {
+        // Dragged right -> go to previous slide
+        (window as any).galleryPrevSlide();
+      } else {
+        // Dragged left -> go to next slide
+        (window as any).galleryNextSlide();
+      }
+    }
+  };
+  
+  // Set initial cursor style to indicate draggable
+  galleryContainer.style.cursor = 'grab';
+  
+  // Add event listeners
+  galleryContainer.addEventListener('mousedown', handleStart);
+  galleryContainer.addEventListener('touchstart', handleStart, { passive: false });
+  
+  document.addEventListener('mousemove', handleMove);
+  document.addEventListener('touchmove', handleMove, { passive: false });
+  
+  document.addEventListener('mouseup', handleEnd);
+  document.addEventListener('touchend', handleEnd);
+  
+  // Prevent drag on images to avoid browser's default drag behavior
+  galleryContainer.addEventListener('dragstart', (e) => e.preventDefault());
+  galleryContainer.addEventListener('selectstart', (e) => e.preventDefault());
+}
+
+// Initialize gallery carousel - will be called after navigation setup
+function initializeGalleryCarousel() {
+  console.log('🎮 Initializing Gallery Carousel...');
+  
+  const slides = document.querySelectorAll('.gallery-slide');
+  const container = document.querySelector('.gallery-slides-container');
+  
+  console.log('📊 Gallery stats:');
+  console.log('   - Slides found:', slides.length);
+  console.log('   - Container found:', !!container);
+  
+  if (slides.length === 0) {
+    console.warn('⚠️ No gallery slides found!');
+    return;
+  }
+  
+  // Force update gallery slide multiple times to ensure it takes effect
+  updateGallerySlide();
+  setTimeout(() => updateGallerySlide(), 10);
+  setTimeout(() => updateGallerySlide(), 50);
+  
+  setupGalleryDrag();
+  
+  // Aplicar inteligência de imagem para cada slide
+  setTimeout(() => applyImageIntelligence(), 100);
+  
+  console.log('✅ Gallery carousel initialized successfully');
+}
+
+// Inteligência para otimizar a exibição das imagens na galeria
+function applyImageIntelligence() {
+  console.log('🧠 Aplicando inteligência de imagem...');
+  
+  const slides = document.querySelectorAll('.gallery-slide[data-image-src]');
+  
+  slides.forEach((slide, index) => {
+    const slideElement = slide as HTMLElement;
+    const imageSrc = slideElement.dataset.imageSrc;
+    
+    if (!imageSrc) return;
+    
+    // Criar elemento de imagem para analisar as dimensões
+    const img = new Image();
+    
+    img.onload = function() {
+      const aspectRatio = img.naturalWidth / img.naturalHeight;
+      const slideAspectRatio = 0.7 / 0.5; // Aproximadamente 1.4 (width 70% / height 500px)
+      
+      console.log(`📸 Imagem ${index + 1}:`, {
+        width: img.naturalWidth,
+        height: img.naturalHeight,
+        aspectRatio: aspectRatio.toFixed(2),
+        slideAspectRatio: slideAspectRatio.toFixed(2)
+      });
+      
+      // Determinar a melhor estratégia de exibição
+      let backgroundSize = 'contain';
+      let backgroundColor = 'var(--background)';
+      
+      // Se a proporção da imagem é muito similar à do slide, usar cover
+      if (Math.abs(aspectRatio - slideAspectRatio) < 0.3) {
+        backgroundSize = 'cover';
+        console.log(`✨ Imagem ${index + 1}: Proporção ideal, usando cover`);
+      } else if (aspectRatio > slideAspectRatio) {
+        // Imagem mais larga - usar contain com fundo suave
+        backgroundSize = 'contain';
+        backgroundColor = 'linear-gradient(135deg, var(--background), var(--primary-color)15%)';
+        console.log(`📐 Imagem ${index + 1}: Muito larga, usando contain com gradiente`);
+      } else {
+        // Imagem mais alta - usar contain com fundo neutro
+        backgroundSize = 'contain';
+        backgroundColor = 'var(--background)';
+        console.log(`📏 Imagem ${index + 1}: Muito alta, usando contain com fundo neutro`);
+      }
+      
+      // Aplicar estilos otimizados
+      slideElement.style.backgroundImage = `url('${imageSrc}')`;
+      slideElement.style.backgroundSize = backgroundSize;
+      slideElement.style.background = `${backgroundColor} url('${imageSrc}') center/contain no-repeat`;
+      
+      // Se usar contain, adicionar uma borda sutil para definir melhor o slide
+      if (backgroundSize === 'contain') {
+        slideElement.style.border = '2px solid rgba(255, 182, 191, 0.2)';
+      }
+    };
+    
+    img.onerror = function() {
+      console.error(`❌ Erro ao carregar imagem: ${imageSrc}`);
+      // Fallback para imagem com erro
+      slideElement.style.background = 'var(--background)';
+      slideElement.style.display = 'flex';
+      slideElement.style.alignItems = 'center';
+      slideElement.style.justifyContent = 'center';
+      slideElement.innerHTML = '<div style="color: var(--text-light); text-align: center;">Imagem não encontrada</div>';
+    };
+    
+    img.src = imageSrc;
+  });
+}
+
+// Hero Physics Functions
+function initHeroPhysics() {
+  console.log('🌟 Initializing Hero Physics with Matter.js...');
+  
+  // Load Matter.js if not already loaded
+  if (!(window as any).Matter) {
+    const script = document.createElement('script');
+    script.src = 'https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js';
+    script.onload = () => createHeroPhysicsWorld();
+    document.head.appendChild(script);
+  } else {
+    createHeroPhysicsWorld();
+  }
+}
+
+function createHeroPhysicsWorld() {
+  const Matter = (window as any).Matter;
+  const Engine = Matter.Engine;
+  const Render = Matter.Render;
+  const World = Matter.World;
+  const Bodies = Matter.Bodies;
+  
+  const canvas = document.getElementById('heroPhysicsCanvas') as HTMLCanvasElement;
+  const container = document.getElementById('heroImageContainer') as HTMLElement;
+  
+  if (!canvas || !container) {
+    console.error('❌ Canvas ou container não encontrado');
+    return;
+  }
+  
+  // Get container size and set canvas dimensions properly for crisp rendering
+  const containerRect = container.getBoundingClientRect();
+  const pixelRatio = window.devicePixelRatio || 1;
+  
+  // Set actual canvas size (for crisp rendering)
+  canvas.width = containerRect.width * pixelRatio;
+  canvas.height = containerRect.height * pixelRatio;
+  
+  // Scale canvas back down using CSS for proper display size
+  canvas.style.width = containerRect.width + 'px';
+  canvas.style.height = containerRect.height + 'px';
+  
+  // Get the context and scale it for high DPI displays
+  const ctx = canvas.getContext('2d');
+  if (ctx) {
+    ctx.scale(pixelRatio, pixelRatio);
+  }
+  
+  console.log('📐 Hero physics canvas:', { 
+    displayWidth: containerRect.width, 
+    displayHeight: containerRect.height,
+    actualWidth: canvas.width, 
+    actualHeight: canvas.height,
+    pixelRatio: pixelRatio
+  });
+  
+  // Create engine with natural gravity
+  const engine = Engine.create();
+  engine.world.gravity.y = 0.6;
+  
+  // Create renderer with sprites (use display dimensions, not actual canvas dimensions)
+  const render = Render.create({
+    canvas: canvas,
+    engine: engine,
+    options: {
+      width: containerRect.width,
+      height: containerRect.height,
+      wireframes: false,
+      background: 'transparent',
+      showAngleIndicator: false,
+      showDebug: false,
+      showVelocity: false,
+      showIds: false,
+      showShadows: false,
+      showVertexNumbers: false,
+      showConvexHulls: false
+    }
+  });
+  
+  // Create boundaries within the canvas area (use display dimensions)
+  const wallThickness = 10;
+  const displayWidth = containerRect.width;
+  const displayHeight = containerRect.height;
+  
+  const walls = [
+    // Bottom wall (floor)
+    Bodies.rectangle(displayWidth / 2, displayHeight - wallThickness/2, displayWidth, wallThickness, { 
+      isStatic: true, 
+      render: { visible: false } 
+    }),
+    // Left wall
+    Bodies.rectangle(wallThickness/2, displayHeight / 2, wallThickness, displayHeight, { 
+      isStatic: true, 
+      render: { visible: false } 
+    }),
+    // Right wall
+    Bodies.rectangle(displayWidth - wallThickness/2, displayHeight / 2, wallThickness, displayHeight, { 
+      isStatic: true, 
+      render: { visible: false } 
+    })
+    // Não adicionar parede superior para permitir que os biscoitos caiam do topo
+  ];
+  
+  // Create hero biscuits with physics (use display dimensions)
+  const heroBiscuits = createHeroBiscuits(displayWidth, displayHeight);
+  
+  // Add all bodies to world
+  World.add(engine.world, [...walls, ...heroBiscuits]);
+  
+  // Store references globally for interaction
+  (window as any).heroPhysicsEngine = engine;
+  (window as any).heroPhysicsRender = render;
+  (window as any).heroPhysicsBiscuits = heroBiscuits;
+  
+  // Setup hero interaction
+  setupHeroPhysicsInteraction(canvas, engine);
+  
+  // Start simulation
+  Engine.run(engine);
+  Render.run(render);
+  
+  console.log('✅ Hero physics initialized successfully');
+}
+
+function createHeroBiscuits(canvasWidth: number, _canvasHeight: number) {
+  const Matter = (window as any).Matter;
+  const Bodies = Matter.Bodies;
+  
+  const centerX = canvasWidth / 2;
+  
+  const biscuits = [
+    // Main biscuit (caindo do topo centro) - mesmo tamanho do modal
+    Bodies.circle(centerX, 50, 35, { 
+      render: { 
+        sprite: {
+          texture: '/biscoidino_biscuit.png',
+          xScale: 0.3,
+          yScale: 0.3
+        }
+      },
+      restitution: 0.6,
+      frictionAir: 0.01,
+      density: 0.002
+    }),
+    Bodies.circle(centerX, 50, 35, { 
+      render: { 
+        sprite: {
+          texture: '/biscoidino_biscuit.png',
+          xScale: 0.3,
+          yScale: 0.3
+        }
+      },
+      restitution: 0.6,
+      frictionAir: 0.01,
+      density: 0.002
+    }),
+    Bodies.circle(centerX, 50, 35, { 
+      render: { 
+        sprite: {
+          texture: '/biscoidino_biscuit.png',
+          xScale: 0.3,
+          yScale: 0.3
+        }
+      },
+      restitution: 0.6,
+      frictionAir: 0.01,
+      density: 0.002
+    }),
+    // Flower biscuit (caindo do topo esquerda) - mesmo tamanho do modal
+    Bodies.circle(centerX - 100, 30, 35, { 
+      render: { 
+        sprite: {
+          texture: '/flower_baunilha_biscuit.png',
+          xScale: 0.3,
+          yScale: 0.3
+        }
+      },
+      restitution: 0.6,
+      frictionAir: 0.01,
+      density: 0.002
+    }),
+    Bodies.circle(centerX - 100, 30, 35, { 
+      render: { 
+        sprite: {
+          texture: '/flower_baunilha_biscuit.png',
+          xScale: 0.3,
+          yScale: 0.3
+        }
+      },
+      restitution: 0.6,
+      frictionAir: 0.01,
+      density: 0.002
+    }),
+    // Heart biscuit (caindo do topo direita) - mesmo tamanho do modal
+    Bodies.circle(centerX + 80, 40, 35, { 
+      render: { 
+        sprite: {
+          texture: '/heart_baunilha_biscuit.png',
+          xScale: 0.3,
+          yScale: 0.3
+        }
+      },
+      restitution: 0.6,
+      frictionAir: 0.01,
+      density: 0.002
+    }),
+    Bodies.circle(centerX + 80, 40, 35, { 
+      render: { 
+        sprite: {
+          texture: '/heart_baunilha_biscuit.png',
+          xScale: 0.3,
+          yScale: 0.3
+        }
+      },
+      restitution: 0.6,
+      frictionAir: 0.01,
+      density: 0.002
+    }),
+    // Parmesao biscuit (caindo do topo centro-esquerda) - mesmo tamanho do modal
+    Bodies.circle(centerX - 40, 20, 30, { 
+      render: { 
+        sprite: {
+          texture: '/parmesao_biscuit.png',
+          xScale: 0.3,
+          yScale: 0.3
+        }
+      },
+      restitution: 0.6,
+      frictionAir: 0.01,
+      density: 0.002
+    }),
+    Bodies.circle(centerX - 40, 20, 30, { 
+      render: { 
+        sprite: {
+          texture: '/parmesao_biscuit.png',
+          xScale: 0.3,
+          yScale: 0.3
+        }
+      },
+      restitution: 0.6,
+      frictionAir: 0.01,
+      density: 0.002
+    }),
+    Bodies.circle(centerX - 40, 20, 30, { 
+      render: { 
+        sprite: {
+          texture: '/parmesao_biscuit.png',
+          xScale: 0.3,
+          yScale: 0.3
+        }
+      },
+      restitution: 0.6,
+      frictionAir: 0.01,
+      density: 0.002
+    }),
+  ];
+  
+  return biscuits;
+}
+
+function setupHeroPhysicsInteraction(canvas: HTMLCanvasElement, engine: any) {
+  const Matter = (window as any).Matter;
+  const Mouse = Matter.Mouse;
+  const MouseConstraint = Matter.MouseConstraint;
+  const World = Matter.World;
+  
+  // Create mouse/touch input
+  const mouse = Mouse.create(canvas);
+  
+  // Create mouse constraint for dragging
+  const mouseConstraint = MouseConstraint.create(engine, {
+    mouse: mouse,
+    constraint: {
+      stiffness: 0.05,
+      damping: 0.1,
+      length: 0,
+      render: { visible: false }
+    }
+  });
+  
+  // Add mouse constraint to world
+  World.add(engine.world, mouseConstraint);
+  
+  // Store mouse constraint globally for cleanup
+  (window as any).heroPhysicsMouseConstraint = mouseConstraint;
+  
+  // Add click/touch interaction for impulse effects
+  const handleInteractionStart = (event: MouseEvent | TouchEvent) => {
+    const rect = canvas.getBoundingClientRect();
+    const clientX = 'touches' in event ? event.touches[0].clientX : event.clientX;
+    const clientY = 'touches' in event ? event.touches[0].clientY : event.clientY;
+    const x = clientX - rect.left;
+    const y = clientY - rect.top;
+    
+    // Apply impulse to nearby biscuits
+    applyHeroForceAtPosition(x, y);
+  };
+  
+  // Add event listeners
+  canvas.addEventListener('mousedown', handleInteractionStart);
+  canvas.addEventListener('touchstart', handleInteractionStart, { passive: true });
+  
+  // Prevent context menu
+  canvas.addEventListener('contextmenu', (e) => e.preventDefault());
+  
+  console.log('🎮 Hero physics interaction setup complete');
+}
+
+function applyHeroForceAtPosition(x: number, y: number) {
+  if (!(window as any).heroPhysicsBiscuits) return;
+  
+  const Matter = (window as any).Matter;
+  const forceRadius = 80;
+  const maxForce = 0.01;
+  
+  (window as any).heroPhysicsBiscuits.forEach((biscuit: any) => {
+    const distance = Math.sqrt(
+      Math.pow(biscuit.position.x - x, 2) + 
+      Math.pow(biscuit.position.y - y, 2)
+    );
+    
+    if (distance < forceRadius) {
+      const forceMagnitude = maxForce * (1 - distance / forceRadius);
+      const angle = Math.atan2(biscuit.position.y - y, biscuit.position.x - x);
+      
+      const force = {
+        x: Math.cos(angle) * forceMagnitude,
+        y: Math.sin(angle) * forceMagnitude
+      };
+      
+      Matter.Body.applyForce(biscuit, biscuit.position, force);
+    }
+  });
 }
