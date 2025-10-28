@@ -95,7 +95,21 @@ class BiscoidinApp {
           <section id="about" class="about-section">
             <h2>Nossa História</h2>
             <div class="about-content">
-              <p>A BISCOIDINO foi criada por Micaela, uma mãe que queria fazer biscoitos de dinossauro para seu filho Lucas. Sem querer, acabou levando para outras pessoas provarem e descobriu que sua receita seria um sucesso.</p>
+              <p>
+              A Biscoidino nasceu do amor entre mãe e filho — e de uma boa dose de criatividade.
+              Tudo começou quando Micaela Gregorio, buscando tornar a alimentação do pequeno Lucas mais divertida, 
+              decidiu preparar biscoitos em formato de dinossauros.
+              </p>
+              <p>
+              O que seria apenas uma brincadeira na cozinha acabou se transformando em algo muito maior: 
+              uma receita caseira que encantou familiares, amigos e, logo, um público apaixonado pelo sabor e pela delicadeza de cada Biscoidino.
+              </p>
+              <p>
+              Hoje, a Biscoidino é uma marca que leva carinho, sabor e diversão para todas as idades.
+              </p>
+              <p>
+              Cada fornada é feita com ingredientes selecionados e um toque especial de amor — porque acreditamos que momentos simples também podem ser inesquecíveis. 💚
+              </p>
               <div class="features">
                 <div class="feature">
                   <span class="feature-emoji">🌾</span>
