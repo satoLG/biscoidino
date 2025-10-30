@@ -262,12 +262,13 @@ body {
 
 /* Main Content */
 .main {
+  display: flex;
   flex: 1;
   padding: 2rem;
 }
 
-/* Hero Section */
-.hero.active {
+/* Home Section */
+.home.active {
   display: flex;
   align-items: center;
   gap: 3rem;
@@ -276,22 +277,25 @@ body {
   background: var(--white);
   border-radius: 20px;
   box-shadow: 0 4px 20px var(--shadow);
+  position: relative;
+  min-height: 400px;
 }
 
-.hero-content {
+.home-content {
   z-index: 1;
   margin-bottom: 8em;
   flex: 1;
+  position: relative;
 }
 
-.hero-content h2 {
+.home-content h2 {
   font-size: 3rem;
   color: var(--primary-color);
   margin-bottom: 1rem;
   font-weight: bold;
 }
 
-.hero-content p {
+.home-content p {
   font-size: 1.2rem;
   color: var(--text-light);
   margin-bottom: 2rem;
@@ -316,7 +320,7 @@ body {
   box-shadow: 0 6px 20px rgba(210, 105, 30, 0.4);
 }
 
-.hero-image {
+.home-image {
   z-index: 0;
   position: absolute;
   top: 0;
@@ -328,9 +332,28 @@ body {
   align-items: center;
 }
 
-#heroPhysicsCanvas{
+#homePhysicsCanvas{
   height: 100%;
   width: 100%;
+  transition: filter 0.2s ease;
+}
+
+/* Drag mode indicator - light protection only */
+body.drag-mode {
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+}
+
+body.drag-mode #homePhysicsCanvas {
+  filter: brightness(1.02) contrast(1.01);
+}
+
+/* Prevent accidental text selection during drag, but keep interactions working */
+body.drag-mode * {
+  user-select: none !important;
+  -webkit-user-select: none !important;
+  -moz-user-select: none !important;
 }
 
 .floating-biscuits {
@@ -394,6 +417,7 @@ section {
 }
 
 section.active {
+  width: 100%;
   display: block;
 }
 
@@ -1193,13 +1217,13 @@ section.active {
   }
 }
   
-  .hero {
+  .home {
     position: relative;
     flex-direction: column;
     text-align: center;
   }
   
-  .hero-content h2 {
+  .home-content h2 {
     font-size: 2rem;
   }
   
@@ -1276,6 +1300,200 @@ section.active {
   .carousel-images {
     height: 300px;
   }
+
+/* Orientation-specific styles for better responsivity */
+@media screen and (orientation: landscape) and (max-width: 968px) {
+  /* .home.active {
+    flex-direction: row;
+    align-items: center;
+    gap: 2rem;
+    min-height: 300px;
+    padding: 1.5rem;
+  } */
+  
+  .home-content {
+    flex: 1;
+    margin-bottom: 0;
+    max-width: 50%;
+  }
+  
+  .home-content h2 {
+    font-size: 2.2rem;
+    margin-bottom: 0.8rem;
+  }
+  
+  .home-content p {
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  /* .home-image {
+    flex: 1;
+    position: relative;
+    max-width: 50%;
+    height: 250px;
+  } */
+  
+  /* #homePhysicsCanvas {
+    max-height: 250px;
+  } */
+}
+
+@media screen and (orientation: portrait) and (max-width: 768px) {
+  /* .home.active {
+    flex-direction: column;
+    text-align: center;
+    gap: 1.5rem;
+    min-height: 500px;
+    padding: 1.5rem 1rem;
+  } */
+  
+  .home-content {
+    flex: none;
+    margin-bottom: 0;
+    max-width: 100%;
+    order: 1;
+  }
+  
+  .home-content h2 {
+    font-size: 2.2rem;
+    margin-bottom: 1rem;
+  }
+  
+  .home-content p {
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+  }
+  
+  /* .home-image {
+    flex: none;
+    position: relative;
+    width: 100%;
+    height: 300px;
+    order: 2;
+  } */
+  
+  /* #homePhysicsCanvas {
+    max-height: 300px;
+    width: 100%;
+  } */
+}
+
+/* Ultra-wide landscape phones */
+@media screen and (orientation: landscape) and (max-height: 500px) {
+  /* .home.active {
+    min-height: 200px;
+    padding: 1rem;
+    gap: 1rem;
+  } */
+  
+  .home-content h2 {
+    font-size: 1.8rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .home-content p {
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+  }
+  
+  /* .home-image {
+    height: 180px;
+  } */
+  
+  /* #homePhysicsCanvas {
+    max-height: 180px;
+  } */
+}
+
+/* Navigation improvements for orientation changes */
+@media screen and (orientation: landscape) and (max-height: 500px) {
+  .header {
+    padding: 0.5rem 1rem;
+  }
+  
+  .logo h1 {
+    font-size: 1.6rem;
+  }
+  
+  .nav {
+    gap: 1rem;
+  }
+  
+  .nav-link {
+    padding: 0.5rem 0.8rem;
+    font-size: 0.9rem;
+  }
+}
+
+/* Menu and gallery adaptations */
+@media screen and (orientation: portrait) and (max-width: 768px) {
+  .menu-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  
+  .menu-item {
+    padding: 1.5rem;
+  }
+  
+  .gallery-slides-container {
+    height: 400px !important;
+  }
+  
+  .gallery-carousel {
+    padding: 0;
+  }
+  
+  .gallery-nav-btn {
+    width: 50px;
+    height: 50px;
+    font-size: 2rem;
+  }
+}
+
+@media screen and (orientation: landscape) and (max-width: 968px) and (min-width: 569px) {
+  .menu-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+  
+  .gallery-slides-container {
+    height: 300px !important;
+  }
+}
+
+/* Splash screen orientation fixes */
+@media screen and (orientation: landscape) and (max-height: 500px) {
+  .splash-logo {
+    width: 80px;
+    height: 80px;
+  }
+  
+  .splash-title {
+    font-size: 2rem;
+  }
+  
+  .splash-subtitle {
+    font-size: 0.9rem;
+  }
+}
+
+/* Modal responsive improvements */
+@media screen and (orientation: landscape) and (max-height: 600px) {
+  .modal-content {
+    max-height: 90vh;
+    padding: 1rem;
+  }
+  
+  .carousel-images {
+    height: 250px;
+  }
+  
+  .physics-content {
+    height: 400px;
+  }
+}
   
   .zoom-controls {
     bottom: 5px;

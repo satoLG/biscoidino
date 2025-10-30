@@ -74,14 +74,14 @@ class BiscoidinApp {
         </header>
 
         <main class="main">
-          <section id="home" class="hero active">
-            <div class="hero-content">
+          <section id="home" class="home active">
+            <div class="home-content">
               <h2>Seja Bem-vindo(a)</h2>
               <p>Experimente os melhores biscoitos amanteigados caseiros feitos com receitas próprias e ingredientes premium.</p>
               <button class="cta-button">Ver nosso cardápio</button>
             </div>
-            <div class="hero-image" id="heroImageContainer">
-              <canvas id="heroPhysicsCanvas"></canvas>
+            <div class="home-image" id="homeImageContainer">
+              <canvas id="homePhysicsCanvas"></canvas>
             </div>
           </section>
 
@@ -96,20 +96,16 @@ class BiscoidinApp {
             <h2>Nossa História</h2>
             <div class="about-content">
               <p>
-              A Biscoidino nasceu do amor entre mãe e filho — e de uma boa dose de criatividade.
-              Tudo começou quando Micaela Gregorio, buscando tornar a alimentação do pequeno Lucas mais divertida, 
-              decidiu preparar biscoitos em formato de dinossauros.
+                A Biscoidino nasceu do amor entre mãe e filho.
               </p>
               <p>
-              O que seria apenas uma brincadeira na cozinha acabou se transformando em algo muito maior: 
-              uma receita caseira que encantou familiares, amigos e, logo, um público apaixonado pelo sabor e pela delicadeza de cada Biscoidino.
-              </p>
+                Tudo começou quando Micaela Gregorio, buscando tornar a alimentação do pequeno Lucas mais divertida, decidiu preparar biscoitos em formato de dinossauros.              </p>
               <p>
-              Hoje, a Biscoidino é uma marca que leva carinho, sabor e diversão para todas as idades.
-              </p>
+                O que seria apenas uma brincadeira na cozinha acabou se transformando em algo muito maior: uma receita caseira que encantou familiares, amigos e, logo, um público apaixonado pelo sabor e pela delicadeza de cada Biscoidino.              </p>
               <p>
-              Cada fornada é feita com ingredientes selecionados e um toque especial de amor — porque acreditamos que momentos simples também podem ser inesquecíveis. 💚
-              </p>
+                Hoje, a Biscoidino é uma marca que leva carinho, sabor e diversão para todas as idades.              </p>
+              <p>
+                Cada fornada é feita com ingredientes selecionados e um toque especial de amor — porque acreditamos que momentos simples também podem ser inesquecíveis. 💚              </p>
               <div class="features">
                 <div class="feature">
                   <span class="feature-emoji">🌾</span>
@@ -157,7 +153,7 @@ class BiscoidinApp {
     this.setupNavigation();
     
     setTimeout(() => {
-      initHeroPhysics();
+      initHomePhysics();
     }, 100);
 
     // Initialize gallery carousel after DOM is ready (backup initialization)
@@ -1184,30 +1180,30 @@ function applyImageIntelligence() {
   });
 }
 
-// Hero Physics Functions
-function initHeroPhysics() {
-  console.log('🌟 Initializing Hero Physics with Matter.js...');
+// Home Physics Functions
+function initHomePhysics() {
+  console.log('🌟 Initializing Home Physics with Matter.js...');
   
   // Load Matter.js if not already loaded
   if (!(window as any).Matter) {
     const script = document.createElement('script');
     script.src = 'https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js';
-    script.onload = () => createHeroPhysicsWorld();
+    script.onload = () => createHomePhysicsWorld();
     document.head.appendChild(script);
   } else {
-    createHeroPhysicsWorld();
+    createHomePhysicsWorld();
   }
 }
 
-function createHeroPhysicsWorld() {
+function createHomePhysicsWorld() {
   const Matter = (window as any).Matter;
   const Engine = Matter.Engine;
   const Render = Matter.Render;
   const World = Matter.World;
   const Bodies = Matter.Bodies;
   
-  const canvas = document.getElementById('heroPhysicsCanvas') as HTMLCanvasElement;
-  const container = document.getElementById('heroImageContainer') as HTMLElement;
+  const canvas = document.getElementById('homePhysicsCanvas') as HTMLCanvasElement;
+  const container = document.getElementById('homeImageContainer') as HTMLElement;
   
   if (!canvas || !container) {
     console.error('❌ Canvas ou container não encontrado');
@@ -1233,12 +1229,12 @@ function createHeroPhysicsWorld() {
   }
   
   // Store initial canvas size for resize detection
-  (window as any).heroLastCanvasSize = { 
+  (window as any).homeLastCanvasSize = { 
     width: Math.round(containerRect.width), 
     height: Math.round(containerRect.height) 
   };
-  
-  console.log('📐 Hero physics canvas:', { 
+
+  console.log('📐 Home physics canvas:', {
     displayWidth: containerRect.width, 
     displayHeight: containerRect.height,
     actualWidth: canvas.width, 
@@ -1293,170 +1289,101 @@ function createHeroPhysicsWorld() {
     // Não adicionar parede superior para permitir que os biscoitos caiam do topo
   ];
   
-  // Create hero biscuits with physics (use display dimensions)
-  const heroBiscuits = createHeroBiscuits(displayWidth, displayHeight);
-  
+  // Create home biscuits with physics (use display dimensions)
+  const homeBiscuits = createHomeBiscuits(displayWidth, displayHeight);
+
   // Add all bodies to world
-  World.add(engine.world, [...walls, ...heroBiscuits]);
-  
-  // Store references globally for interaction
-  (window as any).heroPhysicsEngine = engine;
-  (window as any).heroPhysicsRender = render;
-  (window as any).heroPhysicsBiscuits = heroBiscuits;
-  
-  // Setup hero interaction
-  setupHeroPhysicsInteraction(canvas, engine);
+  World.add(engine.world, [...walls, ...homeBiscuits]);  // Store references globally for interaction
+  (window as any).homePhysicsEngine = engine;
+  (window as any).homePhysicsRender = render;
+  (window as any).homePhysicsBiscuits = homeBiscuits;
+
+  // Setup home interaction
+  setupHomePhysicsInteraction(canvas, engine);
   
   // Start simulation
   Engine.run(engine);
   Render.run(render);
   
   // Setup resize listener for responsive canvas (only once)
-  if (!(window as any).heroResizeSetup) {
-    setupHeroCanvasResize();
-    (window as any).heroResizeSetup = true;
+  if (!(window as any).homeResizeSetup) {
+    setupHomeCanvasResize();
+    (window as any).homeResizeSetup = true;
   }
-  
-  console.log('✅ Hero physics initialized successfully');
+
+  console.log('✅ Home physics initialized successfully');
 }
 
-function createHeroBiscuits(canvasWidth: number, _canvasHeight: number) {
+function createHomeBiscuits(canvasWidth: number, canvasHeight: number) {
   const Matter = (window as any).Matter;
   const Bodies = Matter.Bodies;
   
   const centerX = canvasWidth / 2;
   
-  const biscuits = [
-    // Main biscuit (caindo do topo centro) - mesmo tamanho do modal
-    Bodies.circle(centerX, 50, 35, { 
-      render: { 
-        sprite: {
-          texture: '/biscoidino_biscuit.png',
-          xScale: 0.3,
-          yScale: 0.3
-        }
-      },
-      restitution: 0.6,
-      frictionAir: 0.01,
-      density: 0.002
-    }),
-    Bodies.circle(centerX, 50, 35, { 
-      render: { 
-        sprite: {
-          texture: '/biscoidino_biscuit.png',
-          xScale: 0.3,
-          yScale: 0.3
-        }
-      },
-      restitution: 0.6,
-      frictionAir: 0.01,
-      density: 0.002
-    }),
-    Bodies.circle(centerX, 50, 35, { 
-      render: { 
-        sprite: {
-          texture: '/biscoidino_biscuit.png',
-          xScale: 0.3,
-          yScale: 0.3
-        }
-      },
-      restitution: 0.6,
-      frictionAir: 0.01,
-      density: 0.002
-    }),
-    // Flower biscuit (caindo do topo esquerda) - mesmo tamanho do modal
-    Bodies.circle(centerX - 100, 30, 35, { 
-      render: { 
-        sprite: {
-          texture: '/flower_baunilha_biscuit.png',
-          xScale: 0.3,
-          yScale: 0.3
-        }
-      },
-      restitution: 0.6,
-      frictionAir: 0.01,
-      density: 0.002
-    }),
-    Bodies.circle(centerX - 100, 30, 35, { 
-      render: { 
-        sprite: {
-          texture: '/flower_baunilha_biscuit.png',
-          xScale: 0.3,
-          yScale: 0.3
-        }
-      },
-      restitution: 0.6,
-      frictionAir: 0.01,
-      density: 0.002
-    }),
-    // Heart biscuit (caindo do topo direita) - mesmo tamanho do modal
-    Bodies.circle(centerX + 80, 40, 35, { 
-      render: { 
-        sprite: {
-          texture: '/heart_baunilha_biscuit.png',
-          xScale: 0.3,
-          yScale: 0.3
-        }
-      },
-      restitution: 0.6,
-      frictionAir: 0.01,
-      density: 0.002
-    }),
-    Bodies.circle(centerX + 80, 40, 35, { 
-      render: { 
-        sprite: {
-          texture: '/heart_baunilha_biscuit.png',
-          xScale: 0.3,
-          yScale: 0.3
-        }
-      },
-      restitution: 0.6,
-      frictionAir: 0.01,
-      density: 0.002
-    }),
-    // Parmesao biscuit (caindo do topo centro-esquerda) - mesmo tamanho do modal
-    Bodies.circle(centerX - 40, 20, 30, { 
-      render: { 
-        sprite: {
-          texture: '/parmesao_biscuit.png',
-          xScale: 0.3,
-          yScale: 0.3
-        }
-      },
-      restitution: 0.6,
-      frictionAir: 0.01,
-      density: 0.002
-    }),
-    Bodies.circle(centerX - 40, 20, 30, { 
-      render: { 
-        sprite: {
-          texture: '/parmesao_biscuit.png',
-          xScale: 0.3,
-          yScale: 0.3
-        }
-      },
-      restitution: 0.6,
-      frictionAir: 0.01,
-      density: 0.002
-    }),
-    Bodies.circle(centerX - 40, 20, 30, { 
-      render: { 
-        sprite: {
-          texture: '/parmesao_biscuit.png',
-          xScale: 0.3,
-          yScale: 0.3
-        }
-      },
-      restitution: 0.6,
-      frictionAir: 0.01,
-      density: 0.002
-    }),
+  // Check if we have saved biscuit states from resize
+  const savedStates = (window as any).homeBiscuitStates;
+  let useDefaultPositions = !savedStates || savedStates.length === 0;
+  
+  // Default positions for first load
+  const defaultPositions = [
+    { x: centerX, y: 50, texture: '/biscoidino_biscuit.png' },
+    { x: centerX, y: 50, texture: '/biscoidino_biscuit.png' },
+    { x: centerX, y: 50, texture: '/biscoidino_biscuit.png' },
+    { x: centerX - 100, y: 30, texture: '/flower_baunilha_biscuit.png' },
+    { x: centerX - 100, y: 30, texture: '/flower_baunilha_biscuit.png' },
+    { x: centerX + 80, y: 40, texture: '/heart_baunilha_biscuit.png' },
+    { x: centerX + 80, y: 40, texture: '/heart_baunilha_biscuit.png' },
+    { x: centerX - 40, y: 20, texture: '/parmesao_biscuit.png' },
+    { x: centerX - 40, y: 20, texture: '/parmesao_biscuit.png' },
+    { x: centerX - 40, y: 20, texture: '/parmesao_biscuit.png' }
   ];
+  
+  const biscuits = [];
+  
+  for (let i = 0; i < defaultPositions.length; i++) {
+    const defaultPos = defaultPositions[i];
+    const savedState = savedStates && savedStates[i];
+    
+    // Use saved position if available, otherwise use default
+    const x = savedState ? savedState.x * canvasWidth : defaultPos.x;
+    const y = savedState ? savedState.y * canvasHeight : defaultPos.y;
+    const radius = defaultPos.texture.includes('parmesao') ? 30 : 35;
+    
+    const biscuit = Bodies.circle(x, y, radius, { 
+      render: { 
+        sprite: {
+          texture: defaultPos.texture,
+          xScale: 0.3,
+          yScale: 0.3
+        }
+      },
+      restitution: 0.6,
+      frictionAir: 0.01,
+      density: 0.002
+    });
+    
+    // Restore velocity and rotation if saved
+    if (savedState && !useDefaultPositions) {
+      Matter.Body.setVelocity(biscuit, { 
+        x: savedState.velocityX * 0.8, // Dampen velocity slightly
+        y: savedState.velocityY * 0.8 
+      });
+      Matter.Body.setAngle(biscuit, savedState.angle);
+      Matter.Body.setAngularVelocity(biscuit, savedState.angularVelocity * 0.8);
+    }
+    
+    biscuits.push(biscuit);
+  }
+  
+  // Clear saved states after use
+  (window as any).homeBiscuitStates = null;
+  
+  console.log(`🎯 Created ${biscuits.length} biscuits with ${savedStates ? 'restored' : 'default'} positions`);
   
   return biscuits;
 }
 
-function setupHeroPhysicsInteraction(canvas: HTMLCanvasElement, engine: any) {
+function setupHomePhysicsInteraction(canvas: HTMLCanvasElement, engine: any) {
   const Matter = (window as any).Matter;
   const Mouse = Matter.Mouse;
   const MouseConstraint = Matter.MouseConstraint;
@@ -1480,109 +1407,224 @@ function setupHeroPhysicsInteraction(canvas: HTMLCanvasElement, engine: any) {
   World.add(engine.world, mouseConstraint);
   
   // Store mouse constraint globally for cleanup
-  (window as any).heroPhysicsMouseConstraint = mouseConstraint;
+  (window as any).homePhysicsMouseConstraint = mouseConstraint;
   
-  // Add click/touch interaction for impulse effects
-  const handleInteractionStart = (event: MouseEvent | TouchEvent) => {
-    // Mark that we're in a touch interaction to prevent resize conflicts
-    (window as any).heroTouchActive = true;
-    
-    const rect = canvas.getBoundingClientRect();
-    const clientX = 'touches' in event ? event.touches[0].clientX : event.clientX;
-    const clientY = 'touches' in event ? event.touches[0].clientY : event.clientY;
-    const x = clientX - rect.left;
-    const y = clientY - rect.top;
-    
-    // Apply impulse to nearby biscuits
-    applyHeroForceAtPosition(x, y);
+  // State variables for drag protection
+  let isDragging = false;
+  let mouseDownInCanvas = false;
+  
+  // Function to enable drag protection (only prevent HTML interference)
+  const enableDragProtection = () => {
+    if (!isDragging) {
+      isDragging = true;
+      document.body.classList.add('drag-mode');
+      console.log('🔒 Drag protection enabled');
+    }
   };
   
-  const handleInteractionEnd = () => {
-    // Clear touch interaction flag after a delay
+  // Function to disable drag protection
+  const disableDragProtection = () => {
+    if (isDragging) {
+      isDragging = false;
+      document.body.classList.remove('drag-mode');
+      
+      // Ensure Matter.js constraint is fully released
+      if (mouseConstraint.body !== null) {
+        mouseConstraint.body = null;
+        mouseConstraint.pointA = null;
+        mouseConstraint.pointB = null;
+      }
+      
+      console.log('🔓 Drag protection disabled');
+    }
+  };
+  
+  // Canvas mouse/touch event handlers
+  const handleCanvasMouseDown = () => {
+    mouseDownInCanvas = true;
+    // Check if we're actually dragging an object after a short delay
     setTimeout(() => {
-      (window as any).heroTouchActive = false;
-    }, 100);
+      if (mouseDownInCanvas && mouseConstraint.body) {
+        enableDragProtection();
+      }
+    }, 50);
   };
   
-  // Add event listeners
-  canvas.addEventListener('mousedown', handleInteractionStart);
-  canvas.addEventListener('mouseup', handleInteractionEnd);
-  canvas.addEventListener('touchstart', handleInteractionStart, { passive: true });
-  canvas.addEventListener('touchend', handleInteractionEnd);
-  canvas.addEventListener('touchcancel', handleInteractionEnd);
+  const handleCanvasMouseUp = () => {
+    mouseDownInCanvas = false;
+    
+    // Force release any current drag in Matter.js
+    if (mouseConstraint.body !== null) {
+      mouseConstraint.body = null;
+      mouseConstraint.pointA = null;
+      mouseConstraint.pointB = null;
+    }
+    
+    disableDragProtection();
+  };
   
-  // Prevent context menu
+  const handleCanvasTouchStart = () => {
+    mouseDownInCanvas = true;
+    // Check if we're actually dragging an object after a short delay
+    setTimeout(() => {
+      if (mouseDownInCanvas && mouseConstraint.body) {
+        enableDragProtection();
+      }
+    }, 50);
+  };
+  
+  const handleCanvasTouchEnd = () => {
+    mouseDownInCanvas = false;
+    
+    // Force release any current drag in Matter.js
+    if (mouseConstraint.body !== null) {
+      mouseConstraint.body = null;
+      mouseConstraint.pointA = null;
+      mouseConstraint.pointB = null;
+    }
+    
+    disableDragProtection();
+  };
+  
+  // Global event handlers for when mouse leaves canvas during drag
+  const handleGlobalMouseMove = (e: MouseEvent) => {
+    if (isDragging && mouseConstraint.body) {
+      // Continue updating mouse position when dragging outside canvas
+      const rect = canvas.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      
+      // Keep mouse position updated for Matter.js
+      mouse.position.x = x;
+      mouse.position.y = y;
+    }
+  };
+  
+  const handleGlobalMouseUp = () => {
+    mouseDownInCanvas = false;
+    
+    // Force release any current drag in Matter.js when mouse released anywhere
+    if (mouseConstraint.body !== null) {
+      mouseConstraint.body = null;
+      mouseConstraint.pointA = null;
+      mouseConstraint.pointB = null;
+    }
+    
+    disableDragProtection();
+  };
+  
+  const handleGlobalTouchMove = (e: TouchEvent) => {
+    if (isDragging && mouseConstraint.body && e.touches.length > 0) {
+      const rect = canvas.getBoundingClientRect();
+      const x = e.touches[0].clientX - rect.left;
+      const y = e.touches[0].clientY - rect.top;
+      
+      mouse.position.x = x;
+      mouse.position.y = y;
+    }
+  };
+  
+  const handleGlobalTouchEnd = () => {
+    mouseDownInCanvas = false;
+    
+    // Force release any current drag in Matter.js when touch ends anywhere
+    if (mouseConstraint.body !== null) {
+      mouseConstraint.body = null;
+      mouseConstraint.pointA = null;
+      mouseConstraint.pointB = null;
+    }
+    
+    disableDragProtection();
+  };
+  
+  // Add canvas-specific event listeners
+  canvas.addEventListener('mousedown', handleCanvasMouseDown, { passive: true });
+  canvas.addEventListener('mouseup', handleCanvasMouseUp, { passive: true });
+  canvas.addEventListener('touchstart', handleCanvasTouchStart, { passive: true });
+  canvas.addEventListener('touchend', handleCanvasTouchEnd, { passive: true });
+  canvas.addEventListener('touchcancel', handleCanvasTouchEnd, { passive: true });
+  
+  // Add global event listeners for drag continuation outside canvas
+  document.addEventListener('mousemove', handleGlobalMouseMove, { passive: true });
+  document.addEventListener('mouseup', handleGlobalMouseUp, { passive: true });
+  document.addEventListener('touchmove', handleGlobalTouchMove, { passive: true });
+  document.addEventListener('touchend', handleGlobalTouchEnd, { passive: true });
+  document.addEventListener('touchcancel', handleGlobalTouchEnd, { passive: true });
+  
+  // Store cleanup function
+  (window as any).homeDragCleanup = () => {
+    // Remove canvas listeners
+    canvas.removeEventListener('mousedown', handleCanvasMouseDown);
+    canvas.removeEventListener('mouseup', handleCanvasMouseUp);
+    canvas.removeEventListener('touchstart', handleCanvasTouchStart);
+    canvas.removeEventListener('touchend', handleCanvasTouchEnd);
+    canvas.removeEventListener('touchcancel', handleCanvasTouchEnd);
+    
+    // Remove global listeners
+    document.removeEventListener('mousemove', handleGlobalMouseMove);
+    document.removeEventListener('mouseup', handleGlobalMouseUp);
+    document.removeEventListener('touchmove', handleGlobalTouchMove);
+    document.removeEventListener('touchend', handleGlobalTouchEnd);
+    document.removeEventListener('touchcancel', handleGlobalTouchEnd);
+    
+    disableDragProtection();
+  };
+  
+  // Prevent context menu on canvas
   canvas.addEventListener('contextmenu', (e) => e.preventDefault());
   
-  console.log('🎮 Hero physics interaction setup complete');
+  console.log('🎮 Home physics interaction setup complete');
 }
 
-function applyHeroForceAtPosition(x: number, y: number) {
-  if (!(window as any).heroPhysicsBiscuits) return;
-  
-  const Matter = (window as any).Matter;
-  const forceRadius = 80;
-  const maxForce = 0.01;
-  
-  (window as any).heroPhysicsBiscuits.forEach((biscuit: any) => {
-    const distance = Math.sqrt(
-      Math.pow(biscuit.position.x - x, 2) + 
-      Math.pow(biscuit.position.y - y, 2)
-    );
-    
-    if (distance < forceRadius) {
-      const forceMagnitude = maxForce * (1 - distance / forceRadius);
-      const angle = Math.atan2(biscuit.position.y - y, biscuit.position.x - x);
-      
-      const force = {
-        x: Math.cos(angle) * forceMagnitude,
-        y: Math.sin(angle) * forceMagnitude
-      };
-      
-      Matter.Body.applyForce(biscuit, biscuit.position, force);
-    }
-  });
-}
-
-// Hero Canvas Resize Handler
-function setupHeroCanvasResize() {
+// Home Canvas Resize Handler
+function setupHomeCanvasResize() {
   let resizeTimeout: number;
   
   const handleResize = () => {
     // Skip resize if we're in the middle of a touch interaction
-    if ((window as any).heroTouchActive) {
+    if ((window as any).homeTouchActive) {
       console.log('📱 Skipping resize during touch interaction');
       return;
     }
     
-    // Only resize if hero section is active and canvas exists
-    const canvas = document.getElementById('heroPhysicsCanvas') as HTMLCanvasElement;
-    const heroSection = document.querySelector('.hero.active');
-    const container = document.getElementById('heroImageContainer') as HTMLElement;
+    // Only resize if home section is active and canvas exists
+    const canvas = document.getElementById('homePhysicsCanvas') as HTMLCanvasElement;
+    const homeSection = document.querySelector('.home.active');
+    const container = document.getElementById('homeImageContainer') as HTMLElement;
     
-    if (!canvas || !heroSection || !container) {
+    if (!canvas || !homeSection || !container) {
       return;
     }
     
     // Get stored canvas size (initialized when physics world is created)
-    const lastCanvasSize = (window as any).heroLastCanvasSize || { width: 0, height: 0 };
+    const lastCanvasSize = (window as any).homeLastCanvasSize || { width: 0, height: 0 };
     
     // Check if size actually changed to prevent unnecessary resize on mobile interactions
     const containerRect = container.getBoundingClientRect();
     const currentWidth = Math.round(containerRect.width);
     const currentHeight = Math.round(containerRect.height);
     
-    // Only proceed if size actually changed by more than 10px (to account for mobile browser quirks)
-    if (Math.abs(currentWidth - lastCanvasSize.width) < 10 && 
-        Math.abs(currentHeight - lastCanvasSize.height) < 10) {
-      console.log('📱 Size change too small, ignoring resize event');
+    // Calculate percentage change instead of absolute pixels for better responsiveness
+    const widthChange = lastCanvasSize.width > 0 ? Math.abs(currentWidth - lastCanvasSize.width) / lastCanvasSize.width : 1;
+    const heightChange = lastCanvasSize.height > 0 ? Math.abs(currentHeight - lastCanvasSize.height) / lastCanvasSize.height : 1;
+    
+    // Only proceed if size changed by more than 5% or more than 30px (significant change)
+    const significantChange = widthChange > 0.05 || heightChange > 0.05 || 
+                             Math.abs(currentWidth - lastCanvasSize.width) > 30 || 
+                             Math.abs(currentHeight - lastCanvasSize.height) > 30;
+    
+    if (!significantChange) {
+      console.log('📱 Size change not significant enough, ignoring resize event', {
+        widthChange: Math.round(widthChange * 100) + '%',
+        heightChange: Math.round(heightChange * 100) + '%'
+      });
       return;
     }
     
     console.log('📏 Size changed from', lastCanvasSize, 'to', { width: currentWidth, height: currentHeight });
     
     // Update stored size
-    (window as any).heroLastCanvasSize = { width: currentWidth, height: currentHeight };
+    (window as any).homeLastCanvasSize = { width: currentWidth, height: currentHeight };
     
     // Debounce the resize to avoid too many calls (longer delay for mobile)
     const isMobile = /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
@@ -1590,55 +1632,103 @@ function setupHeroCanvasResize() {
     
     clearTimeout(resizeTimeout);
     resizeTimeout = setTimeout(() => {
-      console.log('🔄 Resizing hero physics canvas...');
+      console.log('🔄 Resizing home physics canvas...');
+      
+      // Save biscuit positions before cleanup (for smoother transitions)
+      let biscuitStates: any[] = [];
+      if ((window as any).homePhysicsBiscuits && (window as any).homePhysicsBiscuits.length > 0) {
+        biscuitStates = (window as any).homePhysicsBiscuits.map((biscuit: any) => ({
+          x: biscuit.position.x / lastCanvasSize.width, // Normalize to percentage
+          y: biscuit.position.y / lastCanvasSize.height,
+          velocityX: biscuit.velocity.x,
+          velocityY: biscuit.velocity.y,
+          angle: biscuit.angle,
+          angularVelocity: biscuit.angularVelocity
+        }));
+        console.log('💾 Saved positions of', biscuitStates.length, 'biscuits');
+      }
+      
+      // Store for use in recreation
+      (window as any).homeBiscuitStates = biscuitStates;
       
       // Cleanup existing physics world
-      if ((window as any).heroPhysicsEngine) {
+      if ((window as any).homePhysicsEngine) {
         const Matter = (window as any).Matter;
         
         // Stop the engine
-        Matter.Engine.clear((window as any).heroPhysicsEngine);
+        Matter.Engine.clear((window as any).homePhysicsEngine);
         
         // Stop and cleanup renderer
-        if ((window as any).heroPhysicsRender) {
-          Matter.Render.stop((window as any).heroPhysicsRender);
-          (window as any).heroPhysicsRender = null;
+        if ((window as any).homePhysicsRender) {
+          Matter.Render.stop((window as any).homePhysicsRender);
+          (window as any).homePhysicsRender = null;
         }
         
         // Clean up mouse constraint
-        if ((window as any).heroPhysicsMouseConstraint) {
-          Matter.World.remove((window as any).heroPhysicsEngine.world, (window as any).heroPhysicsMouseConstraint);
-          (window as any).heroPhysicsMouseConstraint = null;
+        if ((window as any).homePhysicsMouseConstraint) {
+          Matter.World.remove((window as any).homePhysicsEngine.world, (window as any).homePhysicsMouseConstraint);
+          (window as any).homePhysicsMouseConstraint = null;
         }
         
-        (window as any).heroPhysicsEngine = null;
-        (window as any).heroPhysicsBiscuits = null;
+        // Clean up drag system
+        if ((window as any).homeDragCleanup) {
+          (window as any).homeDragCleanup();
+          (window as any).homeDragCleanup = null;
+        }
+        
+        (window as any).homePhysicsEngine = null;
+        (window as any).homePhysicsBiscuits = null;
       }
       
       // Recreate physics world with new dimensions (but don't setup resize again)
-      const originalSetup = (window as any).heroResizeSetup;
-      (window as any).heroResizeSetup = true; // Prevent recursive setup
-      createHeroPhysicsWorld();
-      (window as any).heroResizeSetup = originalSetup;
+      const originalSetup = (window as any).homeResizeSetup;
+      (window as any).homeResizeSetup = true; // Prevent recursive setup
+      createHomePhysicsWorld();
+      (window as any).homeResizeSetup = originalSetup;
       
     }, debounceDelay); // Wait longer on mobile to avoid interaction conflicts
   };
   
   // Cleanup any existing resize listener first
-  if ((window as any).heroResizeCleanup) {
-    (window as any).heroResizeCleanup();
+  if ((window as any).homeResizeCleanup) {
+    (window as any).homeResizeCleanup();
   }
   
-  // Add resize event listener
+  // Add resize and orientation change listeners
   window.addEventListener('resize', handleResize);
   
+  // Add orientation change listener for better mobile support
+  const handleOrientationChange = () => {
+    // Wait a bit for the orientation change to complete
+    setTimeout(() => {
+      console.log('📱 Orientation changed, triggering layout update');
+      handleResize();
+    }, 150);
+  };
+  
+  // Modern browsers
+  if ('onorientationchange' in window) {
+    window.addEventListener('orientationchange', handleOrientationChange);
+  }
+  
+  // Also listen for screen orientation changes (newer API)
+  if (screen && screen.orientation) {
+    screen.orientation.addEventListener('change', handleOrientationChange);
+  }
+  
   // Store cleanup function globally
-  (window as any).heroResizeCleanup = () => {
+  (window as any).homeResizeCleanup = () => {
     window.removeEventListener('resize', handleResize);
+    if ('onorientationchange' in window) {
+      window.removeEventListener('orientationchange', handleOrientationChange);
+    }
+    if (screen && screen.orientation) {
+      screen.orientation.removeEventListener('change', handleOrientationChange);
+    }
     if (resizeTimeout) {
       clearTimeout(resizeTimeout);
     }
   };
   
-  console.log('📐 Hero canvas resize listener setup complete');
+  console.log('📐 Home canvas resize and orientation listeners setup complete');
 }
