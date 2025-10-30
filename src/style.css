@@ -272,7 +272,7 @@ body {
   display: flex;
   align-items: center;
   gap: 3rem;
-  margin-bottom: 4rem;
+  margin-bottom: 1rem;
   padding: 2rem;
   background: var(--white);
   border-radius: 20px;
@@ -434,7 +434,7 @@ section.active {
   padding: 3rem;
   border-radius: 20px;
   box-shadow: 0 4px 20px var(--shadow);
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
 }
 
 .menu-section h2,
