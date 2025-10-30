@@ -283,7 +283,7 @@ body {
 
 .home-content {
   z-index: 1;
-  margin-bottom: 8em;
+  margin-bottom: 10rem;
   flex: 1;
   position: relative;
 }
