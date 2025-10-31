@@ -629,7 +629,7 @@ section.active {
 
 .gallery-slides-container {
   position: relative;
-  height: 400px;
+  height: 350px !important;
   overflow: visible;
   border-radius: 20px;
   cursor: grab;
