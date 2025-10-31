@@ -278,7 +278,7 @@ body {
   border-radius: 20px;
   box-shadow: 0 4px 20px var(--shadow);
   position: relative;
-  min-height: 700px;
+  min-height: 550px;
 }
 
 .home-content {
