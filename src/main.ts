@@ -45,17 +45,17 @@ class BiscoidinApp {
                 <path d="M3 9L12 2L21 9V20C21 20.5304 20.7893 21.0391 20.4142 21.4142C20.0391 21.7893 19.5304 22 19 22H5C4.46957 22 3.96086 21.7893 3.58579 21.4142C3.21071 21.0391 3 20.5304 3 20V9Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                 <path d="M9 22V12H15V22" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
-              <span class="nav-text">Início</span>
+
             </a>
             <a href="#menu" class="nav-link">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chef-hat-icon lucide-chef-hat"><path d="M17 21a1 1 0 0 0 1-1v-5.35c0-.457.316-.844.727-1.041a4 4 0 0 0-2.134-7.589 5 5 0 0 0-9.186 0 4 4 0 0 0-2.134 7.588c.411.198.727.585.727 1.041V20a1 1 0 0 0 1 1Z"/><path d="M6 17h12"/>
             </svg>
-              <span class="nav-text">Cardápio</span>
+
             </a>
             <a href="#about" class="nav-link">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-book-open-text-icon lucide-book-open-text"><path d="M12 7v14"/><path d="M16 12h2"/><path d="M16 8h2"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/><path d="M6 12h2"/><path d="M6 8h2"/>
               </svg>
-              <span class="nav-text">Sobre</span>
+
             </a>
             <a href="#gallery" class="nav-link">
               <svg class="nav-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -63,12 +63,12 @@ class BiscoidinApp {
                 <circle cx="8.5" cy="8.5" r="1.5" stroke="currentColor" stroke-width="2"/>
                 <path d="M21 15L16 10L5 21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
-              <span class="nav-text">Galeria</span>
+
             </a>
             <a href="#contact" class="nav-link">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-phone-icon lucide-phone"><path d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384"/>
               </svg>
-              <span class="nav-text">Contato</span>
+
             </a>
           </nav>
         </header>
@@ -144,7 +144,7 @@ class BiscoidinApp {
         </main>
 
         <footer class="footer">
-          <p>&copy; 2025 BISCOIDINO. Feito com <img src="/biscoidino_biscuit.png" alt="amor" class="footer-icon"> para amantes de biscoitos em todo lugar.</p>
+          <p>&copy; 2025 BISCOIDINO. Feito com <img src="/biscuits/biscoidino.png" alt="amor" class="footer-icon"> para amantes de biscoitos em todo lugar.</p>
         </footer>
       </div>
     `;
@@ -174,9 +174,12 @@ class BiscoidinApp {
         image: "/baunilha_package.png",
         images: [
           "/baunilha_package.png",
-          "/flower_baunilha_biscuit.png", 
-          "/heart_baunilha_biscuit.png",
-          "/biscoidino_biscuit.png"
+          "/biscuits/flower_baunilha1.png", 
+          "/biscuits/heart_baunilha1.png",
+          "/biscuits/star_baunilha1.png",
+          "/biscuits/flower_baunilha2.png",
+          "/biscuits/heart_baunilha2.png",
+          "/biscuits/star_banulha2.png"
         ]
       },
       {
@@ -186,7 +189,7 @@ class BiscoidinApp {
         image: "/parmesao_package.png",
         images: [
           "/parmesao_package.png",
-          "/parmesao_biscuit.png"
+          "/biscuits/parmesao_biscuit.png"
         ]
       }
     ];
@@ -290,6 +293,14 @@ class BiscoidinApp {
       {
         image: '/gallery/galeria7.jpeg',
         text: 'Hmm, parmesão, que delícia!',
+      },
+      {
+        image: '/gallery/galeria8.jpeg',
+        text: 'Biscoidinos com brinde de Halloween!',
+      },
+      {
+        image: '/gallery/galeria9.jpeg',
+        text: 'Biscoidinos assustadores de Halloween! 🎃',
       }
     ];
 
@@ -696,9 +707,13 @@ function createPhysicsWorld(productType: 'baunilha' | 'parmesao') {
   if (productType === 'baunilha') {
     // 1 dinosaur, 6 hearts, 6 flowers
     const biscuitConfigs = [
-      { count: 1, radius: 35, type: 'dinosaur', image: '/biscoidino_biscuit.png' },
-      { count: 7, radius: 35, type: 'heart', image: '/heart_baunilha_biscuit.png' },
-      { count: 6, radius: 35, type: 'flower', image: '/flower_baunilha_biscuit.png' }
+      { count: 1, radius: 25, type: 'dinosaur', image: '/biscuits/biscoidino.png' },
+      { count: 2, radius: 25, type: 'flower1', image: '/biscuits/flower_baunilha1.png' },
+      { count: 2, radius: 25, type: 'flower2', image: '/biscuits/flower_baunilha2.png' },
+      { count: 2, radius: 25, type: 'heart1', image: '/biscuits/heart_baunilha1.png' },
+      { count: 2, radius: 25, type: 'heart2', image: '/biscuits/heart_baunilha2.png' },
+      { count: 2, radius: 25, type: 'star1', image: '/biscuits/star_baunilha1.png' },
+      { count: 3, radius: 25, type: 'star2', image: '/biscuits/star_baunilha2.png' }
     ];
     
     biscuitConfigs.forEach(config => {
@@ -730,7 +745,7 @@ function createPhysicsWorld(productType: 'baunilha' | 'parmesao') {
       const biscuit = Bodies.circle(x, y, 30, {
         render: {
           sprite: {
-            texture: '/parmesao_biscuit.png',
+            texture: '/biscuits/parmesao_biscuit.png',
             xScale: 0.3, // Scale to fit the 15px radius
             yScale: 0.3
           }
@@ -941,7 +956,7 @@ function setupCarouselDrag() {
 
 // Gallery Carousel Functions
 let currentGallerySlide = 0;
-const totalGallerySlides = 7;
+const totalGallerySlides = 9;
 
 (window as any).galleryNextSlide = function() {
   currentGallerySlide = (currentGallerySlide + 1) % totalGallerySlides;
@@ -1324,18 +1339,20 @@ function createHomeBiscuits(canvasWidth: number, canvasHeight: number) {
   const savedStates = (window as any).homeBiscuitStates;
   let useDefaultPositions = !savedStates || savedStates.length === 0;
   
-  // Default positions for first load
+  // Default positions for first load - distributed equally across 3 formats
   const defaultPositions = [
-    { x: centerX, y: 50, texture: '/biscoidino_biscuit.png' },
-    { x: centerX, y: 50, texture: '/biscoidino_biscuit.png' },
-    { x: centerX, y: 50, texture: '/biscoidino_biscuit.png' },
-    { x: centerX - 100, y: 30, texture: '/flower_baunilha_biscuit.png' },
-    { x: centerX - 100, y: 30, texture: '/flower_baunilha_biscuit.png' },
-    { x: centerX + 80, y: 40, texture: '/heart_baunilha_biscuit.png' },
-    { x: centerX + 80, y: 40, texture: '/heart_baunilha_biscuit.png' },
-    { x: centerX - 40, y: 20, texture: '/parmesao_biscuit.png' },
-    { x: centerX - 40, y: 20, texture: '/parmesao_biscuit.png' },
-    { x: centerX - 40, y: 20, texture: '/parmesao_biscuit.png' }
+    { x: centerX, y: 50, texture: '/biscuits/biscoidino.png' },
+    { x: centerX - 100, y: 30, texture: '/biscuits/flower_baunilha1.png' },
+    { x: centerX - 100, y: 30, texture: '/biscuits/flower_baunilha2.png' },
+    { x: centerX + 80, y: 40, texture: '/biscuits/heart_baunilha1.png' },
+    { x: centerX + 80, y: 40, texture: '/biscuits/heart_baunilha2.png' },
+    { x: centerX - 40, y: 20, texture: '/biscuits/star_baunilha1.png' },
+    { x: centerX - 40, y: 20, texture: '/biscuits/star_baunilha2.png' },
+    { x: centerX - 40, y: 20, texture: '/biscuits/parmesao_biscuit.png' },
+    { x: centerX - 40, y: 20, texture: '/biscuits/parmesao_biscuit.png' },
+    { x: centerX - 40, y: 20, texture: '/biscuits/parmesao_biscuit.png' },
+    { x: centerX + 50, y: 35, texture: '/biscuits/flower_baunilha1.png' },
+    { x: centerX - 60, y: 45, texture: '/biscuits/heart_baunilha1.png' }
   ];
   
   const biscuits = [];
@@ -1347,14 +1364,14 @@ function createHomeBiscuits(canvasWidth: number, canvasHeight: number) {
     // Use saved position if available, otherwise use default
     const x = savedState ? savedState.x * canvasWidth : defaultPos.x;
     const y = savedState ? savedState.y * canvasHeight : defaultPos.y;
-    const radius = defaultPos.texture.includes('parmesao') ? 30 : 35;
+    const radius = defaultPos.texture.includes('parmesao') ? 30 : defaultPos.texture.includes('biscoidino') ? 35 : 25;
     
     const biscuit = Bodies.circle(x, y, radius, { 
       render: { 
         sprite: {
           texture: defaultPos.texture,
-          xScale: 0.3,
-          yScale: 0.3
+          xScale: defaultPos.texture.includes('parmesao') ? 0.2 : 0.3,
+          yScale: defaultPos.texture.includes('parmesao') ? 0.2 : 0.3
         }
       },
       restitution: 0.6,
@@ -1418,6 +1435,13 @@ function setupHomePhysicsInteraction(canvas: HTMLCanvasElement, engine: any) {
     if (!isDragging) {
       isDragging = true;
       document.body.classList.add('drag-mode');
+      
+      // Disable pointer events on home-content during drag
+      const homeContent = document.querySelector('.home-content') as HTMLElement;
+      if (homeContent) {
+        homeContent.style.pointerEvents = 'none';
+      }
+      
       console.log('🔒 Drag protection enabled');
     }
   };
@@ -1427,6 +1451,12 @@ function setupHomePhysicsInteraction(canvas: HTMLCanvasElement, engine: any) {
     if (isDragging) {
       isDragging = false;
       document.body.classList.remove('drag-mode');
+      
+      // Re-enable pointer events on home-content after drag
+      const homeContent = document.querySelector('.home-content') as HTMLElement;
+      if (homeContent) {
+        homeContent.style.pointerEvents = '';
+      }
       
       // Ensure Matter.js constraint is fully released
       if (mouseConstraint.body !== null) {

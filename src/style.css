@@ -1151,6 +1151,58 @@ section.active {
 }
 
 /* Responsive Design */
+
+/* Compact landscape mode - hide nav text to fit everything on one line */
+@media screen and (orientation: landscape) and (max-width: 700px) and (min-width: 500px) {
+  .header {
+    padding: 0.5rem 1rem;
+    flex-wrap: nowrap; /* Prevent wrapping */
+    min-height: auto;
+  }
+  
+  .logo {
+    flex-shrink: 0; /* Prevent logo from shrinking */
+  }
+  
+  .logo h1 {
+    font-size: 0 !important; /* Hide the BISCOIDINO text completely */
+    line-height: 0;
+  }
+  
+  .header-logo {
+    width: 36px;
+    height: 36px;
+    margin: 0; /* Remove any margins since text is hidden */
+  }
+  
+  .tagline {
+    display: none; /* Hide tagline to save space */
+  }
+  
+  .nav {
+    gap: 0.4rem;
+    flex-shrink: 0; /* Prevent nav from shrinking */
+  }
+  
+  .nav-link {
+    padding: 0.4rem;
+    border-radius: 50%; /* Make them circular since no text */
+    min-width: 36px;
+    height: 36px;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  
+  .nav-text {
+    display: none; /* Hide text labels in compact mode */
+  }
+  
+  .nav-icon {
+    width: 18px;
+    height: 18px;
+  }
+}
+
 @media (max-width: 968px) {
   .nav {
     gap: 1.2rem;
@@ -1162,6 +1214,24 @@ section.active {
   
   .nav-text {
     font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 768px) and (orientation: landscape) {
+  .header {
+    flex-direction: row !important;
+    gap: 1rem;
+    padding: 1rem;
+  }
+  
+  .nav {
+    gap: 0.5rem;
+    background: var(--background);
+    padding: 0.8rem;
+    border-radius: 25px;
+    box-shadow: 0 2px 10px var(--shadow);
+    width: 80% !important;
+    justify-content: space-around;
   }
 }
 
@@ -1438,7 +1508,7 @@ section.active {
   }
   
   .gallery-slides-container {
-    height: 400px !important;
+    height: 300px !important;
   }
   
   .gallery-carousel {
