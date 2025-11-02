@@ -1,3 +1,4 @@
+import { inject } from '@vercel/analytics';
 import './style.css?v=2'
 
 // BISCOIDINO - Main Application
@@ -6,16 +7,17 @@ class BiscoidinApp {
   private splashScreen: HTMLElement;
 
   constructor() {
+    inject();
     this.app = document.querySelector<HTMLDivElement>('#app')!;
     this.splashScreen = document.querySelector<HTMLDivElement>('#splash-screen')!;
     this.initializeSplashScreen();
   }
 
   private initializeSplashScreen(): void {
-    // Show splash screen for 4 seconds then transition to main content
+    // Show splash screen for 3 seconds then transition to main content
     setTimeout(() => {
       this.hideSplashScreen();
-    }, 4000);
+    }, 3000);
   }
 
   private hideSplashScreen(): void {
@@ -95,32 +97,30 @@ class BiscoidinApp {
           <section id="about" class="about-section">
             <h2>Nossa História</h2>
             <div class="about-content">
-              <p>
-                A Biscoidino nasceu do amor entre mãe e filho.
-              </p>
-              <p>
-                Tudo começou quando Micaela Gregorio, buscando tornar a alimentação do pequeno Lucas mais divertida, decidiu preparar biscoitos em formato de dinossauros.              </p>
-              <p>
-                O que seria apenas uma brincadeira na cozinha acabou se transformando em algo muito maior: uma receita caseira que encantou familiares, amigos e, logo, um público apaixonado pelo sabor e pela delicadeza de cada Biscoidino.              </p>
-              <p>
-                Hoje, a Biscoidino é uma marca que leva carinho, sabor e diversão para todas as idades.              </p>
-              <p>
-                Cada fornada é feita com ingredientes selecionados e um toque especial de amor — porque acreditamos que momentos simples também podem ser inesquecíveis. 💚              </p>
-              <div class="features">
-                <div class="feature">
-                  <span class="feature-emoji">🌾</span>
-                  <h3>Ingredientes Premium</h3>
-                  <p>Usamos apenas os melhores ingredientes de fornecedores de confiança.</p>
+              <div class="about-parallax-container">
+                <div class="parallax-images">
+                  <img src="/biscuits/flower_baunilha1.png" class="parallax-img parallax-left" alt="">
+                  <img src="/biscuits/heart_baunilha1.png" class="parallax-img parallax-right" alt="">
+                  <img src="/biscuits/star_baunilha1.png" class="parallax-img parallax-left" alt="">
+                  <img src="/biscuits/flower_baunilha2.png" class="parallax-img parallax-right" alt="">
+                  <img src="/biscuits/biscoidino.png" class="parallax-img parallax-left" alt="">
                 </div>
-                <div class="feature">
-                  <span class="feature-emoji">👨‍🍳</span>
-                  <h3>Processo Artesanal</h3>
-                  <p>Cada biscoito é cuidadosamente feito à mão usando métodos tradicionais.</p>
-                </div>
-                <div class="feature">
-                  <span class="feature-emoji">📜</span>
-                  <h3>Receitas Próprias</h3>
-                  <p>Receitas testadas até alcançarem o sabor ideal.</p>
+                <div class="story-container">
+                  <div class="story-paragraph active" data-story="0">
+                    <div class="typewriter-text"></div>
+                  </div>
+                  <div class="story-paragraph" data-story="1">
+                    <div class="typewriter-text"></div>
+                  </div>
+                  <div class="story-paragraph" data-story="2">
+                    <div class="typewriter-text"></div>
+                  </div>
+                  <div class="story-paragraph" data-story="3">
+                    <div class="typewriter-text"></div>
+                  </div>
+                  <div class="story-paragraph" data-story="4">
+                    <div class="typewriter-text"></div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -363,8 +363,8 @@ preloadLogo.src = '/biscoidino_logo.png';
             <button class="carousel-btn prev" onclick="changeCarouselImage(-1)" title="Imagem anterior">‹</button>
             <button class="carousel-btn next" onclick="changeCarouselImage(1)" title="Próxima imagem">›</button>
             <div class="zoom-controls">
-              <button class="zoom-btn" onclick="zoomImage(-0.2)" title="Diminuir zoom">🔍-</button>
-              <button class="zoom-btn" onclick="zoomImage(0.2)" title="Aumentar zoom">🔍+</button>
+              <button class="zoom-btn" onclick="zoomImage(-1)" title="Diminuir zoom">🔍-</button>
+              <button class="zoom-btn" onclick="zoomImage(1)" title="Aumentar zoom">🔍+</button>
               <button class="zoom-btn" onclick="resetZoom()" title="Resetar zoom">⌂</button>
             </div>
           </div>
@@ -384,7 +384,7 @@ preloadLogo.src = '/biscoidino_logo.png';
   // Store current image index and zoom state
   (window as any).currentImageIndex = 0;
   (window as any).totalImages = product.images.length;
-  (window as any).currentZoom = 1;
+  (window as any).currentZoomLevel = 0; // 0 = normal, 1 = zoomed (same as gallery modal)
   (window as any).imagePosition = { x: 0, y: 0 };
   
   // Setup carousel dragging after modal is added to DOM
@@ -705,15 +705,15 @@ function createPhysicsWorld(productType: 'baunilha' | 'parmesao') {
   const biscuits: any[] = [];
   
   if (productType === 'baunilha') {
-    // 1 dinosaur, 6 hearts, 6 flowers
+    // 1 dinosaur, 6 hearts, 6 flowers, 5 stars
     const biscuitConfigs = [
-      { count: 1, radius: 25, type: 'dinosaur', image: '/biscuits/biscoidino.png' },
-      { count: 2, radius: 25, type: 'flower1', image: '/biscuits/flower_baunilha1.png' },
-      { count: 2, radius: 25, type: 'flower2', image: '/biscuits/flower_baunilha2.png' },
-      { count: 2, radius: 25, type: 'heart1', image: '/biscuits/heart_baunilha1.png' },
-      { count: 2, radius: 25, type: 'heart2', image: '/biscuits/heart_baunilha2.png' },
-      { count: 2, radius: 25, type: 'star1', image: '/biscuits/star_baunilha1.png' },
-      { count: 3, radius: 25, type: 'star2', image: '/biscuits/star_baunilha2.png' }
+      { count: 1, type: 'dinosaur', image: '/biscuits/biscoidino.png' },
+      { count: 2, type: 'flower1', image: '/biscuits/flower_baunilha1.png' },
+      { count: 2, type: 'flower2', image: '/biscuits/flower_baunilha2.png' },
+      { count: 2, type: 'heart1', image: '/biscuits/heart_baunilha1.png' },
+      { count: 2, type: 'heart2', image: '/biscuits/heart_baunilha2.png' },
+      { count: 2, type: 'star1', image: '/biscuits/star_baunilha1.png' },
+      { count: 3, type: 'star2', image: '/biscuits/star_baunilha2.png' }
     ];
     
     biscuitConfigs.forEach(config => {
@@ -721,14 +721,7 @@ function createPhysicsWorld(productType: 'baunilha' | 'parmesao') {
         const x = Math.random() * (canvas.width - 100) + 50;
         const y = Math.random() * 100 + 50;
         
-        const biscuit = Bodies.circle(x, y, config.radius, {
-          render: {
-            sprite: {
-              texture: config.image,
-              xScale: 0.3, // Adjust scale based on radius
-              yScale: 0.3
-            }
-          },
+        const biscuit = createStandardBiscuit(Matter, x, y, config.image, {
           restitution: 0.3,
           friction: 0.4
         });
@@ -742,14 +735,7 @@ function createPhysicsWorld(productType: 'baunilha' | 'parmesao') {
       const x = Math.random() * (canvas.width - 100) + 50;
       const y = Math.random() * 150 + 50;
       
-      const biscuit = Bodies.circle(x, y, 30, {
-        render: {
-          sprite: {
-            texture: '/biscuits/parmesao_biscuit.png',
-            xScale: 0.3, // Scale to fit the 15px radius
-            yScale: 0.3
-          }
-        },
+      const biscuit = createStandardBiscuit(Matter, x, y, '/biscuits/parmesao_biscuit.png', {
         restitution: 0.2,
         friction: 0.5
       });
@@ -804,13 +790,17 @@ function createPhysicsWorld(productType: 'baunilha' | 'parmesao') {
 };
 
 // Zoom and carousel drag functions
-(window as any).zoomImage = function(delta: number) {
-  (window as any).currentZoom = Math.max(0.5, Math.min(3, (window as any).currentZoom + delta));
+(window as any).zoomImage = function(direction: number) {
+  const currentLevel = (window as any).currentZoomLevel || 0;
+  const newLevel = Math.max(0, Math.min(1, currentLevel + direction));
+  
+  (window as any).currentZoomLevel = newLevel;
+  (window as any).imagePosition = { x: 0, y: 0 }; // Reset position when changing zoom
   updateImageTransform();
 };
 
 (window as any).resetZoom = function() {
-  (window as any).currentZoom = 1;
+  (window as any).currentZoomLevel = 0;
   (window as any).imagePosition = { x: 0, y: 0 };
   updateImageTransform();
 };
@@ -820,10 +810,14 @@ function updateImageTransform() {
   if (activeSlide) {
     const img = activeSlide.querySelector('.carousel-image') as HTMLImageElement;
     if (img) {
-      const zoom = (window as any).currentZoom;
-      const pos = (window as any).imagePosition;
-      img.style.transform = `scale(${zoom}) translate(${pos.x}px, ${pos.y}px)`;
-      img.style.cursor = zoom > 1 ? 'grab' : 'default';
+      const zoomLevel = (window as any).currentZoomLevel || 0;
+      const position = (window as any).imagePosition || { x: 0, y: 0 };
+      
+      // Simple 2-level zoom: 1x and 2x (same as gallery modal)
+      const scale = zoomLevel === 0 ? 1 : 2;
+      
+      img.style.transform = `scale(${scale}) translate(${position.x}px, ${position.y}px)`;
+      img.style.cursor = zoomLevel > 0 ? 'move' : 'zoom-in';
     }
   }
 }
@@ -852,7 +846,7 @@ function setupCarouselDrag() {
     
     // Check if we're dragging a zoomed image
     const activeImg = document.querySelector('.carousel-slide.active .carousel-image') as HTMLElement;
-    if (activeImg && (window as any).currentZoom > 1) {
+    if (activeImg && (window as any).currentZoomLevel > 0) {
       isImageDrag = true;
       initialImagePos = { ...(window as any).imagePosition };
       activeImg.style.cursor = 'grabbing';
@@ -872,10 +866,10 @@ function setupCarouselDrag() {
     
     endX = clientX; // Track current position for end calculation
     
-    if (isImageDrag && (window as any).currentZoom > 1) {
-      // Drag zoomed image
-      const deltaX = (clientX - startX) / (window as any).currentZoom;
-      const deltaY = (clientY - startY) / (window as any).currentZoom;
+    if (isImageDrag && (window as any).currentZoomLevel > 0) {
+      // Drag zoomed image - use scale 2 for calculations
+      const deltaX = (clientX - startX) / 2;
+      const deltaY = (clientY - startY) / 2;
       
       (window as any).imagePosition = {
         x: initialImagePos.x + deltaX,
@@ -895,7 +889,7 @@ function setupCarouselDrag() {
     
     const activeImg = document.querySelector('.carousel-slide.active .carousel-image') as HTMLElement;
     if (activeImg) {
-      activeImg.style.cursor = (window as any).currentZoom > 1 ? 'grab' : 'default';
+      activeImg.style.cursor = (window as any).currentZoomLevel > 0 ? 'move' : 'zoom-in';
     }
     carouselContainer.style.cursor = 'grab';
     
@@ -939,6 +933,49 @@ function setupCarouselDrag() {
     img.style.webkitUserSelect = 'none';
   });
   
+  // Add pinch-to-zoom support for mobile
+  let initialDistance = 0;
+  
+  const handleTouchStart = (e: TouchEvent) => {
+    if (e.touches.length === 2) {
+      const touch1 = e.touches[0];
+      const touch2 = e.touches[1];
+      initialDistance = Math.hypot(touch2.clientX - touch1.clientX, touch2.clientY - touch1.clientY);
+    }
+  };
+  
+  const handleTouchMove = (e: TouchEvent) => {
+    if (e.touches.length === 2 && initialDistance > 0) {
+      e.preventDefault();
+      const touch1 = e.touches[0];
+      const touch2 = e.touches[1];
+      const currentDistance = Math.hypot(touch2.clientX - touch1.clientX, touch2.clientY - touch1.clientY);
+      
+      const scale = currentDistance / initialDistance;
+      
+      if (scale > 1.2 && (window as any).currentZoomLevel === 0) {
+        // Pinch out - zoom in
+        (window as any).zoomImage(1);
+      } else if (scale < 0.8 && (window as any).currentZoomLevel === 1) {
+        // Pinch in - zoom out
+        (window as any).zoomImage(-1);
+      }
+    }
+  };
+  
+  const handleTouchEnd = (e: TouchEvent) => {
+    if (e.touches.length < 2) {
+      initialDistance = 0;
+    }
+  };
+  
+  // Add pinch event listeners to carousel images
+  images.forEach(img => {
+    img.addEventListener('touchstart', handleTouchStart, { passive: false });
+    img.addEventListener('touchmove', handleTouchMove, { passive: false });
+    img.addEventListener('touchend', handleTouchEnd);
+  });
+  
   // Store cleanup function
   (window as any).cleanupCarouselDrag = () => {
     carouselContainer.removeEventListener('mousedown', handleStart);
@@ -950,6 +987,9 @@ function setupCarouselDrag() {
     
     images.forEach(img => {
       img.removeEventListener('dragstart', (e) => e.preventDefault());
+      img.removeEventListener('touchstart', handleTouchStart);
+      img.removeEventListener('touchmove', handleTouchMove);
+      img.removeEventListener('touchend', handleTouchEnd);
     });
   };
 }
@@ -1033,15 +1073,22 @@ function setupGalleryDrag() {
   
   let isDragging = false;
   let startX = 0;
+  let startY = 0;
   let endX = 0;
+  let dragStartTime = 0;
+  let hasMoved = false;
   
   // Handle mouse and touch events for gallery dragging
   const handleStart = (e: MouseEvent | TouchEvent) => {
     isDragging = true;
+    hasMoved = false;
+    dragStartTime = Date.now();
     
     const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
+    const clientY = 'touches' in e ? e.touches[0].clientY : e.clientY;
     
     startX = clientX;
+    startY = clientY;
     endX = clientX;
     
     galleryContainer.style.cursor = 'grabbing';
@@ -1052,21 +1099,41 @@ function setupGalleryDrag() {
     if (!isDragging) return;
     
     const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
-    endX = clientX; // Track current position for end calculation
+    const clientY = 'touches' in e ? e.touches[0].clientY : e.clientY;
+    
+    endX = clientX;
+    
+    // Check if user has moved significantly
+    const moveDistance = Math.sqrt(Math.pow(clientX - startX, 2) + Math.pow(clientY - startY, 2));
+    if (moveDistance > 10) {
+      hasMoved = true;
+    }
+    
     e.preventDefault();
   };
   
-  const handleEnd = () => {
+  const handleEnd = (e: MouseEvent | TouchEvent) => {
     if (!isDragging) return;
     
     isDragging = false;
     galleryContainer.style.cursor = 'grab';
     
-    // Handle gallery navigation
+    const clickDuration = Date.now() - dragStartTime;
     const dragDistance = endX - startX;
     const threshold = 50; // Minimum drag distance to change slides
     
-    if (Math.abs(dragDistance) > threshold) {
+    // If it was a quick tap/click without significant movement, open modal
+    if (clickDuration < 300 && !hasMoved) {
+      const target = e.target as HTMLElement;
+      const slide = target.closest('.gallery-slide.active') as HTMLElement;
+      if (slide && slide.dataset.imageSrc) {
+        openGalleryImageModal(slide.dataset.imageSrc);
+      }
+      return;
+    }
+    
+    // Handle gallery navigation only if user dragged significantly
+    if (hasMoved && Math.abs(dragDistance) > threshold) {
       if (dragDistance > 0) {
         // Dragged right -> go to previous slide
         (window as any).galleryPrevSlide();
@@ -1195,6 +1262,281 @@ function applyImageIntelligence() {
   });
 }
 
+// Gallery Image Modal Functions
+function openGalleryImageModal(imageSrc: string) {
+  const modalHTML = `
+    <div id="galleryImageModal" class="modal gallery-image-modal">
+      <div class="modal-content gallery-modal-content">
+        <div class="modal-header">
+          <h2>Galeria</h2>
+          <button class="close-modal" onclick="closeGalleryImageModal()">&times;</button>
+        </div>
+        <div class="gallery-image-container">
+          <img id="galleryModalImage" src="${imageSrc}" alt="Imagem da galeria" class="gallery-modal-image" />
+          <div class="zoom-controls gallery-zoom-controls">
+            <button class="zoom-btn gallery-zoom-btn" onclick="galleryZoomImage(-1)" title="Diminuir zoom">🔍-</button>
+            <button class="zoom-btn gallery-zoom-btn" onclick="galleryZoomImage(1)" title="Aumentar zoom">🔍+</button>
+            <button class="zoom-btn gallery-zoom-btn" onclick="galleryResetZoom()" title="Resetar zoom">⌂</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+  
+  document.body.insertAdjacentHTML('beforeend', modalHTML);
+  
+  // Initialize zoom state
+  (window as any).galleryZoomLevel = 0; // 0 = normal, 1 = zoomed
+  (window as any).galleryImagePosition = { x: 0, y: 0 };
+  
+  // Setup interactions
+  setTimeout(() => setupGalleryModalInteractions(), 50);
+}
+
+(window as any).closeGalleryImageModal = function() {
+  const modal = document.getElementById('galleryImageModal');
+  if (modal) {
+    document.body.removeChild(modal);
+  }
+  
+  // Cleanup event listeners
+  if ((window as any).galleryModalCleanup) {
+    (window as any).galleryModalCleanup();
+  }
+};
+
+(window as any).galleryZoomImage = function(direction: number) {
+  const currentLevel = (window as any).galleryZoomLevel || 0;
+  const newLevel = Math.max(0, Math.min(1, currentLevel + direction));
+  
+  (window as any).galleryZoomLevel = newLevel;
+  updateGalleryImageTransform();
+};
+
+(window as any).galleryResetZoom = function() {
+  (window as any).galleryZoomLevel = 0;
+  (window as any).galleryImagePosition = { x: 0, y: 0 };
+  updateGalleryImageTransform();
+};
+
+function updateGalleryImageTransform() {
+  const image = document.getElementById('galleryModalImage') as HTMLImageElement;
+  if (!image) return;
+  
+  const zoomLevel = (window as any).galleryZoomLevel || 0;
+  const position = (window as any).galleryImagePosition || { x: 0, y: 0 };
+  
+  // Simple 2-level zoom: 1x and 2x
+  const scale = zoomLevel === 0 ? 1 : 2;
+  
+  image.style.transform = `scale(${scale}) translate(${position.x}px, ${position.y}px)`;
+  image.style.cursor = zoomLevel > 0 ? 'move' : 'zoom-in';
+}
+
+function setupGalleryModalInteractions() {
+  const image = document.getElementById('galleryModalImage') as HTMLImageElement;
+  const container = image.parentElement as HTMLElement;
+  
+  if (!image || !container) return;
+  
+  let isDragging = false;
+  let startX = 0;
+  let startY = 0;
+  let initialPosition = { x: 0, y: 0 };
+  
+  // Desktop mouse interactions
+  const handleMouseDown = (e: MouseEvent) => {
+    const zoomLevel = (window as any).galleryZoomLevel || 0;
+    
+    if (zoomLevel === 0) {
+      // Not zoomed, zoom in on click
+      (window as any).galleryZoomImage(1);
+      return;
+    }
+    
+    // Zoomed in, allow dragging
+    isDragging = true;
+    startX = e.clientX;
+    startY = e.clientY;
+    initialPosition = { ...(window as any).galleryImagePosition };
+    e.preventDefault();
+  };
+  
+  const handleMouseMove = (e: MouseEvent) => {
+    const zoomLevel = (window as any).galleryZoomLevel || 0;
+    if (!isDragging || zoomLevel === 0) return;
+    
+    const deltaX = (e.clientX - startX) / 2; // Reduce sensitivity
+    const deltaY = (e.clientY - startY) / 2;
+    
+    (window as any).galleryImagePosition = {
+      x: initialPosition.x + deltaX,
+      y: initialPosition.y + deltaY
+    };
+    
+    updateGalleryImageTransform();
+  };
+  
+  const handleMouseUp = () => {
+    isDragging = false;
+  };
+  
+  // Touch interactions for mobile
+  let initialDistance = 0;
+  
+  const handleTouchStart = (e: TouchEvent) => {
+    e.preventDefault();
+    
+    if (e.touches.length === 2) {
+      // Pinch gesture
+      const touch1 = e.touches[0];
+      const touch2 = e.touches[1];
+      initialDistance = Math.sqrt(
+        Math.pow(touch2.clientX - touch1.clientX, 2) + 
+        Math.pow(touch2.clientY - touch1.clientY, 2)
+      );
+    } else if (e.touches.length === 1) {
+      // Single touch
+      const zoomLevel = (window as any).galleryZoomLevel || 0;
+      if (zoomLevel === 0) {
+        // Not zoomed, zoom in on tap
+        (window as any).galleryZoomImage(1);
+      } else {
+        // Zoomed in, prepare for dragging
+        isDragging = true;
+        startX = e.touches[0].clientX;
+        startY = e.touches[0].clientY;
+        initialPosition = { ...(window as any).galleryImagePosition };
+      }
+    }
+  };
+  
+  const handleTouchMove = (e: TouchEvent) => {
+    e.preventDefault();
+    
+    if (e.touches.length === 2) {
+      // Pinch zoom
+      const touch1 = e.touches[0];
+      const touch2 = e.touches[1];
+      const currentDistance = Math.sqrt(
+        Math.pow(touch2.clientX - touch1.clientX, 2) + 
+        Math.pow(touch2.clientY - touch1.clientY, 2)
+      );
+      
+      const scale = currentDistance / initialDistance;
+      const newZoom = scale > 1.2 ? 1 : 0; // Simple threshold
+      
+      if (newZoom !== (window as any).galleryZoomLevel) {
+        (window as any).galleryZoomLevel = newZoom;
+        updateGalleryImageTransform();
+      }
+    } else if (e.touches.length === 1 && isDragging) {
+      // Pan when zoomed
+      const zoomLevel = (window as any).galleryZoomLevel || 0;
+      if (zoomLevel > 0) {
+        const deltaX = (e.touches[0].clientX - startX) / 2;
+        const deltaY = (e.touches[0].clientY - startY) / 2;
+        
+        (window as any).galleryImagePosition = {
+          x: initialPosition.x + deltaX,
+          y: initialPosition.y + deltaY
+        };
+        
+        updateGalleryImageTransform();
+      }
+    }
+  };
+  
+  const handleTouchEnd = (e: TouchEvent) => {
+    if (e.touches.length === 0) {
+      isDragging = false;
+    }
+  };
+  
+  // Add event listeners
+  image.addEventListener('mousedown', handleMouseDown);
+  document.addEventListener('mousemove', handleMouseMove);
+  document.addEventListener('mouseup', handleMouseUp);
+  
+  image.addEventListener('touchstart', handleTouchStart, { passive: false });
+  document.addEventListener('touchmove', handleTouchMove, { passive: false });
+  document.addEventListener('touchend', handleTouchEnd, { passive: false });
+  
+  // Prevent context menu
+  image.addEventListener('contextmenu', (e) => e.preventDefault());
+  
+  // Store cleanup function
+  (window as any).galleryModalCleanup = () => {
+    image.removeEventListener('mousedown', handleMouseDown);
+    document.removeEventListener('mousemove', handleMouseMove);
+    document.removeEventListener('mouseup', handleMouseUp);
+    
+    image.removeEventListener('touchstart', handleTouchStart);
+    document.removeEventListener('touchmove', handleTouchMove);
+    document.removeEventListener('touchend', handleTouchEnd);
+    
+    image.removeEventListener('contextmenu', (e) => e.preventDefault());
+  };
+  
+  // Initialize transform
+  updateGalleryImageTransform();
+}
+
+// Centralized Biscuit Configuration
+function getBiscuitConfig(texture: string) {
+  const radiusMap: any = {
+    '/biscuits/parmesao_biscuit.png': 20,
+    '/biscuits/biscoidino.png': 38,
+    '/biscuits/heart_baunilha1.png': 28,
+    '/biscuits/star_baunilha1.png': 30,
+    '/biscuits/flower_baunilha1.png': 35,
+    '/biscuits/heart_baunilha2.png': 28,
+    '/biscuits/star_baunilha2.png': 30,
+    '/biscuits/flower_baunilha2.png': 35,
+    'default': 25
+  };
+
+  const scaleMap: any = {
+    '/biscuits/parmesao_biscuit.png': 0.2,
+    '/biscuits/biscoidino.png': 0.3,
+    '/biscuits/heart_baunilha1.png': 0.35,
+    '/biscuits/star_baunilha1.png': 0.4,
+    '/biscuits/flower_baunilha1.png': 0.35,
+    '/biscuits/heart_baunilha2.png': 0.35,
+    '/biscuits/star_baunilha2.png': 0.4,
+    '/biscuits/flower_baunilha2.png': 0.35,
+    'default': 0.3
+  };
+
+  return {
+    radius: radiusMap[texture] || radiusMap['default'],
+    scale: scaleMap[texture] || scaleMap['default']
+  };
+}
+
+function createStandardBiscuit(Matter: any, x: number, y: number, texture: string, physicsOptions: any = {}) {
+  const config = getBiscuitConfig(texture);
+  const Bodies = Matter.Bodies;
+  
+  const defaultPhysics = {
+    restitution: 0.6,
+    frictionAir: 0.01,
+    density: 0.002
+  };
+
+  return Bodies.circle(x, y, config.radius, { 
+    ...defaultPhysics,
+    ...physicsOptions,
+    render: { 
+      sprite: {
+        texture: texture,
+        xScale: config.scale,
+        yScale: config.scale
+      }
+    }
+  });
+}
+
 // Home Physics Functions
 function initHomePhysics() {
   console.log('🌟 Initializing Home Physics with Matter.js...');
@@ -1259,7 +1601,7 @@ function createHomePhysicsWorld() {
   
   // Create engine with natural gravity
   const engine = Engine.create();
-  engine.world.gravity.y = 0.6;
+  engine.world.gravity.y = 0.3;
   
   // Create renderer with sprites (use display dimensions, not actual canvas dimensions)
   const render = Render.create({
@@ -1331,7 +1673,6 @@ function createHomePhysicsWorld() {
 
 function createHomeBiscuits(canvasWidth: number, canvasHeight: number) {
   const Matter = (window as any).Matter;
-  const Bodies = Matter.Bodies;
   
   const centerX = canvasWidth / 2;
   
@@ -1341,7 +1682,7 @@ function createHomeBiscuits(canvasWidth: number, canvasHeight: number) {
   
   // Default positions for first load - distributed equally across 3 formats
   const defaultPositions = [
-    { x: centerX, y: 50, texture: '/biscuits/biscoidino.png' },
+    { x: centerX, y: 10, texture: '/biscuits/biscoidino.png' },
     { x: centerX - 100, y: 30, texture: '/biscuits/flower_baunilha1.png' },
     { x: centerX - 100, y: 30, texture: '/biscuits/flower_baunilha2.png' },
     { x: centerX + 80, y: 40, texture: '/biscuits/heart_baunilha1.png' },
@@ -1364,20 +1705,8 @@ function createHomeBiscuits(canvasWidth: number, canvasHeight: number) {
     // Use saved position if available, otherwise use default
     const x = savedState ? savedState.x * canvasWidth : defaultPos.x;
     const y = savedState ? savedState.y * canvasHeight : defaultPos.y;
-    const radius = defaultPos.texture.includes('parmesao') ? 30 : defaultPos.texture.includes('biscoidino') ? 35 : 25;
-    
-    const biscuit = Bodies.circle(x, y, radius, { 
-      render: { 
-        sprite: {
-          texture: defaultPos.texture,
-          xScale: defaultPos.texture.includes('parmesao') ? 0.2 : 0.3,
-          yScale: defaultPos.texture.includes('parmesao') ? 0.2 : 0.3
-        }
-      },
-      restitution: 0.6,
-      frictionAir: 0.01,
-      density: 0.002
-    });
+
+    const biscuit = createStandardBiscuit(Matter, x, y, defaultPos.texture);
     
     // Restore velocity and rotation if saved
     if (savedState && !useDefaultPositions) {
