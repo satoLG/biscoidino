@@ -97,32 +97,20 @@ class BiscoidinApp {
           <section id="about" class="about-section">
             <h2>Nossa História</h2>
             <div class="about-content">
-              <div class="about-parallax-container">
-                <div class="parallax-images">
-                  <img src="/biscuits/flower_baunilha1.png" class="parallax-img parallax-left" alt="">
-                  <img src="/biscuits/heart_baunilha1.png" class="parallax-img parallax-right" alt="">
-                  <img src="/biscuits/star_baunilha1.png" class="parallax-img parallax-left" alt="">
-                  <img src="/biscuits/flower_baunilha2.png" class="parallax-img parallax-right" alt="">
-                  <img src="/biscuits/biscoidino.png" class="parallax-img parallax-left" alt="">
-                </div>
-                <div class="story-container">
-                  <div class="story-paragraph active" data-story="0">
-                    <div class="typewriter-text"></div>
-                  </div>
-                  <div class="story-paragraph" data-story="1">
-                    <div class="typewriter-text"></div>
-                  </div>
-                  <div class="story-paragraph" data-story="2">
-                    <div class="typewriter-text"></div>
-                  </div>
-                  <div class="story-paragraph" data-story="3">
-                    <div class="typewriter-text"></div>
-                  </div>
-                  <div class="story-paragraph" data-story="4">
-                    <div class="typewriter-text"></div>
-                  </div>
-                </div>
-              </div>
+              <p>
+                A Biscoidino nasceu do amor entre mãe e filho.
+              </p>
+              <p>
+                Tudo começou quando Micaela Gregorio, buscando tornar a alimentação do pequeno Lucas mais divertida, decidiu preparar biscoitos em formato de dinossauros.
+              </p>
+              <p>
+                O que seria apenas uma brincadeira na cozinha acabou se transformando em algo muito maior: uma receita caseira que encantou familiares, amigos e, logo, um público apaixonado pelo sabor e pela delicadeza de cada Biscoidino.              </p>
+              <p>
+                Hoje, a Biscoidino é uma marca que leva carinho, sabor e diversão para todas as idades.
+              </p>
+              <p>
+                Cada fornada é feita com ingredientes selecionados e um toque especial de amor — porque acreditamos que momentos simples também podem ser inesquecíveis. 💚
+              </p>
             </div>
           </section>
 
