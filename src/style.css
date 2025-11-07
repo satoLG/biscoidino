@@ -513,7 +513,7 @@ section.active {
 
 .menu-item-image {
     background-color: #ffb6bf;
-    border-radius: 50%;
+    border-radius: 25%;
     padding: 10px;
     width: 150px;
     height: 150px;
@@ -1242,6 +1242,7 @@ section.active {
   }
   
   .home-content h2 {
+    white-space: nowrap;
     font-size: 2rem;
   }
   

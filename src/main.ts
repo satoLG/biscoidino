@@ -132,7 +132,7 @@ class BiscoidinApp {
         </main>
 
         <footer class="footer">
-          <p>&copy; 2025 BISCOIDINO. Feito com <img src="/biscuits/biscoidino.png" alt="amor" class="footer-icon"> para amantes de biscoitos em todo lugar.</p>
+          <p>&copy; 2025 BISCOIDINO. Feito com <img src="/biscuits/biscoidino_biscuit1.png" alt="amor" class="footer-icon"> para amantes de biscoitos em todo lugar.</p>
         </footer>
       </div>
     `;
@@ -162,22 +162,24 @@ class BiscoidinApp {
         image: "/baunilha_package.png",
         images: [
           "/baunilha_package.png",
+          "/biscuits/biscoidino_biscuit1.png",
           "/biscuits/flower_baunilha1.png", 
           "/biscuits/heart_baunilha1.png",
           "/biscuits/star_baunilha1.png",
           "/biscuits/flower_baunilha2.png",
           "/biscuits/heart_baunilha2.png",
-          "/biscuits/star_banulha2.png"
+          "/products/baunilha_biscuits.png"
         ]
       },
       {
         name: "Biscoitos de Parmesão",
         description: "Biscoitos salgados crocantes com queijo parmesão premium (150g)",
-        price: "R$ 15,00",
-        image: "/parmesao_package.png",
+        price: "R$ 12,00",
+        image: "/products/parmesao_biscuit_package1.png",
         images: [
-          "/parmesao_package.png",
-          "/biscuits/parmesao_biscuit.png"
+          "/products/parmesao_biscuit_package1.png",
+          "/products/parmesao_biscuit_package2.png",
+          "/products/parmesao_biscuits.png"
         ]
       }
     ];
@@ -695,7 +697,7 @@ function createPhysicsWorld(productType: 'baunilha' | 'parmesao') {
   if (productType === 'baunilha') {
     // 1 dinosaur, 6 hearts, 6 flowers, 5 stars
     const biscuitConfigs = [
-      { count: 1, type: 'dinosaur', image: '/biscuits/biscoidino.png' },
+      { count: 1, type: 'dinosaur', image: '/biscuits/biscoidino_biscuit1.png' },
       { count: 2, type: 'flower1', image: '/biscuits/flower_baunilha1.png' },
       { count: 2, type: 'flower2', image: '/biscuits/flower_baunilha2.png' },
       { count: 2, type: 'heart1', image: '/biscuits/heart_baunilha1.png' },
@@ -718,12 +720,15 @@ function createPhysicsWorld(productType: 'baunilha' | 'parmesao') {
       }
     });
   } else {
-    // 21 parmesão biscuits
+    // 21 parmesão biscuits - mix of both types
     for (let i = 0; i < 21; i++) {
       const x = Math.random() * (canvas.width - 100) + 50;
       const y = Math.random() * 150 + 50;
       
-      const biscuit = createStandardBiscuit(Matter, x, y, '/biscuits/parmesao_biscuit.png', {
+      // Alternate between the two new parmesao biscuit package types
+      const biscuitType = i % 2 === 0 ? '/biscuits/parmesao_biscuit1.png' : '/biscuits/parmesao_biscuit2.png';
+      
+      const biscuit = createStandardBiscuit(Matter, x, y, biscuitType, {
         restitution: 0.2,
         friction: 0.5
       });
@@ -1473,8 +1478,9 @@ function setupGalleryModalInteractions() {
 // Centralized Biscuit Configuration
 function getBiscuitConfig(texture: string) {
   const radiusMap: any = {
-    '/biscuits/parmesao_biscuit.png': 20,
-    '/biscuits/biscoidino.png': 38,
+    '/biscuits/parmesao_biscuit1.png': 27,
+    '/biscuits/parmesao_biscuit2.png': 27,
+    '/biscuits/biscoidino_biscuit1.png': 45,
     '/biscuits/heart_baunilha1.png': 28,
     '/biscuits/star_baunilha1.png': 30,
     '/biscuits/flower_baunilha1.png': 35,
@@ -1485,8 +1491,9 @@ function getBiscuitConfig(texture: string) {
   };
 
   const scaleMap: any = {
-    '/biscuits/parmesao_biscuit.png': 0.2,
-    '/biscuits/biscoidino.png': 0.3,
+    '/biscuits/parmesao_biscuit1.png': 0.25,
+    '/biscuits/parmesao_biscuit2.png': 0.25,
+    '/biscuits/biscoidino_biscuit1.png': 0.42,
     '/biscuits/heart_baunilha1.png': 0.35,
     '/biscuits/star_baunilha1.png': 0.4,
     '/biscuits/flower_baunilha1.png': 0.35,
@@ -1670,18 +1677,20 @@ function createHomeBiscuits(canvasWidth: number, canvasHeight: number) {
   
   // Default positions for first load - distributed equally across 3 formats
   const defaultPositions = [
-    { x: centerX, y: 10, texture: '/biscuits/biscoidino.png' },
+    { x: centerX + 100, y: 10, texture: '/biscuits/biscoidino_biscuit1.png' },
     { x: centerX - 100, y: 30, texture: '/biscuits/flower_baunilha1.png' },
     { x: centerX - 100, y: 30, texture: '/biscuits/flower_baunilha2.png' },
     { x: centerX + 80, y: 40, texture: '/biscuits/heart_baunilha1.png' },
     { x: centerX + 80, y: 40, texture: '/biscuits/heart_baunilha2.png' },
     { x: centerX - 40, y: 20, texture: '/biscuits/star_baunilha1.png' },
     { x: centerX - 40, y: 20, texture: '/biscuits/star_baunilha2.png' },
-    { x: centerX - 40, y: 20, texture: '/biscuits/parmesao_biscuit.png' },
-    { x: centerX - 40, y: 20, texture: '/biscuits/parmesao_biscuit.png' },
-    { x: centerX - 40, y: 20, texture: '/biscuits/parmesao_biscuit.png' },
     { x: centerX + 50, y: 35, texture: '/biscuits/flower_baunilha1.png' },
-    { x: centerX - 60, y: 45, texture: '/biscuits/heart_baunilha1.png' }
+    { x: centerX - 60, y: 45, texture: '/biscuits/heart_baunilha1.png' },
+    { x: centerX - 40, y: 20, texture: '/biscuits/star_baunilha2.png' },
+    { x: centerX + 50, y: 35, texture: '/biscuits/flower_baunilha1.png' },
+    { x: centerX - 60, y: 45, texture: '/biscuits/heart_baunilha1.png' },
+    { x: centerX - 40, y: 20, texture: '/biscuits/star_baunilha2.png' },
+    { x: centerX + 50, y: 35, texture: '/biscuits/flower_baunilha1.png' },
   ];
   
   const biscuits = [];
