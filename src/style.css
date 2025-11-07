@@ -289,7 +289,7 @@ body {
 }
 
 .home-content h2 {
-  font-size: 3rem;
+  font-size: 2.2rem;
   color: var(--primary-color);
   margin-bottom: 1rem;
   font-weight: bold;
@@ -1243,7 +1243,7 @@ section.active {
   
   .home-content h2 {
     white-space: nowrap;
-    font-size: 2rem;
+    font-size: 1.2rem;
   }
   
   .floating-biscuits {
