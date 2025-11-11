@@ -5,6 +5,9 @@ import './style.css?v=2'
 class BiscoidinApp {
   private app: HTMLElement;
   private splashScreen: HTMLElement;
+  private typewriterInitialized: boolean = false;
+  private typewriterRunning: boolean = false;
+  private activeEventListeners: Array<{element: any, event: string, handler: any, options?: any}> = [];
 
   constructor() {
     inject();
@@ -134,7 +137,10 @@ class BiscoidinApp {
     // Initialize typewriter effect immediately after DOM is ready
     setTimeout(() => {
       console.log('🚀 Initializing typewriter effect...');
-      this.initTypewriterEffect();
+      if (!this.typewriterInitialized) {
+        this.initTypewriterEffect();
+        this.typewriterInitialized = true;
+      }
     }, 300);
 
     // Initialize gallery carousel after DOM is ready (backup initialization)
@@ -229,6 +235,14 @@ class BiscoidinApp {
                 initializeGalleryCarousel();
               }, 50);
             }
+            
+            // Reset and restart typewriter when about section becomes active
+            if (targetId === 'about') {
+              setTimeout(() => {
+                console.log('📝 About section activated, resetting typewriter...');
+                this.resetAndRestartTypewriter();
+              }, 50);
+            }
           } else {
             section.classList.remove('active');
           }
@@ -246,11 +260,90 @@ class BiscoidinApp {
     }
   }
 
+  private resetAndRestartTypewriter(): void {
+    console.log('🔄 Resetting typewriter effect...');
+    
+    // Get elements
+    const typewriterText = document.getElementById('typewriterText');
+    const aboutContent = document.getElementById('aboutContent');
+    
+    if (!typewriterText || !aboutContent) {
+      console.error('❌ Required elements not found for typewriter reset');
+      return;
+    }
+    
+    // Force stop any running typewriter
+    this.typewriterRunning = false;
+    
+    // Clear ALL tracked event listeners
+    this.activeEventListeners.forEach(({ element, event, handler }) => {
+      try {
+        element.removeEventListener(event, handler);
+        console.log(`🧹 Removed ${event} listener`);
+      } catch (e) {
+        console.warn(`⚠️ Could not remove ${event} listener:`, e);
+      }
+    });
+    this.activeEventListeners = [];
+    
+    // Clear all timeouts that might be running
+    for (let i = 1; i < 99999; i++) {
+      window.clearTimeout(i);
+    }
+    
+    // Clear all content
+    typewriterText.innerHTML = '';
+    
+    // Remove all scroll images from anywhere in the document
+    const scrollImages = document.querySelectorAll('.scroll-image');
+    scrollImages.forEach(img => img.remove());
+    
+    // Remove ALL scroll hints from anywhere in the document
+    const scrollHints = document.querySelectorAll('.scroll-hint-floating, .scroll-hint');
+    scrollHints.forEach(hint => {
+      console.log('🧹 Removing scroll hint:', hint);
+      hint.remove();
+    });
+    
+    // Also remove any orphaned elements that might be in body
+    const orphanedHints = document.body.querySelectorAll('[class*="scroll-hint"]');
+    orphanedHints.forEach(hint => {
+      console.log('🧹 Removing orphaned hint:', hint);
+      hint.remove();
+    });
+    
+    // Reset the initialization flag and reinitialize after a small delay
+    this.typewriterInitialized = false;
+    
+    // Use a delay to ensure all cleanup is complete
+    setTimeout(() => {
+      this.initTypewriterEffect();
+      this.typewriterInitialized = true;
+    }, 300);
+    
+    console.log('✅ Typewriter effect reset and restarted');
+  }
+
   private initTypewriterEffect(): void {
+    // Prevent multiple instances running simultaneously
+    if (this.typewriterRunning) {
+      console.log('🚫 Typewriter already running, skipping initialization');
+      return;
+    }
+    
     const typewriterText = document.getElementById('typewriterText');
     const aboutContent = document.getElementById('aboutContent');
     
     if (!typewriterText || !aboutContent) return;
+    
+    this.typewriterRunning = true;
+    const self = this; // Store reference for inner functions
+    
+    // Helper function to track event listeners
+    const addTrackedListener = (element: any, event: string, handler: any, options?: any) => {
+      element.addEventListener(event, handler, options);
+      self.activeEventListeners.push({ element, event, handler, options });
+    };
     
     // Story content with images
     const storyData = [
@@ -264,15 +357,15 @@ class BiscoidinApp {
       },
       { 
         text: "O que começou como brincadeira acabou se tornando uma receita de sucesso.",
-        image: "/about/estoque.png"
-      },
-      { 
-        text: "Cada fornada é feita com amor e ingredientes especiais.",
         image: "/about/ingredientes.png"
       },
       { 
-        text: "Hoje, a Biscoidino é uma marca que leva carinho e sabor para todas as idades.",
+        text: "Cada fornada é feita com amor e ingredientes especiais.",
         image: "/about/fornada.png"
+      },
+      { 
+        text: "Hoje, a Biscoidino é uma marca que leva carinho e sabor para todas as idades.",
+        image: "/about/estoque.png"
       }
     ];
     
@@ -361,7 +454,10 @@ class BiscoidinApp {
       scrollHint.style.opacity = '0';
       scrollHint.style.transition = 'opacity 0.4s ease-in-out';
       
-      document.body.appendChild(scrollHint);
+      // Add to aboutContent instead of body
+      if (aboutContent) {
+        aboutContent.appendChild(scrollHint);
+      }
       
       // Fade in after a brief moment
       setTimeout(() => {
@@ -680,10 +776,10 @@ class BiscoidinApp {
           setTimeout(() => {
             // Reactivate scroll listener for this new image
             scrollListener = handleScroll;
-            window.addEventListener('scroll', scrollListener);
-            window.addEventListener('touchstart', handleTouchStart, { passive: false });
-            window.addEventListener('touchmove', handleTouchMove, { passive: false });
-            window.addEventListener('touchend', handleTouchEnd, { passive: false });
+            addTrackedListener(window, 'scroll', scrollListener);
+            addTrackedListener(window, 'touchstart', handleTouchStart, { passive: false });
+            addTrackedListener(window, 'touchmove', handleTouchMove, { passive: false });
+            addTrackedListener(window, 'touchend', handleTouchEnd, { passive: false });
             lastScrollY = window.scrollY;
             
             // Show scroll hint when scroll lock is active
@@ -724,6 +820,10 @@ class BiscoidinApp {
             console.log('🔒 Last image locked at center - keeping visible');
             currentScrollImage = null; // Clear reference but don't remove from DOM
           }
+          
+          // Mark typewriter as no longer running
+          self.typewriterRunning = false;
+          console.log('✅ Typewriter finished and flag cleared');
         }, 2000);
         return;
       }
@@ -788,7 +888,7 @@ class BiscoidinApp {
           positionParagraph();
           
           if (currentScrollImage && !currentScrollImage.complete) {
-            currentScrollImage.addEventListener('load', positionParagraph, { once: true });
+            addTrackedListener(currentScrollImage, 'load', positionParagraph, { once: true });
           }
         }
         
@@ -891,11 +991,11 @@ class BiscoidinApp {
         // Replace scroll listener with the image movement handler
         window.removeEventListener('scroll', initialScrollListener);
         scrollListener = handleScroll;
-        window.addEventListener('scroll', scrollListener);
-        window.addEventListener('wheel', handleWheel, { passive: false });
-        window.addEventListener('touchstart', handleTouchStart, { passive: false });
-        window.addEventListener('touchmove', handleTouchMove, { passive: false });
-        window.addEventListener('touchend', handleTouchEnd, { passive: false });
+        addTrackedListener(window, 'scroll', scrollListener);
+        addTrackedListener(window, 'wheel', handleWheel, { passive: false });
+        addTrackedListener(window, 'touchstart', handleTouchStart, { passive: false });
+        addTrackedListener(window, 'touchmove', handleTouchMove, { passive: false });
+        addTrackedListener(window, 'touchend', handleTouchEnd, { passive: false });
         lastScrollY = window.scrollY;
         
         // Show scroll hint when scroll lock is active for second paragraph
@@ -909,12 +1009,12 @@ class BiscoidinApp {
     // Start typing first paragraph
     setTimeout(typeNextChar, 500);
     
-    // Set initial scroll listener
-    window.addEventListener('scroll', initialScrollListener);
-    window.addEventListener('wheel', handleWheel, { passive: false });
-    window.addEventListener('touchstart', handleTouchStart, { passive: false });
-    window.addEventListener('touchmove', handleTouchMove, { passive: false });
-    window.addEventListener('touchend', handleTouchEnd, { passive: false });
+    // Set initial scroll listener using tracked system
+    addTrackedListener(window, 'scroll', initialScrollListener);
+    addTrackedListener(window, 'wheel', handleWheel, { passive: false });
+    addTrackedListener(window, 'touchstart', handleTouchStart, { passive: false });
+    addTrackedListener(window, 'touchmove', handleTouchMove, { passive: false });
+    addTrackedListener(window, 'touchend', handleTouchEnd, { passive: false });
   }
 
   private renderGalleryCarousel(): string {
