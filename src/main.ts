@@ -5,12 +5,14 @@ import './style.css?v=2'
 class BiscoidinApp {
   private app: HTMLElement;
   private splashScreen: HTMLElement;
+  private deferredPrompt: any;
 
   constructor() {
     inject();
     this.app = document.querySelector<HTMLDivElement>('#app')!;
     this.splashScreen = document.querySelector<HTMLDivElement>('#splash-screen')!;
     this.initializeSplashScreen();
+    this.initializePWA();
   }
 
   private initializeSplashScreen(): void {
@@ -31,6 +33,269 @@ class BiscoidinApp {
       this.app.classList.add('visible');
       this.render();
     }, 800); // Match the CSS animation duration
+  }
+
+  private initializePWA(): void {
+    // Register service worker
+    this.registerServiceWorker();
+
+    // Listen for the beforeinstallprompt event (Android/Chrome)
+    window.addEventListener('beforeinstallprompt', (e) => {
+      console.log('📱 PWA Install prompt available');
+      e.preventDefault();
+      this.deferredPrompt = e;
+      
+      // Show install popup after a short delay
+      setTimeout(() => {
+        this.showPWAInstallPopup('android');
+      }, 2000);
+    });
+
+    // Check if already installed
+    if (this.isPWAInstalled()) {
+      console.log('✅ PWA is already installed');
+      this.showOpenInAppBanner();
+      return;
+    }
+
+    // Detect iOS and show install instructions
+    if (this.isIOS()) {
+      setTimeout(() => {
+        this.showPWAInstallPopup('ios');
+      }, 3000); // Show after splash screen
+    }
+
+    // Listen for app installation
+    window.addEventListener('appinstalled', () => {
+      console.log('🎉 PWA was installed successfully');
+      this.deferredPrompt = null;
+      
+      // Store that user has installed the app
+      localStorage.setItem('pwa-installed', 'true');
+      
+      // Hide any visible install popups
+      this.hidePWAInstallPopup();
+    });
+  }
+
+  private async registerServiceWorker(): Promise<void> {
+    if ('serviceWorker' in navigator) {
+      try {
+        const registration = await navigator.serviceWorker.register('/sw.js', {
+          scope: '/'
+        });
+        
+        console.log('✅ Service Worker registered successfully:', registration.scope);
+        
+        // Listen for updates
+        registration.addEventListener('updatefound', () => {
+          console.log('🆕 New service worker available');
+        });
+        
+      } catch (error) {
+        console.error('❌ Service Worker registration failed:', error);
+      }
+    }
+  }
+
+  private isPWAInstalled(): boolean {
+    // Check if PWA is already installed
+    return window.matchMedia && window.matchMedia('(display-mode: standalone)').matches ||
+           (window.navigator as any).standalone ||
+           localStorage.getItem('pwa-installed') === 'true';
+  }
+
+  private isIOS(): boolean {
+    return /iPad|iPhone|iPod/.test(navigator.userAgent) && !(window as any).MSStream;
+  }
+
+  private showPWAInstallPopup(platform: 'android' | 'ios'): void {
+    // Don't show if already shown recently
+    const lastShown = localStorage.getItem('pwa-popup-last-shown');
+    const now = Date.now();
+    
+    if (lastShown && (now - parseInt(lastShown)) < 24 * 60 * 60 * 1000) {
+      console.log('⏰ PWA popup shown recently, skipping');
+      return;
+    }
+
+    // Don't show if user dismissed it recently
+    const dismissed = localStorage.getItem('pwa-popup-dismissed');
+    if (dismissed && (now - parseInt(dismissed)) < 7 * 24 * 60 * 60 * 1000) {
+      console.log('❌ PWA popup was dismissed recently, skipping');
+      return;
+    }
+
+    const popupHTML = this.createPWAInstallPopupHTML(platform);
+    document.body.insertAdjacentHTML('beforeend', popupHTML);
+    
+    // Store when popup was shown
+    localStorage.setItem('pwa-popup-last-shown', now.toString());
+    
+    // Add fade-in animation
+    setTimeout(() => {
+      const popup = document.getElementById('pwa-install-popup');
+      if (popup) popup.classList.add('visible');
+    }, 100);
+  }
+
+  private createPWAInstallPopupHTML(platform: 'android' | 'ios'): string {
+    if (platform === 'ios') {
+      return `
+        <div id="pwa-install-popup" class="pwa-install-popup">
+          <div class="pwa-popup-content">
+            <div class="pwa-popup-header">
+              <img src="/biscoidino_logo.png" alt="Biscoidino" class="pwa-popup-logo">
+              <h3>Instalar Biscoidino</h3>
+              <button class="pwa-popup-close" onclick="this.closest('.pwa-install-popup').remove()">×</button>
+            </div>
+            <div class="pwa-popup-body">
+              <p>📱 Adicione o Biscoidino à sua tela inicial para acesso rápido!</p>
+              <div class="pwa-instructions">
+                <div class="pwa-step">
+                  <span class="pwa-step-number">1</span>
+                  <span>Toque no ícone "Compartilhar" <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92-1.31-2.92-2.92-2.92z"/></svg></span>
+                </div>
+                <div class="pwa-step">
+                  <span class="pwa-step-number">2</span>
+                  <span>Selecione "Adicionar à Tela de Início"</span>
+                </div>
+                <div class="pwa-step">
+                  <span class="pwa-step-number">3</span>
+                  <span>Toque em "Adicionar" para confirmar</span>
+                </div>
+              </div>
+            </div>
+            <div class="pwa-popup-actions">
+              <button class="pwa-button pwa-button-secondary" onclick="document.getElementById('pwa-install-popup').remove(); localStorage.setItem('pwa-popup-dismissed', Date.now().toString())">
+                Agora não
+              </button>
+              <button class="pwa-button pwa-button-primary" onclick="document.getElementById('pwa-install-popup').remove()">
+                Entendi!
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+    } else {
+      return `
+        <div id="pwa-install-popup" class="pwa-install-popup">
+          <div class="pwa-popup-content">
+            <div class="pwa-popup-header">
+              <img src="/biscoidino_logo.png" alt="Biscoidino" class="pwa-popup-logo">
+              <h3>Instalar Biscoidino</h3>
+              <button class="pwa-popup-close" onclick="this.closest('.pwa-install-popup').remove()">×</button>
+            </div>
+            <div class="pwa-popup-body">
+              <p>📱 Instale o app Biscoidino para uma experiência melhor!</p>
+              <ul class="pwa-benefits">
+                <li>✨ Acesso mais rápido</li>
+                <li>📱 Funciona offline</li>
+                <li>🔔 Receba atualizações</li>
+                <li>🏠 Direto da tela inicial</li>
+              </ul>
+            </div>
+            <div class="pwa-popup-actions">
+              <button class="pwa-button pwa-button-secondary" onclick="document.getElementById('pwa-install-popup').remove(); localStorage.setItem('pwa-popup-dismissed', Date.now().toString())">
+                Agora não
+              </button>
+              <button class="pwa-button pwa-button-primary" onclick="window.biscoidinApp.installPWA()">
+                Instalar App
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+  }
+
+  private hidePWAInstallPopup(): void {
+    const popup = document.getElementById('pwa-install-popup');
+    if (popup) {
+      popup.classList.add('hiding');
+      setTimeout(() => popup.remove(), 300);
+    }
+  }
+
+  private showOpenInAppBanner(): void {
+    // Only show if user is browsing in regular browser (not in PWA mode)
+    if (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) {
+      return; // User is already in PWA mode
+    }
+
+    // Don't show if banner was dismissed recently
+    const dismissed = localStorage.getItem('open-in-app-banner-dismissed');
+    const now = Date.now();
+    if (dismissed && (now - parseInt(dismissed)) < 24 * 60 * 60 * 1000) {
+      return; // Banner was dismissed in last 24 hours
+    }
+
+    const bannerHTML = `
+      <div id="open-in-app-banner" class="open-in-app-banner">
+        <div class="banner-content">
+          <div class="banner-icon">
+            <img src="/biscoidino_logo.png" alt="Biscoidino" class="banner-logo">
+          </div>
+          <div class="banner-text">
+            <strong>Abra no app Biscoidino</strong>
+            <span>Para uma experiência melhor</span>
+          </div>
+          <div class="banner-actions">
+            <button class="banner-button banner-open" onclick="window.location.href='/'">
+              Abrir
+            </button>
+            <button class="banner-button banner-dismiss" onclick="document.getElementById('open-in-app-banner').remove(); localStorage.setItem('open-in-app-banner-dismissed', Date.now().toString())">
+              ×
+            </button>
+          </div>
+        </div>
+      </div>
+    `;
+
+    document.body.insertAdjacentHTML('afterbegin', bannerHTML);
+    
+    // Auto-hide after 8 seconds
+    setTimeout(() => {
+      const banner = document.getElementById('open-in-app-banner');
+      if (banner) {
+        banner.style.opacity = '0';
+        setTimeout(() => banner.remove(), 300);
+      }
+    }, 8000);
+  }
+
+  public async installPWA(): Promise<void> {
+    if (!this.deferredPrompt) {
+      console.log('❌ No deferred prompt available');
+      return;
+    }
+
+    try {
+      // Show the install prompt
+      this.deferredPrompt.prompt();
+      
+      // Wait for user response
+      const { outcome } = await this.deferredPrompt.userChoice;
+      
+      console.log(`👤 User response: ${outcome}`);
+      
+      if (outcome === 'accepted') {
+        console.log('✅ User accepted the install prompt');
+      } else {
+        console.log('❌ User dismissed the install prompt');
+        localStorage.setItem('pwa-popup-dismissed', Date.now().toString());
+      }
+      
+      // Clear the deferred prompt
+      this.deferredPrompt = null;
+      
+      // Hide the popup
+      this.hidePWAInstallPopup();
+      
+    } catch (error) {
+      console.error('❌ Error during PWA installation:', error);
+      this.hidePWAInstallPopup();
+    }
   }
 
   private render(): void {
@@ -321,7 +586,9 @@ class BiscoidinApp {
 
 // Initialize the application
 document.addEventListener('DOMContentLoaded', () => {
-  new BiscoidinApp();
+  const app = new BiscoidinApp();
+  // Make app globally available for PWA install function
+  (window as any).biscoidinApp = app;
 });
 
 // Preload the logo to ensure smooth animation

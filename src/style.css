@@ -1737,3 +1737,387 @@ section.active {
     padding: 10px;
   }
 }
+
+/* =============================================
+   PWA Install Popup Styles
+   ============================================= */
+
+.pwa-install-popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.75);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10000;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+}
+
+.pwa-install-popup.visible {
+  opacity: 1;
+}
+
+.pwa-install-popup.hiding {
+  opacity: 0;
+}
+
+.pwa-popup-content {
+  background: var(--white);
+  border-radius: 20px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  max-width: 400px;
+  width: 90vw;
+  max-height: 80vh;
+  overflow-y: auto;
+  position: relative;
+  animation: pwaPopupSlideIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes pwaPopupSlideIn {
+  from {
+    opacity: 0;
+    transform: scale(0.8) translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.pwa-popup-header {
+  display: flex;
+  align-items: center;
+  padding: 1.5rem;
+  border-bottom: 1px solid #f0f0f0;
+  gap: 1rem;
+}
+
+.pwa-popup-logo {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  object-fit: contain;
+}
+
+.pwa-popup-header h3 {
+  flex: 1;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text-dark);
+  margin: 0;
+}
+
+.pwa-popup-close {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: #999;
+  cursor: pointer;
+  padding: 0.25rem;
+  line-height: 1;
+  transition: color 0.2s;
+}
+
+.pwa-popup-close:hover {
+  color: var(--text-dark);
+}
+
+.pwa-popup-body {
+  padding: 1.5rem;
+}
+
+.pwa-popup-body p {
+  font-size: 1rem;
+  color: var(--text-dark);
+  margin-bottom: 1.25rem;
+  line-height: 1.5;
+}
+
+.pwa-benefits {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.pwa-benefits li {
+  padding: 0.5rem 0;
+  font-size: 0.95rem;
+  color: var(--text-light);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.pwa-instructions {
+  margin-top: 1rem;
+}
+
+.pwa-step {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem 0;
+  font-size: 0.9rem;
+  color: var(--text-dark);
+  line-height: 1.4;
+}
+
+.pwa-step-number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  background: var(--primary-color);
+  color: white;
+  border-radius: 50%;
+  font-size: 0.8rem;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.pwa-step svg {
+  margin: 0 4px;
+  vertical-align: middle;
+}
+
+.pwa-popup-actions {
+  display: flex;
+  gap: 0.75rem;
+  padding: 1.5rem;
+  border-top: 1px solid #f0f0f0;
+}
+
+.pwa-button {
+  flex: 1;
+  padding: 0.875rem 1.25rem;
+  border: none;
+  border-radius: 12px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: center;
+}
+
+.pwa-button-secondary {
+  background: #f5f5f5;
+  color: var(--text-light);
+}
+
+.pwa-button-secondary:hover {
+  background: #e8e8e8;
+  color: var(--text-dark);
+}
+
+.pwa-button-primary {
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+  color: white;
+  box-shadow: 0 4px 15px rgba(255, 182, 191, 0.4);
+}
+
+.pwa-button-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(255, 182, 191, 0.6);
+}
+
+.pwa-button-primary:active {
+  transform: translateY(0);
+}
+
+/* Mobile optimizations for PWA popup */
+@media (max-width: 480px) {
+  .pwa-popup-content {
+    width: 95vw;
+    margin: 1rem;
+    border-radius: 16px;
+  }
+  
+  .pwa-popup-header {
+    padding: 1.25rem;
+  }
+  
+  .pwa-popup-header h3 {
+    font-size: 1.1rem;
+  }
+  
+  .pwa-popup-body {
+    padding: 1.25rem;
+  }
+  
+  .pwa-popup-actions {
+    padding: 1.25rem;
+    flex-direction: column;
+  }
+  
+  .pwa-button {
+    padding: 1rem;
+  }
+  
+  .pwa-step {
+    gap: 0.75rem;
+    font-size: 0.85rem;
+  }
+}
+
+/* iOS Safari specific adjustments */
+@supports (-webkit-touch-callout: none) {
+  .pwa-install-popup {
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
+  }
+}
+
+/* =============================================
+   Open in App Banner Styles
+   ============================================= */
+
+.open-in-app-banner {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 9999;
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+  color: white;
+  padding: 0.75rem 1rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  animation: bannerSlideDown 0.4s ease-out;
+  transition: opacity 0.3s ease;
+}
+
+@keyframes bannerSlideDown {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.banner-content {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.banner-icon {
+  flex-shrink: 0;
+}
+
+.banner-logo {
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  object-fit: contain;
+}
+
+.banner-text {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+}
+
+.banner-text strong {
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.banner-text span {
+  font-size: 0.8rem;
+  opacity: 0.9;
+}
+
+.banner-actions {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.banner-button {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.banner-button:hover {
+  background: rgba(255, 255, 255, 0.3);
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+.banner-dismiss {
+  padding: 0.5rem !important;
+  width: 32px;
+  min-width: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  border-radius: 6px;
+}
+
+.banner-open {
+  background: rgba(255, 255, 255, 0.9);
+  color: var(--primary-dark);
+  border-color: rgba(255, 255, 255, 0.9);
+  font-weight: 600;
+}
+
+.banner-open:hover {
+  background: white;
+  border-color: white;
+}
+
+/* Mobile adjustments for banner */
+@media (max-width: 480px) {
+  .open-in-app-banner {
+    padding: 0.625rem 1rem;
+  }
+  
+  .banner-content {
+    gap: 0.5rem;
+  }
+  
+  .banner-logo {
+    width: 28px;
+    height: 28px;
+  }
+  
+  .banner-text strong {
+    font-size: 0.85rem;
+  }
+  
+  .banner-text span {
+    font-size: 0.75rem;
+  }
+  
+  .banner-button {
+    padding: 0.375rem 0.75rem;
+    font-size: 0.8rem;
+  }
+  
+  .banner-dismiss {
+    width: 28px;
+    min-width: 28px;
+    padding: 0.375rem !important;
+  }
+}

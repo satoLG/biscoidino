@@ -2,14 +2,31 @@
   "name": "Biscoidino - Biscoitos Amanteigados Caseiros",
   "short_name": "Biscoidino",
   "description": "Biscoitos amanteigados caseiros feitos com carinho. A Biscoidino nasceu do amor entre mãe e filho.",
-  "start_url": "/",
+  "start_url": "/?utm_source=pwa",
   "display": "standalone",
+  "display_override": ["window-controls-overlay", "standalone", "minimal-ui"],
   "background_color": "#FFF8DC",
   "theme_color": "#ffb6bf",
   "orientation": "portrait-primary",
   "scope": "/",
   "lang": "pt-BR",
   "categories": ["food", "business", "lifestyle"],
+  "prefer_related_applications": false,
+  "edge_side_panel": {
+    "preferred_width": 400
+  },
+  "launch_handler": {
+    "client_mode": "focus-existing"
+  },
+  "screenshots": [
+    {
+      "src": "/gallery/galeria1.jpeg",
+      "sizes": "540x720",
+      "type": "image/jpeg",
+      "platform": "wide",
+      "label": "Biscoidino - Biscoitos deliciosos"
+    }
+  ],
   "icons": [
     {
       "src": "/pwa/favicon-16x16.png",
