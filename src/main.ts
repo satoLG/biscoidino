@@ -41,13 +41,13 @@ class BiscoidinApp {
 
     // Listen for the beforeinstallprompt event (Android/Chrome)
     window.addEventListener('beforeinstallprompt', (e) => {
-      console.log('📱 PWA Install prompt available');
+      console.log('📱 Native PWA Install prompt available');
       e.preventDefault();
       this.deferredPrompt = e;
       
-      // Show install popup after a short delay
+      // Show NATIVE install popup after a short delay
       setTimeout(() => {
-        this.showPWAInstallPopup('android');
+        this.showNativeInstallPrompt();
       }, 2000);
     });
 
@@ -76,6 +76,17 @@ class BiscoidinApp {
       // Hide any visible install popups
       this.hidePWAInstallPopup();
     });
+
+    // Add global functions for testing (can be called from console)
+    (window as any).testPWAInstall = () => this.showNativeInstallPrompt();
+    (window as any).testPWABanner = () => this.showOpenInAppBanner();
+    (window as any).resetPWASettings = () => {
+      localStorage.removeItem('pwa-installed');
+      localStorage.removeItem('pwa-popup-dismissed');
+      localStorage.removeItem('pwa-popup-last-shown');
+      localStorage.removeItem('open-in-app-banner-dismissed');
+      console.log('🔄 PWA settings reset');
+    };
   }
 
   private async registerServiceWorker(): Promise<void> {
@@ -178,6 +189,8 @@ class BiscoidinApp {
         </div>
       `;
     } else {
+      const hasNativeSupport = !!this.deferredPrompt;
+      
       return `
         <div id="pwa-install-popup" class="pwa-install-popup">
           <div class="pwa-popup-content">
@@ -187,20 +200,21 @@ class BiscoidinApp {
               <button class="pwa-popup-close" onclick="this.closest('.pwa-install-popup').remove()">×</button>
             </div>
             <div class="pwa-popup-body">
-              <p>📱 Instale o app Biscoidino para uma experiência melhor!</p>
+              <p>📱 ${hasNativeSupport ? 'Instale o app Biscoidino com um clique!' : 'Instale o app Biscoidino para uma experiência melhor!'}</p>
               <ul class="pwa-benefits">
                 <li>✨ Acesso mais rápido</li>
                 <li>📱 Funciona offline</li>
                 <li>🔔 Receba atualizações</li>
                 <li>🏠 Direto da tela inicial</li>
               </ul>
+              ${hasNativeSupport ? '<p class="native-notice">💡 <strong>O navegador mostrará uma janela de instalação nativa</strong></p>' : ''}
             </div>
             <div class="pwa-popup-actions">
               <button class="pwa-button pwa-button-secondary" onclick="document.getElementById('pwa-install-popup').remove(); localStorage.setItem('pwa-popup-dismissed', Date.now().toString())">
                 Agora não
               </button>
               <button class="pwa-button pwa-button-primary" onclick="window.biscoidinApp.installPWA()">
-                Instalar App
+                ${hasNativeSupport ? 'Mostrar Instalação' : 'Ver Instruções'}
               </button>
             </div>
           </div>
@@ -264,38 +278,46 @@ class BiscoidinApp {
     }, 8000);
   }
 
-  public async installPWA(): Promise<void> {
+  public async showNativeInstallPrompt(): Promise<void> {
     if (!this.deferredPrompt) {
-      console.log('❌ No deferred prompt available');
+      console.log('❌ No native install prompt available');
+      // Fallback to custom popup for browsers that don't support native prompt
+      this.showPWAInstallPopup('android');
       return;
     }
 
     try {
-      // Show the install prompt
+      console.log('🚀 Showing NATIVE browser install prompt');
+      
+      // Show the NATIVE browser install prompt
       this.deferredPrompt.prompt();
       
       // Wait for user response
       const { outcome } = await this.deferredPrompt.userChoice;
       
-      console.log(`👤 User response: ${outcome}`);
+      console.log(`👤 User response to native prompt: ${outcome}`);
       
       if (outcome === 'accepted') {
-        console.log('✅ User accepted the install prompt');
+        console.log('✅ User accepted the NATIVE install prompt');
+        localStorage.setItem('pwa-installed', 'true');
       } else {
-        console.log('❌ User dismissed the install prompt');
+        console.log('❌ User dismissed the NATIVE install prompt');
         localStorage.setItem('pwa-popup-dismissed', Date.now().toString());
       }
       
       // Clear the deferred prompt
       this.deferredPrompt = null;
       
-      // Hide the popup
-      this.hidePWAInstallPopup();
-      
     } catch (error) {
-      console.error('❌ Error during PWA installation:', error);
-      this.hidePWAInstallPopup();
+      console.error('❌ Error during native PWA installation:', error);
+      // Fallback to custom popup if native fails
+      this.showPWAInstallPopup('android');
     }
+  }
+
+  public async installPWA(): Promise<void> {
+    // This method is now used by custom popup buttons
+    return this.showNativeInstallPrompt();
   }
 
   private render(): void {
