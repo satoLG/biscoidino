@@ -427,7 +427,6 @@ section.active {
 }
 
 .menu-section,
-.about-section,
 .gallery-section,
 .contact-section {
   background: var(--white);
@@ -435,6 +434,16 @@ section.active {
   border-radius: 20px;
   box-shadow: 0 4px 20px var(--shadow);
   /* margin-bottom: 1rem; */
+}
+
+.about-section {
+  overflow: hidden;
+  background: var(--white);
+  padding: 3rem;
+  border-radius: 20px;
+  box-shadow: 0 4px 20px var(--shadow);
+  min-height: 200vh; /* Increased height to accommodate larger images and spacing */
+  position: relative;
 }
 
 .menu-section h2,
@@ -558,9 +567,13 @@ section.active {
 
 /* About Section */
 .about-content {
+  overflow: hidden;
+  z-index: 1;
   max-width: 800px;
   margin: 0 auto;
   text-align: center;
+  position: relative;
+  height: 100%;
 }
 
 .about-content > p {
@@ -569,6 +582,72 @@ section.active {
   margin-bottom: 3rem;
   line-height: 1.7;
 }
+
+/* Typewriter Effect Styles */
+.typewriter-text {
+  text-align: center;
+  position: relative;
+  min-height: 400px; /* Reserve space to prevent layout shifts */
+}
+
+.typewriter-cursor {
+  display: inline;
+  color: var(--primary-color);
+  font-weight: bold;
+  margin-left: 1px;
+  animation: typewriterBlink 1s infinite;
+}
+
+@keyframes typewriterBlink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+/* Scroll hint for typewriter effect */
+.scroll-hint {
+  animation: scrollPulse 2s ease-in-out infinite;
+}
+
+@keyframes scrollPulse {
+  0%, 100% { 
+    opacity: 0.7; 
+    transform: translateY(0px);
+  }
+  50% { 
+    opacity: 1; 
+    transform: translateY(-3px);
+  }
+}
+
+@media (max-width: 700px) {
+  .scroll-image {
+    width: 27vh !important;
+    height: 27vh !important;
+  }
+}
+
+.about-section p {
+    background-color: #ffffffa8;
+}
+
+/* Scroll images for typewriter effect */
+.scroll-image {
+    background-color: #ffb6bf63;
+    border-radius: 50%;
+    position: absolute;
+    right: 120%;
+    width: 22vw;
+    height: 22vw;
+    object-fit: contain;
+    z-index: -1;
+    /* border-radius: 15px; */
+    padding: 5px;
+    transition: all 0.5s ease;
+}
+
+/* .scroll-image:hover {
+  transform: scale(1.05) translateY(-50%);
+} */
 
 .features {
   display: grid;

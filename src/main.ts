@@ -5,6 +5,9 @@ import './style.css?v=2'
 class BiscoidinApp {
   private app: HTMLElement;
   private splashScreen: HTMLElement;
+  private typewriterInitialized: boolean = false;
+  private typewriterRunning: boolean = false;
+  private activeEventListeners: Array<{element: any, event: string, handler: any, options?: any}> = [];
 
   constructor() {
     inject();
@@ -96,21 +99,8 @@ class BiscoidinApp {
 
           <section id="about" class="about-section">
             <h2>Nossa História</h2>
-            <div class="about-content">
-              <p>
-                A Biscoidino nasceu do amor entre mãe e filho.
-              </p>
-              <p>
-                Tudo começou quando Micaela Gregorio, buscando tornar a alimentação do pequeno Lucas mais divertida, decidiu preparar biscoitos em formato de dinossauros.
-              </p>
-              <p>
-                O que seria apenas uma brincadeira na cozinha acabou se transformando em algo muito maior: uma receita caseira que encantou familiares, amigos e, logo, um público apaixonado pelo sabor e pela delicadeza de cada Biscoidino.              </p>
-              <p>
-                Hoje, a Biscoidino é uma marca que leva carinho, sabor e diversão para todas as idades.
-              </p>
-              <p>
-                Cada fornada é feita com ingredientes selecionados e um toque especial de amor — porque acreditamos que momentos simples também podem ser inesquecíveis. 💚
-              </p>
+            <div class="about-content" id="aboutContent">
+              <div class="typewriter-text" id="typewriterText"></div>
             </div>
           </section>
 
@@ -143,6 +133,15 @@ class BiscoidinApp {
     setTimeout(() => {
       initHomePhysics();
     }, 100);
+
+    // Initialize typewriter effect immediately after DOM is ready
+    setTimeout(() => {
+      console.log('🚀 Initializing typewriter effect...');
+      if (!this.typewriterInitialized) {
+        this.initTypewriterEffect();
+        this.typewriterInitialized = true;
+      }
+    }, 300);
 
     // Initialize gallery carousel after DOM is ready (backup initialization)
     setTimeout(() => {
@@ -236,6 +235,14 @@ class BiscoidinApp {
                 initializeGalleryCarousel();
               }, 50);
             }
+            
+            // Reset and restart typewriter when about section becomes active
+            if (targetId === 'about') {
+              setTimeout(() => {
+                console.log('📝 About section activated, resetting typewriter...');
+                this.resetAndRestartTypewriter();
+              }, 50);
+            }
           } else {
             section.classList.remove('active');
           }
@@ -251,6 +258,763 @@ class BiscoidinApp {
         menuLink?.click();
       });
     }
+  }
+
+  private resetAndRestartTypewriter(): void {
+    console.log('🔄 Resetting typewriter effect...');
+    
+    // Get elements
+    const typewriterText = document.getElementById('typewriterText');
+    const aboutContent = document.getElementById('aboutContent');
+    
+    if (!typewriterText || !aboutContent) {
+      console.error('❌ Required elements not found for typewriter reset');
+      return;
+    }
+    
+    // Force stop any running typewriter
+    this.typewriterRunning = false;
+    
+    // Clear ALL tracked event listeners
+    this.activeEventListeners.forEach(({ element, event, handler }) => {
+      try {
+        element.removeEventListener(event, handler);
+        console.log(`🧹 Removed ${event} listener`);
+      } catch (e) {
+        console.warn(`⚠️ Could not remove ${event} listener:`, e);
+      }
+    });
+    this.activeEventListeners = [];
+    
+    // Clear all timeouts that might be running
+    for (let i = 1; i < 99999; i++) {
+      window.clearTimeout(i);
+    }
+    
+    // Clear all content
+    typewriterText.innerHTML = '';
+    
+    // Remove all scroll images from anywhere in the document
+    const scrollImages = document.querySelectorAll('.scroll-image');
+    scrollImages.forEach(img => img.remove());
+    
+    // Remove ALL scroll hints from anywhere in the document
+    const scrollHints = document.querySelectorAll('.scroll-hint-floating, .scroll-hint');
+    scrollHints.forEach(hint => {
+      console.log('🧹 Removing scroll hint:', hint);
+      hint.remove();
+    });
+    
+    // Also remove any orphaned elements that might be in body
+    const orphanedHints = document.body.querySelectorAll('[class*="scroll-hint"]');
+    orphanedHints.forEach(hint => {
+      console.log('🧹 Removing orphaned hint:', hint);
+      hint.remove();
+    });
+    
+    // Reset the initialization flag and reinitialize after a small delay
+    this.typewriterInitialized = false;
+    
+    // Use a delay to ensure all cleanup is complete
+    setTimeout(() => {
+      this.initTypewriterEffect();
+      this.typewriterInitialized = true;
+    }, 300);
+    
+    console.log('✅ Typewriter effect reset and restarted');
+  }
+
+  private initTypewriterEffect(): void {
+    // Prevent multiple instances running simultaneously
+    if (this.typewriterRunning) {
+      console.log('🚫 Typewriter already running, skipping initialization');
+      return;
+    }
+    
+    const typewriterText = document.getElementById('typewriterText');
+    const aboutContent = document.getElementById('aboutContent');
+    
+    if (!typewriterText || !aboutContent) return;
+    
+    this.typewriterRunning = true;
+    const self = this; // Store reference for inner functions
+    
+    // Helper function to track event listeners
+    const addTrackedListener = (element: any, event: string, handler: any, options?: any) => {
+      element.addEventListener(event, handler, options);
+      self.activeEventListeners.push({ element, event, handler, options });
+    };
+    
+    // Story content with images
+    const storyData = [
+      { 
+        text: "A Biscoidino nasceu do amor entre mãe e filho.",
+        image: null
+      },
+      { 
+        text: "Quando Micaela Gregorio decidiu fazer biscoitos em formato de dinossauro para seu filho Lucas.",
+        image: "/about/mae_filho.png"
+      },
+      { 
+        text: "O que começou como brincadeira acabou se tornando uma receita de sucesso.",
+        image: "/about/ingredientes.png"
+      },
+      { 
+        text: "Cada fornada é feita com amor e ingredientes especiais.",
+        image: "/about/fornada.png"
+      },
+      { 
+        text: "Hoje, a Biscoidino é uma marca que leva carinho e sabor para todas as idades.",
+        image: "/about/estoque.png"
+      }
+    ];
+    
+    // Clear any existing content
+    typewriterText.innerHTML = '';
+    
+    // State management
+    let currentParagraph = 0;
+    let currentChar = 0;
+    let isWaitingForScroll = false;
+    let scrollListener: (() => void) | null = null;
+    let currentScrollImage: HTMLImageElement | null = null;
+    let imageProgress = 0; // 0 to 1 (0 = right side, 1 = center)
+    let lastScrollY = 0;
+    
+    // Control flags for progression
+    let paragraphCompleted = false;
+    let imageAtCenter = false;
+    let typingStarted = false; // Flag to track if we've started typing the current paragraph
+    let imageLocked = false; // Flag to prevent further image movement after reaching center
+    
+    const typeSpeed = 35;
+    const pauseBetweenParagraphs = 800;
+    
+    function createScrollImage(imageSrc: string, paragraphIndex: number): HTMLImageElement {
+      console.log('🎨 Creating scroll image:', imageSrc, 'for paragraph:', paragraphIndex);
+      
+      // Remove any existing image for this paragraph to prevent duplicates
+      const existingImages = aboutContent?.querySelectorAll('.scroll-image');
+      existingImages?.forEach(img => {
+        const imgElement = img as HTMLImageElement;
+        if (imgElement.src.includes(imageSrc.split('/').pop() || '')) {
+          console.log('🗑️ Removing duplicate image');
+          imgElement.remove();
+        }
+      });
+      
+      const img = document.createElement('img');
+      img.src = imageSrc;
+      img.className = 'scroll-image';
+      img.style.opacity = '0.9';
+      img.dataset.paragraph = paragraphIndex.toString(); // Track which paragraph this image belongs to
+      
+      // Calculate vertical position based on paragraph index (starting from second paragraph)
+      const baseTopOffset = 80; // Start position in pixels from top of about-section (adjusted for larger images)
+      const verticalSpacing = 400; // Space between each image (increased for larger image sizes)
+      const topPosition = baseTopOffset + (paragraphIndex - 1) * verticalSpacing;
+      
+      img.style.top = `${topPosition}px`;
+      
+      // Add to about-content container for relative positioning
+      if (aboutContent) {
+        aboutContent.appendChild(img);
+        console.log('✅ Image created and added to about-content at position:', topPosition);
+      }
+      
+      return img;
+    }
+    
+    function showScrollHint() {
+      // Remove existing hint first
+      const existingHint = document.querySelector('.scroll-hint-floating');
+      if (existingHint) existingHint.remove();
+      
+      if (!currentScrollImage) {
+        console.log('❌ No current image to show hint for');
+        return;
+      }
+      
+      // Get image position
+      const imageRect = currentScrollImage.getBoundingClientRect();
+      const imageTop = imageRect.top + window.scrollY;
+      
+      // Create floating hint at same height as image
+      const scrollHint = document.createElement('div');
+      scrollHint.className = 'scroll-hint-floating';
+      scrollHint.innerHTML = '<span style="color: var(--primary-color); font-style: italic; font-size: 1rem; background: rgba(255,255,255,0.9);">Role para baixo para continuar a história...</span>';
+      
+      scrollHint.style.position = 'absolute';
+      scrollHint.style.top = `${imageTop + 50}px`; // 50px below image
+      scrollHint.style.left = '50%';
+      scrollHint.style.transform = 'translateX(-50%)';
+      scrollHint.style.textAlign = 'center';
+      scrollHint.style.zIndex = '1000';
+      scrollHint.style.pointerEvents = 'none';
+      scrollHint.style.opacity = '0';
+      scrollHint.style.transition = 'opacity 0.4s ease-in-out';
+      
+      // Add to aboutContent instead of body
+      if (aboutContent) {
+        aboutContent.appendChild(scrollHint);
+      }
+      
+      // Fade in after a brief moment
+      setTimeout(() => {
+        scrollHint.style.opacity = '1';
+      }, 50);
+      
+      console.log('📝 Scroll hint shown at image position:', imageTop + 50);
+    }
+    
+    function hideScrollHint() {
+      const scrollHint = document.querySelector('.scroll-hint-floating') as HTMLElement;
+      if (scrollHint) {
+        // Fade out smoothly
+        scrollHint.style.opacity = '0';
+        
+        // Remove after fade completes
+        setTimeout(() => {
+          if (scrollHint.parentNode) {
+            scrollHint.remove();
+          }
+        }, 400); // Match the transition duration
+        
+        console.log('📝 Scroll hint fading out');
+      }
+    }
+    
+    let scrollTimeout: number | null = null;
+    
+    // Function to detect if device is mobile
+    function isMobileDevice(): boolean {
+      return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) 
+             || window.innerWidth <= 768;
+    }
+    
+    // Function to get the appropriate center position based on device
+    function getCenterPosition(): number {
+      return isMobileDevice() ? 10 : 25; // Mobile: 30%, Desktop: 40%
+    }
+    
+    function updateImagePosition(progress: number) {
+      if (!currentScrollImage) return;
+      
+      // Move from right (120%) to center (mobile: 30%, desktop: 40%) based on progress
+      const startPosition = 120;
+      const centerPosition = getCenterPosition();
+      const currentPosition = startPosition - (progress * (startPosition - centerPosition));
+      
+      currentScrollImage.style.right = `${currentPosition}%`;
+      
+      console.log('🖼️ Image position:', { progress, currentPosition, centerPosition, isMobile: isMobileDevice(), isAtCenter: progress >= 1 });
+    }
+    
+    function handleScroll() {
+      const currentScrollY = window.scrollY;
+      const scrollDelta = currentScrollY - lastScrollY;
+      
+      console.log('🎯 SCROLL EVENT:', { currentScrollY, scrollDelta, hasImage: !!currentScrollImage, imageProgress });
+      
+      // ALWAYS hide scroll hint when user starts scrolling (regardless of image state)
+      hideScrollHint();
+      
+      // Clear any existing timeout and set a new one to show hint again if user stops
+      if (scrollTimeout) clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(() => {
+        if (currentScrollImage && !imageLocked) {
+          showScrollHint();
+        }
+      }, 2000); // Show hint again after 2 seconds of no scrolling
+      
+      if (currentScrollImage && !imageLocked) {
+        
+        // Move image based on scroll direction
+        const scrollSensitivity = 0.003;
+        const progressChange = scrollDelta * scrollSensitivity;
+        
+        const oldProgress = imageProgress;
+        imageProgress = Math.max(0, Math.min(1, imageProgress + progressChange));
+        
+        console.log('�️ Image progress update:', { oldProgress, newProgress: imageProgress, progressChange });
+        
+        updateImagePosition(imageProgress);
+        
+        // Update imageAtCenter flag
+        const wasAtCenter = imageAtCenter;
+        imageAtCenter = imageProgress >= 1;
+        
+        // If image just reached center for the first time AND we haven't started typing yet
+        if (imageAtCenter && !wasAtCenter && !typingStarted) {
+          // Remove scroll hint when image reaches center
+          const scrollHint = document.querySelector('.scroll-hint');
+          if (scrollHint) {
+            scrollHint.remove();
+            console.log('📝 Scroll hint removed - image reached center');
+          }
+          
+          typingStarted = true;
+          imageLocked = true; // Lock the image at center position - no more movement
+          // Force image to exact center position when locking
+          if (currentScrollImage) {
+            currentScrollImage.style.right = `${getCenterPosition()}%`;
+          }
+          console.log('🔒 Image reached center and locked - starting to type paragraph');
+          setTimeout(() => typeNextChar(), pauseBetweenParagraphs);
+        }
+        
+        // Check if both conditions are met for progression (only if we've already started typing)
+        if (typingStarted) {
+          checkForProgression();
+        }
+      }
+      
+      lastScrollY = currentScrollY;
+    }
+    
+    // Handle wheel events for more precise control when image is active
+    function handleWheel(e: WheelEvent) {
+      // ALWAYS hide scroll hint when user wheels (regardless of image state)
+      hideScrollHint();
+      
+      // Clear any existing timeout and set a new one to show hint again if user stops
+      if (scrollTimeout) clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(() => {
+        if (currentScrollImage && !imageLocked) {
+          showScrollHint();
+        }
+      }, 2000); // Show hint again after 2 seconds of no wheel activity
+      
+      if (currentScrollImage && !imageLocked) {
+        // Prevent default scroll behavior when we have an active image
+        e.preventDefault();
+        e.stopPropagation();
+        
+        // Use wheel delta for image movement
+        const wheelSensitivity = 0.001;
+        const progressChange = e.deltaY * wheelSensitivity;
+        
+        const oldProgress = imageProgress;
+        imageProgress = Math.max(0, Math.min(1, imageProgress + progressChange));
+        
+        console.log('🎡 WHEEL controlling image:', { wheelDelta: e.deltaY, progressChange, oldProgress, newProgress: imageProgress });
+        
+        updateImagePosition(imageProgress);
+        
+        // Update imageAtCenter flag
+        const wasAtCenter = imageAtCenter;
+        imageAtCenter = imageProgress >= 1;
+        
+        // If image just reached center for the first time AND we haven't started typing yet
+        if (imageAtCenter && !wasAtCenter && !typingStarted) {
+          typingStarted = true;
+          imageLocked = true; // Lock the image at center position - no more movement
+          // Force image to exact center position when locking
+          if (currentScrollImage) {
+            currentScrollImage.style.right = `${getCenterPosition()}%`;
+          }
+          console.log('🔒 Image reached center and locked - starting to type paragraph');
+          setTimeout(() => typeNextChar(), pauseBetweenParagraphs);
+        }
+        
+        // Check if both conditions are met for progression (only if we've already started typing)
+        if (typingStarted) {
+          checkForProgression();
+        }
+        
+        return false;
+      }
+    }
+
+    // Touch handling for mobile devices
+    let touchStartY = 0;
+    let touchLastY = 0;
+    
+    function handleTouchStart(e: TouchEvent) {
+      if (currentScrollImage && !imageLocked) {
+        touchStartY = e.touches[0].clientY;
+        touchLastY = touchStartY;
+        console.log('👆 TOUCH START:', { touchStartY });
+      }
+    }
+    
+    function handleTouchMove(e: TouchEvent) {
+      // ALWAYS hide scroll hint when user starts touching (regardless of image state)
+      hideScrollHint();
+      
+      // Clear any existing timeout and set a new one to show hint again if user stops
+      if (scrollTimeout) clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(() => {
+        if (currentScrollImage && !imageLocked) {
+          showScrollHint();
+        }
+      }, 2000); // Show hint again after 2 seconds of no touching
+      
+      if (currentScrollImage && !imageLocked) {
+        // Prevent default scroll behavior when we have an active image
+        e.preventDefault();
+        e.stopPropagation();
+        
+        const touchCurrentY = e.touches[0].clientY;
+        const touchDelta = touchLastY - touchCurrentY; // Inverted for natural scroll direction
+        
+        // Use touch delta for image movement (similar to wheel)
+        const touchSensitivity = 0.003;
+        const progressChange = touchDelta * touchSensitivity;
+        
+        const oldProgress = imageProgress;
+        imageProgress = Math.max(0, Math.min(1, imageProgress + progressChange));
+        
+        console.log('👆 TOUCH controlling image:', { touchDelta, progressChange, oldProgress, newProgress: imageProgress });
+        
+        updateImagePosition(imageProgress);
+        
+        // Update imageAtCenter flag
+        const wasAtCenter = imageAtCenter;
+        imageAtCenter = imageProgress >= 1;
+        
+        // If image just reached center for the first time AND we haven't started typing yet
+        if (imageAtCenter && !wasAtCenter && !typingStarted) {
+          // Remove scroll hint when image reaches center
+          const scrollHint = document.querySelector('.scroll-hint');
+          if (scrollHint) {
+            scrollHint.remove();
+            console.log('📝 Scroll hint removed - image reached center');
+          }
+          
+          typingStarted = true;
+          imageLocked = true; // Lock the image at center position - no more movement
+          // Force image to exact center position when locking
+          if (currentScrollImage) {
+            currentScrollImage.style.right = `${getCenterPosition()}%`;
+          }
+          console.log('🔒 Image reached center and locked - starting to type paragraph');
+          setTimeout(() => typeNextChar(), pauseBetweenParagraphs);
+        }
+        
+        // Check if both conditions are met for progression (only if we've already started typing)
+        if (typingStarted) {
+          checkForProgression();
+        }
+        
+        touchLastY = touchCurrentY;
+        return false;
+      }
+    }
+    
+    function handleTouchEnd(_e: TouchEvent) {
+      if (currentScrollImage && !imageLocked) {
+        console.log('👆 TOUCH END');
+        // Reset touch tracking
+        touchStartY = 0;
+        touchLastY = 0;
+      }
+    }
+    
+    function checkForProgression() {
+      // Only advance if BOTH conditions are true: paragraph completed AND image at center
+      if (paragraphCompleted && imageAtCenter && currentParagraph < storyData.length - 1) {
+        console.log('🎯 Both conditions met - advancing to next paragraph');
+        console.log('   📝 Paragraph completed:', paragraphCompleted);
+        console.log('   🖼️ Image at center:', imageAtCenter);
+        
+        // Remove scroll hint if it exists
+        const scrollHint = document.querySelector('.scroll-hint');
+        if (scrollHint) {
+          scrollHint.remove();
+          console.log('📝 Scroll hint removed - advancing to next paragraph');
+        }
+        
+        // Lock current image at center
+        if (currentScrollImage) {
+          currentScrollImage.style.right = `${getCenterPosition()}%`;
+          console.log('🔒 Image locked at center position');
+        }
+        
+        // Reset flags
+        paragraphCompleted = false;
+        imageAtCenter = false;
+        typingStarted = false; // Reset typing flag for the new paragraph
+        imageLocked = false; // Unlock for the new image
+        
+        // Remove current scroll listener temporarily
+        if (scrollListener) {
+          window.removeEventListener('scroll', scrollListener);
+          scrollListener = null;
+        }
+        
+        // Advance to next paragraph
+        currentParagraph++;
+        currentChar = 0;
+        currentScrollImage = null;
+        imageProgress = 0;
+        
+        // Create image for the NEW current paragraph (if it has one)
+        const currentStoryItem = storyData[currentParagraph];
+        if (currentStoryItem && currentStoryItem.image) {
+          currentScrollImage = createScrollImage(currentStoryItem.image, currentParagraph);
+          imageProgress = 0;
+          updateImagePosition(0);
+          console.log('🖼️ Created image for current paragraph:', currentStoryItem.text.substring(0, 30) + '...');
+          
+          // Calculate scroll position to make the new image visible
+          // Each image is positioned at: baseTopOffset + (paragraphIndex - 1) * verticalSpacing
+          const baseTopOffset = 80;
+          const verticalSpacing = 400;
+          const imageTopPosition = baseTopOffset + (currentParagraph - 1) * verticalSpacing;
+          
+          // Scroll to position where image is visible (with some offset for better view)
+          const targetScrollY = imageTopPosition - 100; // 100px above the image
+          
+          console.log('📜 Auto-scrolling to make new image visible:', { imageTopPosition, targetScrollY });
+          window.scrollTo({
+            top: targetScrollY,
+            behavior: 'smooth'
+          });
+          
+          // Small delay to let scroll animation complete, then reactivate listeners
+          setTimeout(() => {
+            // Reactivate scroll listener for this new image
+            scrollListener = handleScroll;
+            addTrackedListener(window, 'scroll', scrollListener);
+            addTrackedListener(window, 'touchstart', handleTouchStart, { passive: false });
+            addTrackedListener(window, 'touchmove', handleTouchMove, { passive: false });
+            addTrackedListener(window, 'touchend', handleTouchEnd, { passive: false });
+            lastScrollY = window.scrollY;
+            
+            // Show scroll hint when scroll lock is active
+            showScrollHint();
+            
+            console.log('🔄 Scroll and touch listeners reactivated - waiting for image to reach center before typing');
+          }, 800); // Wait for smooth scroll to complete
+          
+          // DON'T start typing yet - the image needs to reach center first
+          // The typing will be triggered by the scroll handler when imageAtCenter becomes true
+        } else {
+          // No image for this paragraph, start typing immediately
+          setTimeout(() => typeNextChar(), pauseBetweenParagraphs);
+        }
+      } else {
+        console.log('⏳ Waiting for conditions:', { 
+          paragraphCompleted, 
+          imageAtCenter, 
+          canProgress: currentParagraph < storyData.length - 1 
+        });
+      }
+    }
+    
+    function typeNextChar() {
+      if (currentParagraph >= storyData.length) {
+        // Finished typing, cleanup
+        setTimeout(() => {
+          const cursor = document.querySelector('.typewriter-cursor');
+          if (cursor) cursor.remove();
+          if (scrollListener) {
+            window.removeEventListener('scroll', scrollListener);
+            scrollListener = null;
+          }
+          // DON'T remove the last image - let it stay visible
+          // Keep the last image locked at center position
+          if (currentScrollImage) {
+            currentScrollImage.style.right = `${getCenterPosition()}%`;
+            console.log('🔒 Last image locked at center - keeping visible');
+            currentScrollImage = null; // Clear reference but don't remove from DOM
+          }
+          
+          // Mark typewriter as no longer running
+          self.typewriterRunning = false;
+          console.log('✅ Typewriter finished and flag cleared');
+        }, 2000);
+        return;
+      }
+      
+      const currentStoryItem = storyData[currentParagraph];
+      const currentText = currentStoryItem.text;
+      
+      if (currentChar === 0) {
+        // Start new paragraph
+        const p = document.createElement('p');
+        
+        // Calculate position based on paragraph index and corresponding image
+        if (currentParagraph > 0) {
+          // For paragraphs with images, position them below the actual image
+          const positionParagraph = () => {
+            let paragraphTopPosition = 0;
+            
+            if (currentScrollImage) {
+              // Get the image's top position (from its style.top)
+              const imageTop = parseInt(currentScrollImage.style.top) || 0;
+              
+              if (currentScrollImage.complete && currentScrollImage.naturalHeight > 0) {
+                // Image is loaded, use actual height
+                const imageHeight = currentScrollImage.offsetHeight;
+                paragraphTopPosition = imageTop + imageHeight + 20; // 20px below the image
+                
+                console.log('📍 Positioning paragraph below loaded image:', {
+                  imageTop,
+                  imageHeight,
+                  paragraphTop: paragraphTopPosition
+                });
+              } else {
+                // Image not loaded yet, estimate height
+                const estimatedImageHeight = 150; // Reasonable estimate
+                paragraphTopPosition = imageTop + estimatedImageHeight + 20; // 20px below estimated image
+                
+                console.log('📍 Using estimated paragraph position:', {
+                  imageTop,
+                  estimatedHeight: estimatedImageHeight,
+                  paragraphTop: paragraphTopPosition
+                });
+              }
+            } else {
+              // Fallback - no current image
+              const baseTopOffset = 80;
+              const verticalSpacing = 400;
+              const imageTopPosition = baseTopOffset + (currentParagraph - 1) * verticalSpacing;
+              paragraphTopPosition = imageTopPosition + 170; // Estimated image + spacing
+              
+              console.log('📍 Using fallback paragraph position:', paragraphTopPosition);
+            }
+            
+            p.style.top = `${paragraphTopPosition}px`;
+          };
+          
+          p.style.position = 'absolute';
+          p.style.left = '50%';
+          p.style.transform = 'translateX(-50%)';
+          p.style.width = '80%';
+          
+          // Position immediately, and also when image loads (if not loaded yet)
+          positionParagraph();
+          
+          if (currentScrollImage && !currentScrollImage.complete) {
+            addTrackedListener(currentScrollImage, 'load', positionParagraph, { once: true });
+          }
+        }
+        
+        p.style.marginBottom = '1.5rem';
+        p.style.fontSize = '1.2rem';
+        p.style.color = 'var(--text-light)';
+        p.style.lineHeight = '1.7';
+        p.style.textAlign = 'center';
+        if (typewriterText) typewriterText.appendChild(p);
+      }
+      
+      if (currentChar < currentText.length) {
+        // Remove previous cursor
+        const existingCursor = document.querySelector('.typewriter-cursor');
+        if (existingCursor) existingCursor.remove();
+        
+        // Add next character
+        const currentP = typewriterText?.lastElementChild as HTMLParagraphElement;
+        const textContent = currentText.substring(0, currentChar + 1);
+        
+        // Create cursor
+        const cursor = document.createElement('span');
+        cursor.className = 'typewriter-cursor';
+        cursor.textContent = '|';
+        
+        currentP.innerHTML = textContent + cursor.outerHTML;
+        
+        currentChar++;
+        setTimeout(typeNextChar, typeSpeed);
+      } else {
+        // Finished current paragraph
+        const existingCursor = document.querySelector('.typewriter-cursor');
+        if (existingCursor) existingCursor.remove();
+        
+        console.log(`✅ Finished paragraph ${currentParagraph}: "${currentText}"`);
+        
+        // Handle paragraph completion
+        if (currentParagraph === 0) {
+          // First paragraph - show scroll hint and setup scroll listener
+          isWaitingForScroll = true;
+          
+          const scrollHint = document.createElement('p');
+          scrollHint.className = 'scroll-hint';
+          scrollHint.innerHTML = '<span style="color: var(--primary-color); font-style: italic; font-size: 1rem;">Role para baixo para continuar a história...</span>';
+          scrollHint.style.marginTop = '2rem';
+          scrollHint.style.textAlign = 'center';
+          scrollHint.style.animation = 'fadeIn 0.5s ease-in-out';
+          if (typewriterText) typewriterText.appendChild(scrollHint);
+          
+          scrollListener = handleScroll;
+          window.addEventListener('scroll', scrollListener);
+          lastScrollY = window.scrollY;
+          
+        } else if (currentParagraph < storyData.length - 1) {
+          // Middle paragraphs - set flag that paragraph is completed
+          paragraphCompleted = true;
+          console.log('📝 Paragraph completed, waiting for image to reach center');
+          
+          // Check if we can advance immediately
+          checkForProgression();
+        } else {
+          // Last paragraph - finish and ensure image is at center
+          if (currentScrollImage) {
+            currentScrollImage.style.right = `${getCenterPosition()}%`;
+            console.log('🔒 Final image repositioned to center');
+          }
+          currentParagraph = storyData.length; // Trigger completion
+          setTimeout(typeNextChar, pauseBetweenParagraphs);
+        }
+      }
+    }
+    
+    // Handle first scroll to start the scroll-based system
+    const initialScrollListener = () => {
+      if (isWaitingForScroll) {
+        isWaitingForScroll = false;
+        
+        // Remove scroll hint
+        const hint = document.querySelector('.scroll-hint');
+        if (hint) hint.remove();
+        
+        // Move to second paragraph (first one is done)
+        currentParagraph = 1; // Second paragraph
+        currentChar = 0;
+        
+        // Reset progression flags
+        paragraphCompleted = false;
+        imageAtCenter = false;
+        typingStarted = false; // Reset typing flag - we'll wait for image to reach center
+        imageLocked = false; // Unlock for the new image
+        
+        // Create image for the SECOND paragraph (we're about to type it)
+        const currentStoryItem = storyData[currentParagraph];
+        if (currentStoryItem.image) {
+          currentScrollImage = createScrollImage(currentStoryItem.image, currentParagraph);
+          imageProgress = 0;
+          updateImagePosition(0);
+        }
+        
+        // Replace scroll listener with the image movement handler
+        window.removeEventListener('scroll', initialScrollListener);
+        scrollListener = handleScroll;
+        addTrackedListener(window, 'scroll', scrollListener);
+        addTrackedListener(window, 'wheel', handleWheel, { passive: false });
+        addTrackedListener(window, 'touchstart', handleTouchStart, { passive: false });
+        addTrackedListener(window, 'touchmove', handleTouchMove, { passive: false });
+        addTrackedListener(window, 'touchend', handleTouchEnd, { passive: false });
+        lastScrollY = window.scrollY;
+        
+        // Show scroll hint when scroll lock is active for second paragraph
+        showScrollHint();
+        
+        // DON'T start typing yet - wait for image to reach center first
+        console.log('🖼️ Second paragraph image created, waiting for it to reach center before typing');
+      }
+    };
+    
+    // Start typing first paragraph
+    setTimeout(typeNextChar, 500);
+    
+    // Set initial scroll listener using tracked system
+    addTrackedListener(window, 'scroll', initialScrollListener);
+    addTrackedListener(window, 'wheel', handleWheel, { passive: false });
+    addTrackedListener(window, 'touchstart', handleTouchStart, { passive: false });
+    addTrackedListener(window, 'touchmove', handleTouchMove, { passive: false });
+    addTrackedListener(window, 'touchend', handleTouchEnd, { passive: false });
   }
 
   private renderGalleryCarousel(): string {
