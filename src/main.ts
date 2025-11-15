@@ -36,34 +36,54 @@ class BiscoidinApp {
   }
 
   private initializePWA(): void {
+    console.log('🔧 Initializing PWA...');
+    
+    // Only initialize PWA features on mobile devices
+    if (!this.isMobileDevice()) {
+      console.log('💻 Desktop detected - skipping PWA install features');
+      return;
+    }
+    
+    // Debug PWA requirements
+    this.debugPWARequirements();
+    
     // Register service worker
     this.registerServiceWorker();
 
     // Listen for the beforeinstallprompt event (Android/Chrome)
     window.addEventListener('beforeinstallprompt', (e) => {
-      console.log('📱 Native PWA Install prompt available');
+      console.log('🎉 Native PWA Install prompt available!');
+      console.log('Event details:', e);
       e.preventDefault();
       this.deferredPrompt = e;
       
-      // Show NATIVE install popup after a short delay
-      setTimeout(() => {
-        this.showNativeInstallPrompt();
-      }, 2000);
+      // Show floating install button instead of popup
+      this.showFloatingInstallButton();
     });
 
     // Check if already installed
     if (this.isPWAInstalled()) {
-      console.log('✅ PWA is already installed');
-      this.showOpenInAppBanner();
+      console.log('✅ PWA is already installed - not showing install features');
       return;
     }
 
-    // Detect iOS and show install instructions
-    if (this.isIOS()) {
-      setTimeout(() => {
-        this.showPWAInstallPopup('ios');
-      }, 3000); // Show after splash screen
-    }
+    // Wait for user engagement
+    this.waitForUserEngagement();
+
+    // Add timeout to detect if beforeinstallprompt never fires
+    setTimeout(() => {
+      if (!this.deferredPrompt && !this.isPWAInstalled()) {
+        console.log('⚠️ beforeinstallprompt event did not fire within 8 seconds');
+        
+        // Show floating button as fallback for iOS or unsupported browsers
+        if (this.isMobileDevice()) {
+          console.log('📱 Mobile device detected - showing floating install button');
+          this.showFloatingInstallButton();
+        } else {
+          this.diagnoseInstallIssues();
+        }
+      }
+    }, 8000);
 
     // Listen for app installation
     window.addEventListener('appinstalled', () => {
@@ -80,13 +100,117 @@ class BiscoidinApp {
     // Add global functions for testing (can be called from console)
     (window as any).testPWAInstall = () => this.showNativeInstallPrompt();
     (window as any).testPWABanner = () => this.showOpenInAppBanner();
+    (window as any).testFloatingButton = () => this.showFloatingInstallButton();
     (window as any).resetPWASettings = () => {
       localStorage.removeItem('pwa-installed');
-      localStorage.removeItem('pwa-popup-dismissed');
+      localStorage.removeItem('pwa-popup-dismissedF');
       localStorage.removeItem('pwa-popup-last-shown');
       localStorage.removeItem('open-in-app-banner-dismissed');
-      console.log('🔄 PWA settings reset');
+      localStorage.removeItem('floating-install-dismissed');
+      localStorage.removeItem('user-engaged');
+      
+      // Remove floating button if it exists
+      const floatingBtn = document.getElementById('floating-install-btn');
+      if (floatingBtn) floatingBtn.remove();
+      
+      console.log('🔄 PWA settings reset - reload page to test fresh experience');
     };
+    (window as any).debugPWA = () => this.debugPWARequirements();
+    (window as any).diagnosePWA = () => this.diagnoseInstallIssues();
+  }
+
+  private waitForUserEngagement(): void {
+    // Chrome requires user engagement before showing install prompt
+    console.log('⏳ Waiting for user engagement...');
+    
+    const markEngaged = () => {
+      localStorage.setItem('user-engaged', 'true');
+      console.log('👆 User engaged! Ready for install prompt.');
+    };
+
+    // Listen for various user interactions
+    const engagementEvents = ['click', 'scroll', 'keypress', 'touchstart'];
+    
+    const handleEngagement = () => {
+      markEngaged();
+      // Remove listeners after first engagement
+      engagementEvents.forEach(event => {
+        document.removeEventListener(event, handleEngagement);
+      });
+    };
+
+    engagementEvents.forEach(event => {
+      document.addEventListener(event, handleEngagement, { once: true });
+    });
+
+    // Fallback: mark as engaged after 10 seconds
+    setTimeout(() => {
+      if (!localStorage.getItem('user-engaged')) {
+        console.log('⏰ Auto-marking as engaged after 10 seconds');
+        markEngaged();
+      }
+    }, 10000);
+  }
+
+  private showFloatingInstallButton(): void {
+    // Don't show if already installed or button already exists
+    if (this.isPWAInstalled() || document.getElementById('floating-install-btn')) {
+      return;
+    }
+
+    // Don't show if user dismissed it recently
+    const dismissed = localStorage.getItem('floating-install-dismissed');
+    const now = Date.now();
+    if (dismissed && (now - parseInt(dismissed)) < 24 * 60 * 60 * 1000) {
+      console.log('❌ Floating install button was dismissed recently, skipping');
+      return;
+    }
+
+    console.log('🎈 Showing floating install button');
+
+    const buttonHTML = `
+      <button id="floating-install-btn" class="floating-install-button" onclick="window.biscoidinApp.handleFloatingInstallClick()" title="Instalar App Biscoidino">
+        <img src="/mobile-download.png" alt="Instalar" class="floating-install-icon">
+        <span class="floating-install-close" onclick="event.stopPropagation(); window.biscoidinApp.dismissFloatingInstallButton()">×</span>
+      </button>
+    `;
+
+    document.body.insertAdjacentHTML('beforeend', buttonHTML);
+
+    // Add animation after DOM insertion
+    setTimeout(() => {
+      const button = document.getElementById('floating-install-btn');
+      if (button) {
+        button.classList.add('visible');
+      }
+    }, 100);
+  }
+
+  public handleFloatingInstallClick(): void {
+    console.log('🎯 Floating install button clicked');
+    
+    if (this.deferredPrompt) {
+      // Android/Chrome native install
+      this.showNativeInstallPrompt();
+    } else if (this.isIOS()) {
+      // iOS instructions
+      this.showPWAInstallPopup('ios');
+    } else {
+      // Fallback for other browsers
+      this.showPWAInstallPopup('android');
+    }
+  }
+
+  public dismissFloatingInstallButton(): void {
+    const button = document.getElementById('floating-install-btn');
+    if (button) {
+      button.classList.add('hiding');
+      setTimeout(() => button.remove(), 300);
+      
+      // Store dismissal
+      localStorage.setItem('floating-install-dismissed', Date.now().toString());
+      console.log('❌ Floating install button dismissed');
+    }
   }
 
   private async registerServiceWorker(): Promise<void> {
@@ -106,18 +230,121 @@ class BiscoidinApp {
       } catch (error) {
         console.error('❌ Service Worker registration failed:', error);
       }
+    } else {
+      console.log('❌ Service Worker not supported');
+    }
+  }
+
+  private debugPWARequirements(): void {
+    console.log('🔍 PWA Requirements Check:');
+    
+    // Check HTTPS
+    const isHTTPS = location.protocol === 'https:' || location.hostname === 'localhost';
+    console.log(`📡 HTTPS: ${isHTTPS ? '✅' : '❌'} (${location.protocol})`);
+    
+    // Check Service Worker support
+    const hasSW = 'serviceWorker' in navigator;
+    console.log(`⚙️ Service Worker Support: ${hasSW ? '✅' : '❌'}`);
+    
+    // Check manifest
+    const manifestLink = document.querySelector('link[rel="manifest"]');
+    console.log(`📋 Manifest Link: ${manifestLink ? '✅' : '❌'}`);
+    
+    // Check if running in standalone mode
+    const isStandalone = window.matchMedia && window.matchMedia('(display-mode: standalone)').matches ||
+                         (window.navigator as any).standalone;
+    console.log(`📱 Already in standalone mode: ${isStandalone ? '✅' : '❌'}`);
+    
+    // Check user agent
+    console.log(`🌐 User Agent: ${navigator.userAgent}`);
+    
+    // Check if PWA was previously installed
+    const wasInstalled = localStorage.getItem('pwa-installed');
+    const wasDismissed = localStorage.getItem('pwa-popup-dismissed');
+    console.log(`📦 Previously installed: ${wasInstalled ? '⚠️ YES' : '✅ NO'}`);
+    console.log(`🚫 Previously dismissed: ${wasDismissed ? '⚠️ YES' : '✅ NO'}`);
+  }
+
+  private diagnoseInstallIssues(): void {
+    console.log('🩺 Diagnosing PWA Install Issues:');
+    
+    const isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
+    const isEdge = /Edge/.test(navigator.userAgent);
+    const isSamsung = /SamsungBrowser/.test(navigator.userAgent);
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+    const isAndroid = /Android/.test(navigator.userAgent);
+    
+    console.log('📱 Browser Detection:');
+    console.log(`  Chrome: ${isChrome}`);
+    console.log(`  Edge: ${isEdge}`);
+    console.log(`  Samsung: ${isSamsung}`);
+    console.log(`  iOS: ${isIOS}`);
+    console.log(`  Android: ${isAndroid}`);
+    
+    // Possible reasons for missing prompt
+    const reasons = [];
+    
+    if (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) {
+      reasons.push('Already running in standalone mode');
+    }
+    
+    if (localStorage.getItem('pwa-installed') === 'true') {
+      reasons.push('PWA was previously installed');
+    }
+    
+    if (localStorage.getItem('pwa-popup-dismissed')) {
+      reasons.push('Install prompt was previously dismissed');
+    }
+    
+    if (!isChrome && !isEdge && !isSamsung) {
+      reasons.push('Browser may not support beforeinstallprompt event');
+    }
+    
+    if (location.protocol !== 'https:' && location.hostname !== 'localhost') {
+      reasons.push('Site not served over HTTPS');
+    }
+    
+    console.log('🚨 Possible reasons install prompt is not showing:');
+    reasons.forEach((reason, index) => {
+      console.log(`  ${index + 1}. ${reason}`);
+    });
+    
+    // Show fallback popup for testing
+    if (isIOS) {
+      console.log('📱 iOS detected - showing iOS install instructions');
+      setTimeout(() => this.showPWAInstallPopup('ios'), 1000);
+    } else if (isAndroid || isChrome || isEdge) {
+      console.log('🤖 Android/Chrome detected - showing fallback install popup');
+      setTimeout(() => this.showPWAInstallPopup('android'), 1000);
     }
   }
 
   private isPWAInstalled(): boolean {
     // Check if PWA is already installed
-    return window.matchMedia && window.matchMedia('(display-mode: standalone)').matches ||
-           (window.navigator as any).standalone ||
-           localStorage.getItem('pwa-installed') === 'true';
+    const isStandalone = window.matchMedia && window.matchMedia('(display-mode: standalone)').matches ||
+                         (window.navigator as any).standalone ||
+                         document.referrer.includes('android-app://');
+    
+    const wasInstalled = localStorage.getItem('pwa-installed') === 'true';
+    
+    console.log('🔍 PWA Installation check:', {
+      isStandalone,
+      wasInstalled,
+      displayMode: window.matchMedia ? window.matchMedia('(display-mode: standalone)').matches : false,
+      standalone: (window.navigator as any).standalone,
+      referrer: document.referrer
+    });
+    
+    return isStandalone || wasInstalled;
   }
 
   private isIOS(): boolean {
     return /iPad|iPhone|iPod/.test(navigator.userAgent) && !(window as any).MSStream;
+  }
+
+  private isMobileDevice(): boolean {
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) 
+           || window.innerWidth <= 768;
   }
 
   private showPWAInstallPopup(platform: 'android' | 'ios'): void {
