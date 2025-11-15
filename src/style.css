@@ -1985,6 +1985,129 @@ section.active {
 }
 
 /* =============================================
+   Floating Install Button Styles
+   ============================================= */
+
+.floating-install-button {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 9998;
+  box-shadow: 0 4px 20px rgba(255, 182, 191, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transform: translateY(100px) scale(0.8);
+  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.floating-install-button.visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.floating-install-button.hiding {
+  opacity: 0;
+  transform: translateY(100px) scale(0.8);
+}
+
+.floating-install-button:hover {
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 6px 25px rgba(255, 182, 191, 0.6);
+}
+
+.floating-install-button:active {
+  transform: translateY(0) scale(0.98);
+}
+
+.floating-install-icon {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+  filter: brightness(1.1);
+}
+
+.floating-install-close {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  width: 20px;
+  height: 20px;
+  background: rgba(0, 0, 0, 0.7);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  font-size: 12px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  line-height: 1;
+  padding: 0;
+}
+
+.floating-install-close:hover {
+  background: rgba(0, 0, 0, 0.9);
+  transform: scale(1.1);
+}
+
+/* Responsive adjustments for floating button */
+@media (max-width: 480px) {
+  .floating-install-button {
+    width: 55px;
+    height: 55px;
+    bottom: 15px;
+    left: 15px;
+  }
+  
+  .floating-install-icon {
+    width: 28px;
+    height: 28px;
+  }
+  
+  .floating-install-close {
+    width: 18px;
+    height: 18px;
+    font-size: 11px;
+    top: -6px;
+    right: -6px;
+  }
+}
+
+/* Ensure floating button doesn't interfere with scrolling */
+@media (max-height: 600px) {
+  .floating-install-button {
+    bottom: 10px;
+    left: 10px;
+  }
+}
+
+/* Hide on very small screens to avoid interference */
+@media (max-width: 320px) {
+  .floating-install-button {
+    width: 50px;
+    height: 50px;
+  }
+  
+  .floating-install-icon {
+    width: 24px;
+    height: 24px;
+  }
+}
+
+/* =============================================
    Open in App Banner Styles
    ============================================= */
 
