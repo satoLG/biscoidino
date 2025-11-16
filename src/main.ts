@@ -14,6 +14,7 @@ class BiscoidinApp {
     this.app = document.querySelector<HTMLDivElement>('#app')!;
     this.splashScreen = document.querySelector<HTMLDivElement>('#splash-screen')!;
     this.initializeSplashScreen();
+    this.initializePWA();
   }
 
   private initializeSplashScreen(): void {
@@ -35,6 +36,61 @@ class BiscoidinApp {
       this.render();
     }, 800); // Match the CSS animation duration
   }
+
+  private initializePWA(): void {
+    console.log('🔧 Initializing PWA infrastructure...');
+    
+    // Register service worker for PWA functionality
+    this.registerServiceWorker();
+    
+    // Listen for app installation (for logging purposes)
+    window.addEventListener('appinstalled', () => {
+      console.log('🎉 PWA was installed successfully via native browser prompt');
+      localStorage.setItem('pwa-installed', 'true');
+    });
+    
+    console.log('✅ PWA infrastructure ready - install via browser menu');
+  }
+
+
+
+
+
+  private async registerServiceWorker(): Promise<void> {
+    if ('serviceWorker' in navigator) {
+      try {
+        const registration = await navigator.serviceWorker.register('/sw.js', {
+          scope: '/'
+        });
+        
+        console.log('✅ Service Worker registered successfully:', registration.scope);
+        
+        // Listen for updates
+        registration.addEventListener('updatefound', () => {
+          console.log('🆕 New service worker available');
+        });
+        
+      } catch (error) {
+        console.error('❌ Service Worker registration failed:', error);
+      }
+    } else {
+      console.log('❌ Service Worker not supported');
+    }
+  }
+
+
+
+
+
+
+
+
+
+  public async showNativeInstallPrompt(): Promise<void> {
+    console.log('ℹ️ PWA Install: Use your browser\'s native "Add to Home Screen" or "Install" option');
+  }
+
+
 
   private render(): void {
     this.app.innerHTML = `
@@ -1085,7 +1141,9 @@ class BiscoidinApp {
 
 // Initialize the application
 document.addEventListener('DOMContentLoaded', () => {
-  new BiscoidinApp();
+  const app = new BiscoidinApp();
+  // Make app globally available for PWA install function
+  (window as any).biscoidinApp = app;
 });
 
 // Preload the logo to ensure smooth animation
