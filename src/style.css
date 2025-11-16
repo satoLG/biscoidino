@@ -28,6 +28,11 @@
   box-sizing: border-box;
 }
 
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 20px;
+}
+
 body {
   background-color: var(--background);
   color: var(--text-dark);
@@ -442,7 +447,7 @@ section.active {
   padding: 3rem;
   border-radius: 20px;
   box-shadow: 0 4px 20px var(--shadow);
-  min-height: 200vh; /* Increased height to accommodate larger images and spacing */
+  min-height: 220vh; /* Increased height to accommodate larger images and spacing */
   position: relative;
 }
 
@@ -616,6 +621,30 @@ section.active {
   50% { 
     opacity: 1; 
     transform: translateY(-3px);
+  }
+}
+
+/* Bouncing ball indicator */
+.scroll-ball {
+  padding-top: 4px;
+  width: 40px;
+  height: 40px;
+  background-color: var(--primary-color);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 15px auto 0 auto;
+  animation: scrollBallBounce 1.5s ease infinite;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+@keyframes scrollBallBounce {
+  0%, 100% { 
+    transform: translateY(0px);
+  }
+  50% { 
+    transform: translateY(-10px);
   }
 }
 
@@ -882,32 +911,35 @@ section.active {
   text-align: center;
 }
 
-.whatsapp-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.8rem;
-  padding: 1.5rem 2rem;
-  color: #2f2f2f;
-  text-decoration: none;
-  border-radius: 25px;
-  font-size: 1.2rem;
-  font-weight: 600;
-  position: relative;
-  overflow: hidden;
-  transition: all 0.3s ease;
+.contact-link {
+    width: 300px;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 1.2rem 2rem;
+    color: #2f2f2f;
+    text-decoration: none;
+    border-radius: 25px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s 
+ease;
+    justify-content: flex-start;
 }
 
-.whatsapp-link:hover {
+.contact-link:hover {
   box-shadow: 0 4px 15px #cdded34d;
 }
 
-.whatsapp-link:active {
+.contact-link:active {
   box-shadow: 0 4px 15px #272928a7;
 }
 
 .contact-icon {
   padding: 5px;
-  background: #26d367;
+  /* background: #26d367; */
   border-radius: 50%;  
   width: 58px;
   height: 58px;

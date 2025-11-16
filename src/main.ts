@@ -169,9 +169,13 @@ class BiscoidinApp {
           <section id="contact" class="contact-section">
             <h2>Contatos</h2>
             <div class="contact-info">
-              <a href="https://wa.me/5511953826504?text=Olá,%20gostaria%20de%20encomendar%20biscoitos!" target="_blank" class="whatsapp-link">
-                <img src="/whatsapp.jpeg" alt="WhatsApp" class="contact-icon">
+              <a href="https://wa.me/5511953826504?text=Olá,%20gostaria%20de%20encomendar%20biscoitos!" target="_blank" class="contact-link">
+                <img src="/contact/whatsapp.jpeg" alt="WhatsApp" class="contact-icon">
                 <span>(11) 95382-6504</span>
+              </a>
+              <a href="https://www.instagram.com/biscoidino/" target="_blank" class="contact-link">
+                <img src="/contact/instagram.jpg" alt="Instagram" class="contact-icon">
+                <span>@biscoidino</span>
               </a>
             </div>
           </section>
@@ -213,10 +217,10 @@ class BiscoidinApp {
       {
         name: "Biscoitos de Baunilha",
         description: "Deliciosos biscoitos artesanais com sabor suave de baunilha (150g)",
-        price: "R$ 12,00",
-        image: "/baunilha_package.png",
+        price: "R$ 15,00",
+        image: "/products/baunilha_package.png",
         images: [
-          "/baunilha_package.png",
+          "/products/baunilha_package.png",
           "/biscuits/biscoidino_biscuit1.png",
           "/biscuits/flower_baunilha1.png", 
           "/biscuits/heart_baunilha1.png",
@@ -229,7 +233,7 @@ class BiscoidinApp {
       {
         name: "Biscoitos de Parmesão",
         description: "Biscoitos salgados crocantes com queijo parmesão premium (150g)",
-        price: "R$ 12,00",
+        price: "R$ 15,00",
         image: "/products/parmesao_biscuit_package1.png",
         images: [
           "/products/parmesao_biscuit_package1.png",
@@ -292,12 +296,19 @@ class BiscoidinApp {
               }, 50);
             }
             
-            // Reset and restart typewriter when about section becomes active
+            // When about section becomes active, scroll to top and reset typewriter
             if (targetId === 'about') {
+              // Smooth scroll to top of page first
+              window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+              });
+              
+              // Reset and restart typewriter after scrolling completes
               setTimeout(() => {
                 console.log('📝 About section activated, resetting typewriter...');
                 this.resetAndRestartTypewriter();
-              }, 50);
+              }, 50); // Wait for smooth scroll to complete
             }
           } else {
             section.classList.remove('active');
@@ -420,7 +431,7 @@ class BiscoidinApp {
         image: "/about/fornada.png"
       },
       { 
-        text: "Hoje, a Biscoidino é uma marca que leva carinho e sabor para todas as idades.",
+        text: "Hoje, a Biscoidino é uma marca que leva carinho e sabor para todas as idades. 💚",
         image: "/about/estoque.png"
       }
     ];
@@ -435,7 +446,8 @@ class BiscoidinApp {
     let scrollListener: (() => void) | null = null;
     let currentScrollImage: HTMLImageElement | null = null;
     let imageProgress = 0; // 0 to 1 (0 = right side, 1 = center)
-    let lastScrollY = 0;
+    let lastScrollY = window.scrollY; // Lock to current position
+    console.log('🔒 Initial scroll position locked at:', lastScrollY);
     
     // Control flags for progression
     let paragraphCompleted = false;
@@ -466,8 +478,8 @@ class BiscoidinApp {
       img.dataset.paragraph = paragraphIndex.toString(); // Track which paragraph this image belongs to
       
       // Calculate vertical position based on paragraph index (starting from second paragraph)
-      const baseTopOffset = 80; // Start position in pixels from top of about-section (adjusted for larger images)
-      const verticalSpacing = 400; // Space between each image (increased for larger image sizes)
+      const baseTopOffset = 70; // Start position in pixels from top of about-section (adjusted for larger images)
+      const verticalSpacing = isMobileDevice() ? 400 : 500; // Space between each image (increased for larger image sizes)
       const topPosition = baseTopOffset + (paragraphIndex - 1) * verticalSpacing;
       
       img.style.top = `${topPosition}px`;
@@ -491,17 +503,23 @@ class BiscoidinApp {
         return;
       }
       
-      // Get image position
+      // Get image position relative to its parent (aboutContent)
+      const aboutContentRect = aboutContent!.getBoundingClientRect();
       const imageRect = currentScrollImage.getBoundingClientRect();
-      const imageTop = imageRect.top + window.scrollY;
+      const imageRelativeTop = imageRect.bottom - aboutContentRect.top;
       
       // Create floating hint at same height as image
       const scrollHint = document.createElement('div');
       scrollHint.className = 'scroll-hint-floating';
-      scrollHint.innerHTML = '<span style="color: var(--primary-color); font-style: italic; font-size: 1rem; background: rgba(255,255,255,0.9);">Role para baixo para continuar a história...</span>';
+      scrollHint.innerHTML = `
+        <span style="white-space: nowrap;color: var(--primary-color); font-style: italic; font-size: 1rem; background: rgba(255,255,255,0.9);">Role para baixo para continuar a história...</span>
+        <div class="scroll-ball">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M6 9L12 15L18 9" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+        </div>
+      `;
       
       scrollHint.style.position = 'absolute';
-      scrollHint.style.top = `${imageTop + 50}px`; // 50px below image
+      scrollHint.style.top = `${imageRelativeTop + 20}px`; // 20px below image
       scrollHint.style.left = '50%';
       scrollHint.style.transform = 'translateX(-50%)';
       scrollHint.style.textAlign = 'center';
@@ -520,7 +538,7 @@ class BiscoidinApp {
         scrollHint.style.opacity = '1';
       }, 50);
       
-      console.log('📝 Scroll hint shown at image position:', imageTop + 50);
+      console.log('📝 Scroll hint shown at image position:', imageRelativeTop + 20);
     }
     
     function hideScrollHint() {
@@ -550,7 +568,7 @@ class BiscoidinApp {
     
     // Function to get the appropriate center position based on device
     function getCenterPosition(): number {
-      return isMobileDevice() ? 10 : 25; // Mobile: 30%, Desktop: 40%
+      return isMobileDevice() ? 15 : 25;
     }
     
     function updateImagePosition(progress: number) {
@@ -567,11 +585,6 @@ class BiscoidinApp {
     }
     
     function handleScroll() {
-      const currentScrollY = window.scrollY;
-      const scrollDelta = currentScrollY - lastScrollY;
-      
-      console.log('🎯 SCROLL EVENT:', { currentScrollY, scrollDelta, hasImage: !!currentScrollImage, imageProgress });
-      
       // ALWAYS hide scroll hint when user starts scrolling (regardless of image state)
       hideScrollHint();
       
@@ -585,9 +598,8 @@ class BiscoidinApp {
       
       if (currentScrollImage && !imageLocked) {
         
-        // Move image based on scroll direction
-        const scrollSensitivity = 0.003;
-        const progressChange = scrollDelta * scrollSensitivity;
+        // Scroll is locked, no image movement from scrolling
+        const progressChange = 0;
         
         const oldProgress = imageProgress;
         imageProgress = Math.max(0, Math.min(1, imageProgress + progressChange));
@@ -625,7 +637,7 @@ class BiscoidinApp {
         }
       }
       
-      lastScrollY = currentScrollY;
+      // lastScrollY remains locked
     }
     
     // Handle wheel events for more precise control when image is active
@@ -816,19 +828,23 @@ class BiscoidinApp {
           // Calculate scroll position to make the new image visible
           // Each image is positioned at: baseTopOffset + (paragraphIndex - 1) * verticalSpacing
           const baseTopOffset = 80;
-          const verticalSpacing = 400;
+          const verticalSpacing = isMobileDevice() ? 400 : 500;
           const imageTopPosition = baseTopOffset + (currentParagraph - 1) * verticalSpacing;
           
           // Scroll to position where image is visible (with some offset for better view)
           const targetScrollY = imageTopPosition - 100; // 100px above the image
           
           console.log('📜 Auto-scrolling to make new image visible:', { imageTopPosition, targetScrollY });
+          // Smooth scroll with longer duration for better UX
           window.scrollTo({
             top: targetScrollY,
             behavior: 'smooth'
           });
           
-          // Small delay to let scroll animation complete, then reactivate listeners
+          // Update locked scroll position
+          lastScrollY = targetScrollY;
+          
+          // Longer delay for smoother scroll animation, then reactivate listeners
           setTimeout(() => {
             // Reactivate scroll listener for this new image
             scrollListener = handleScroll;
@@ -925,7 +941,7 @@ class BiscoidinApp {
             } else {
               // Fallback - no current image
               const baseTopOffset = 80;
-              const verticalSpacing = 400;
+              const verticalSpacing = isMobileDevice() ? 400 : 500;
               const imageTopPosition = baseTopOffset + (currentParagraph - 1) * verticalSpacing;
               paragraphTopPosition = imageTopPosition + 170; // Estimated image + spacing
               
@@ -986,9 +1002,14 @@ class BiscoidinApp {
           // First paragraph - show scroll hint and setup scroll listener
           isWaitingForScroll = true;
           
-          const scrollHint = document.createElement('p');
+          const scrollHint = document.createElement('div');
           scrollHint.className = 'scroll-hint';
-          scrollHint.innerHTML = '<span style="color: var(--primary-color); font-style: italic; font-size: 1rem;">Role para baixo para continuar a história...</span>';
+          scrollHint.innerHTML = `
+            <span style="white-space: nowrap;color: var(--primary-color); font-style: italic; font-size: 1rem;">Role para baixo para continuar a história...</span>
+            <div class="scroll-ball">
+              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M6 9L12 15L18 9" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+            </div>
+          `;
           scrollHint.style.marginTop = '2rem';
           scrollHint.style.textAlign = 'center';
           scrollHint.style.animation = 'fadeIn 0.5s ease-in-out';
@@ -1020,6 +1041,7 @@ class BiscoidinApp {
     // Handle first scroll to start the scroll-based system
     const initialScrollListener = () => {
       if (isWaitingForScroll) {
+        // Allow first scroll to advance, then lock
         isWaitingForScroll = false;
         
         // Remove scroll hint
