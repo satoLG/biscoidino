@@ -28,6 +28,11 @@
   box-sizing: border-box;
 }
 
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 20px;
+}
+
 body {
   background-color: var(--background);
   color: var(--text-dark);
@@ -427,7 +432,6 @@ section.active {
 }
 
 .menu-section,
-.about-section,
 .gallery-section,
 .contact-section {
   background: var(--white);
@@ -435,6 +439,16 @@ section.active {
   border-radius: 20px;
   box-shadow: 0 4px 20px var(--shadow);
   /* margin-bottom: 1rem; */
+}
+
+.about-section {
+  overflow: hidden;
+  background: var(--white);
+  padding: 3rem;
+  border-radius: 20px;
+  box-shadow: 0 4px 20px var(--shadow);
+  min-height: 220vh; /* Increased height to accommodate larger images and spacing */
+  position: relative;
 }
 
 .menu-section h2,
@@ -558,9 +572,13 @@ section.active {
 
 /* About Section */
 .about-content {
+  overflow: hidden;
+  z-index: 1;
   max-width: 800px;
   margin: 0 auto;
   text-align: center;
+  position: relative;
+  height: 100%;
 }
 
 .about-content > p {
@@ -569,6 +587,96 @@ section.active {
   margin-bottom: 3rem;
   line-height: 1.7;
 }
+
+/* Typewriter Effect Styles */
+.typewriter-text {
+  text-align: center;
+  position: relative;
+  min-height: 400px; /* Reserve space to prevent layout shifts */
+}
+
+.typewriter-cursor {
+  display: inline;
+  color: var(--primary-color);
+  font-weight: bold;
+  margin-left: 1px;
+  animation: typewriterBlink 1s infinite;
+}
+
+@keyframes typewriterBlink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+/* Scroll hint for typewriter effect */
+.scroll-hint {
+  animation: scrollPulse 2s ease-in-out infinite;
+}
+
+@keyframes scrollPulse {
+  0%, 100% { 
+    opacity: 0.7; 
+    transform: translateY(0px);
+  }
+  50% { 
+    opacity: 1; 
+    transform: translateY(-3px);
+  }
+}
+
+/* Bouncing ball indicator */
+.scroll-ball {
+  padding-top: 4px;
+  width: 40px;
+  height: 40px;
+  background-color: var(--primary-color);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 15px auto 0 auto;
+  animation: scrollBallBounce 1.5s ease infinite;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+@keyframes scrollBallBounce {
+  0%, 100% { 
+    transform: translateY(0px);
+  }
+  50% { 
+    transform: translateY(-10px);
+  }
+}
+
+@media (max-width: 700px) {
+  .scroll-image {
+    width: 27vh !important;
+    height: 27vh !important;
+  }
+}
+
+.about-section p {
+    background-color: #ffffffa8;
+}
+
+/* Scroll images for typewriter effect */
+.scroll-image {
+    background-color: #ffb6bf63;
+    border-radius: 50%;
+    position: absolute;
+    right: 120%;
+    width: 22vw;
+    height: 22vw;
+    object-fit: contain;
+    z-index: -1;
+    /* border-radius: 15px; */
+    padding: 5px;
+    transition: all 0.5s ease;
+}
+
+/* .scroll-image:hover {
+  transform: scale(1.05) translateY(-50%);
+} */
 
 .features {
   display: grid;
@@ -803,32 +911,35 @@ section.active {
   text-align: center;
 }
 
-.whatsapp-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.8rem;
-  padding: 1.5rem 2rem;
-  color: #2f2f2f;
-  text-decoration: none;
-  border-radius: 25px;
-  font-size: 1.2rem;
-  font-weight: 600;
-  position: relative;
-  overflow: hidden;
-  transition: all 0.3s ease;
+.contact-link {
+    width: 300px;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 1.2rem 2rem;
+    color: #2f2f2f;
+    text-decoration: none;
+    border-radius: 25px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s 
+ease;
+    justify-content: flex-start;
 }
 
-.whatsapp-link:hover {
+.contact-link:hover {
   box-shadow: 0 4px 15px #cdded34d;
 }
 
-.whatsapp-link:active {
+.contact-link:active {
   box-shadow: 0 4px 15px #272928a7;
 }
 
 .contact-icon {
   padding: 5px;
-  background: #26d367;
+  /* background: #26d367; */
   border-radius: 50%;  
   width: 58px;
   height: 58px;
