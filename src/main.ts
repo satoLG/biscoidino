@@ -52,10 +52,6 @@ class BiscoidinApp {
     console.log('✅ PWA infrastructure ready - install via browser menu');
   }
 
-
-
-
-
   private async registerServiceWorker(): Promise<void> {
     if ('serviceWorker' in navigator) {
       try {
@@ -78,19 +74,9 @@ class BiscoidinApp {
     }
   }
 
-
-
-
-
-
-
-
-
   public async showNativeInstallPrompt(): Promise<void> {
     console.log('ℹ️ PWA Install: Use your browser\'s native "Add to Home Screen" or "Install" option');
   }
-
-
 
   private render(): void {
     this.app.innerHTML = `
@@ -310,6 +296,9 @@ class BiscoidinApp {
                 this.resetAndRestartTypewriter();
               }, 50); // Wait for smooth scroll to complete
             }
+            else {
+              this.destroyTypewriterEffect();
+            }
           } else {
             section.classList.remove('active');
           }
@@ -391,6 +380,22 @@ class BiscoidinApp {
     console.log('✅ Typewriter effect reset and restarted');
   }
 
+  //destroyTypewriterEffect code below
+  private destroyTypewriterEffect(): void {
+    console.log('🧨 Destroying typewriter effect...');
+    // Force stop any running typewriter
+    this.typewriterRunning = false;
+    // Clear ALL tracked event listeners
+    this.activeEventListeners.forEach(({ element, event, handler }) => {
+      try {
+        element.removeEventListener(event, handler);
+      } catch (e) {
+        console.warn(`⚠️ Could not remove ${event} listener:`, e);
+      }
+    });
+    this.activeEventListeners = [];
+  }
+
   private initTypewriterEffect(): void {
     // Prevent multiple instances running simultaneously
     if (this.typewriterRunning) {
@@ -442,8 +447,6 @@ class BiscoidinApp {
     // State management
     let currentParagraph = 0;
     let currentChar = 0;
-    let isWaitingForScroll = false;
-    let scrollListener: (() => void) | null = null;
     let currentScrollImage: HTMLImageElement | null = null;
     let imageProgress = 0; // 0 to 1 (0 = right side, 1 = center)
     let lastScrollY = window.scrollY; // Lock to current position
@@ -568,7 +571,7 @@ class BiscoidinApp {
     
     // Function to get the appropriate center position based on device
     function getCenterPosition(): number {
-      return isMobileDevice() ? 15 : 25;
+      return isMobileDevice() ? 15 : 27;
     }
     
     function updateImagePosition(progress: number) {
@@ -583,65 +586,13 @@ class BiscoidinApp {
       
       console.log('🖼️ Image position:', { progress, currentPosition, centerPosition, isMobile: isMobileDevice(), isAtCenter: progress >= 1 });
     }
-    
-    function handleScroll() {
-      // ALWAYS hide scroll hint when user starts scrolling (regardless of image state)
-      hideScrollHint();
-      
-      // Clear any existing timeout and set a new one to show hint again if user stops
-      if (scrollTimeout) clearTimeout(scrollTimeout);
-      scrollTimeout = setTimeout(() => {
-        if (currentScrollImage && !imageLocked) {
-          showScrollHint();
-        }
-      }, 2000); // Show hint again after 2 seconds of no scrolling
-      
-      if (currentScrollImage && !imageLocked) {
-        
-        // Scroll is locked, no image movement from scrolling
-        const progressChange = 0;
-        
-        const oldProgress = imageProgress;
-        imageProgress = Math.max(0, Math.min(1, imageProgress + progressChange));
-        
-        console.log('�️ Image progress update:', { oldProgress, newProgress: imageProgress, progressChange });
-        
-        updateImagePosition(imageProgress);
-        
-        // Update imageAtCenter flag
-        const wasAtCenter = imageAtCenter;
-        imageAtCenter = imageProgress >= 1;
-        
-        // If image just reached center for the first time AND we haven't started typing yet
-        if (imageAtCenter && !wasAtCenter && !typingStarted) {
-          // Remove scroll hint when image reaches center
-          const scrollHint = document.querySelector('.scroll-hint');
-          if (scrollHint) {
-            scrollHint.remove();
-            console.log('📝 Scroll hint removed - image reached center');
-          }
-          
-          typingStarted = true;
-          imageLocked = true; // Lock the image at center position - no more movement
-          // Force image to exact center position when locking
-          if (currentScrollImage) {
-            currentScrollImage.style.right = `${getCenterPosition()}%`;
-          }
-          console.log('🔒 Image reached center and locked - starting to type paragraph');
-          setTimeout(() => typeNextChar(), pauseBetweenParagraphs);
-        }
-        
-        // Check if both conditions are met for progression (only if we've already started typing)
-        if (typingStarted) {
-          checkForProgression();
-        }
-      }
-      
-      // lastScrollY remains locked
-    }
-    
+
     // Handle wheel events for more precise control when image is active
     function handleWheel(e: WheelEvent) {
+      // Prevent default scroll behavior when we have an active image
+      e.preventDefault();
+      e.stopPropagation();
+
       // ALWAYS hide scroll hint when user wheels (regardless of image state)
       hideScrollHint();
       
@@ -651,13 +602,10 @@ class BiscoidinApp {
         if (currentScrollImage && !imageLocked) {
           showScrollHint();
         }
-      }, 2000); // Show hint again after 2 seconds of no wheel activity
+      }, 500); // Show hint again after 0.5 seconds of no wheel activity
       
-      if (currentScrollImage && !imageLocked) {
-        // Prevent default scroll behavior when we have an active image
-        e.preventDefault();
-        e.stopPropagation();
-        
+
+      if (currentScrollImage && !imageLocked) {  
         // Use wheel delta for image movement
         const wheelSensitivity = 0.001;
         const progressChange = e.deltaY * wheelSensitivity;
@@ -707,6 +655,10 @@ class BiscoidinApp {
     }
     
     function handleTouchMove(e: TouchEvent) {
+      // Prevent default scroll behavior when we have an active image
+      e.preventDefault();
+      e.stopPropagation();
+  
       // ALWAYS hide scroll hint when user starts touching (regardless of image state)
       hideScrollHint();
       
@@ -716,13 +668,9 @@ class BiscoidinApp {
         if (currentScrollImage && !imageLocked) {
           showScrollHint();
         }
-      }, 2000); // Show hint again after 2 seconds of no touching
+      }, 500); // Show hint again after 0.5 seconds of no touching
       
       if (currentScrollImage && !imageLocked) {
-        // Prevent default scroll behavior when we have an active image
-        e.preventDefault();
-        e.stopPropagation();
-        
         const touchCurrentY = e.touches[0].clientY;
         const touchDelta = touchLastY - touchCurrentY; // Inverted for natural scroll direction
         
@@ -781,7 +729,7 @@ class BiscoidinApp {
     
     function checkForProgression() {
       // Only advance if BOTH conditions are true: paragraph completed AND image at center
-      if (paragraphCompleted && imageAtCenter && currentParagraph < storyData.length - 1) {
+      if (paragraphCompleted && (currentParagraph == 0 || imageAtCenter) && currentParagraph < storyData.length - 1) {
         console.log('🎯 Both conditions met - advancing to next paragraph');
         console.log('   📝 Paragraph completed:', paragraphCompleted);
         console.log('   🖼️ Image at center:', imageAtCenter);
@@ -804,12 +752,6 @@ class BiscoidinApp {
         imageAtCenter = false;
         typingStarted = false; // Reset typing flag for the new paragraph
         imageLocked = false; // Unlock for the new image
-        
-        // Remove current scroll listener temporarily
-        if (scrollListener) {
-          window.removeEventListener('scroll', scrollListener);
-          scrollListener = null;
-        }
         
         // Advance to next paragraph
         currentParagraph++;
@@ -843,25 +785,10 @@ class BiscoidinApp {
           
           // Update locked scroll position
           lastScrollY = targetScrollY;
-          
-          // Longer delay for smoother scroll animation, then reactivate listeners
+
           setTimeout(() => {
-            // Reactivate scroll listener for this new image
-            scrollListener = handleScroll;
-            addTrackedListener(window, 'scroll', scrollListener);
-            addTrackedListener(window, 'touchstart', handleTouchStart, { passive: false });
-            addTrackedListener(window, 'touchmove', handleTouchMove, { passive: false });
-            addTrackedListener(window, 'touchend', handleTouchEnd, { passive: false });
-            lastScrollY = window.scrollY;
-            
-            // Show scroll hint when scroll lock is active
             showScrollHint();
-            
-            console.log('🔄 Scroll and touch listeners reactivated - waiting for image to reach center before typing');
-          }, 800); // Wait for smooth scroll to complete
-          
-          // DON'T start typing yet - the image needs to reach center first
-          // The typing will be triggered by the scroll handler when imageAtCenter becomes true
+          }, 800); // Show hint after scroll completes
         } else {
           // No image for this paragraph, start typing immediately
           setTimeout(() => typeNextChar(), pauseBetweenParagraphs);
@@ -881,10 +808,7 @@ class BiscoidinApp {
         setTimeout(() => {
           const cursor = document.querySelector('.typewriter-cursor');
           if (cursor) cursor.remove();
-          if (scrollListener) {
-            window.removeEventListener('scroll', scrollListener);
-            scrollListener = null;
-          }
+
           // DON'T remove the last image - let it stay visible
           // Keep the last image locked at center position
           if (currentScrollImage) {
@@ -896,6 +820,13 @@ class BiscoidinApp {
           // Mark typewriter as no longer running
           self.typewriterRunning = false;
           console.log('✅ Typewriter finished and flag cleared');
+
+          // Remove scroll event listeners
+          window.removeEventListener('wheel', handleWheel);
+          window.removeEventListener('touchstart', handleTouchStart);
+          window.removeEventListener('touchmove', handleTouchMove);
+          window.removeEventListener('touchend', handleTouchEnd);
+          console.log('🧹 Removed scroll and touch event listeners after completion');
         }, 2000);
         return;
       }
@@ -997,29 +928,7 @@ class BiscoidinApp {
         
         console.log(`✅ Finished paragraph ${currentParagraph}: "${currentText}"`);
         
-        // Handle paragraph completion
-        if (currentParagraph === 0) {
-          // First paragraph - show scroll hint and setup scroll listener
-          isWaitingForScroll = true;
-          
-          const scrollHint = document.createElement('div');
-          scrollHint.className = 'scroll-hint';
-          scrollHint.innerHTML = `
-            <span style="white-space: nowrap;color: var(--primary-color); font-style: italic; font-size: 1rem;">Role para baixo para continuar a história...</span>
-            <div class="scroll-ball">
-              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M6 9L12 15L18 9" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
-            </div>
-          `;
-          scrollHint.style.marginTop = '2rem';
-          scrollHint.style.textAlign = 'center';
-          scrollHint.style.animation = 'fadeIn 0.5s ease-in-out';
-          if (typewriterText) typewriterText.appendChild(scrollHint);
-          
-          scrollListener = handleScroll;
-          window.addEventListener('scroll', scrollListener);
-          lastScrollY = window.scrollY;
-          
-        } else if (currentParagraph < storyData.length - 1) {
+        if (currentParagraph < storyData.length - 1) {
           // Middle paragraphs - set flag that paragraph is completed
           paragraphCompleted = true;
           console.log('📝 Paragraph completed, waiting for image to reach center');
@@ -1038,61 +947,31 @@ class BiscoidinApp {
       }
     }
     
-    // Handle first scroll to start the scroll-based system
-    const initialScrollListener = () => {
-      if (isWaitingForScroll) {
-        // Allow first scroll to advance, then lock
-        isWaitingForScroll = false;
-        
-        // Remove scroll hint
-        const hint = document.querySelector('.scroll-hint');
-        if (hint) hint.remove();
-        
-        // Move to second paragraph (first one is done)
-        currentParagraph = 1; // Second paragraph
-        currentChar = 0;
-        
-        // Reset progression flags
-        paragraphCompleted = false;
-        imageAtCenter = false;
-        typingStarted = false; // Reset typing flag - we'll wait for image to reach center
-        imageLocked = false; // Unlock for the new image
-        
-        // Create image for the SECOND paragraph (we're about to type it)
-        const currentStoryItem = storyData[currentParagraph];
-        if (currentStoryItem.image) {
-          currentScrollImage = createScrollImage(currentStoryItem.image, currentParagraph);
-          imageProgress = 0;
-          updateImagePosition(0);
-        }
-        
-        // Replace scroll listener with the image movement handler
-        window.removeEventListener('scroll', initialScrollListener);
-        scrollListener = handleScroll;
-        addTrackedListener(window, 'scroll', scrollListener);
-        addTrackedListener(window, 'wheel', handleWheel, { passive: false });
-        addTrackedListener(window, 'touchstart', handleTouchStart, { passive: false });
-        addTrackedListener(window, 'touchmove', handleTouchMove, { passive: false });
-        addTrackedListener(window, 'touchend', handleTouchEnd, { passive: false });
-        lastScrollY = window.scrollY;
-        
-        // Show scroll hint when scroll lock is active for second paragraph
-        showScrollHint();
-        
-        // DON'T start typing yet - wait for image to reach center first
-        console.log('🖼️ Second paragraph image created, waiting for it to reach center before typing');
-      }
-    };
+    currentParagraph = 0; // First paragraph
+    currentChar = 0;
     
-    // Start typing first paragraph
-    setTimeout(typeNextChar, 500);
+    // Reset progression flags
+    paragraphCompleted = false;
+    imageAtCenter = false;
+    typingStarted = false; // Reset typing flag - we'll wait for image to reach center
+    imageLocked = false; // Unlock for the new image
     
-    // Set initial scroll listener using tracked system
-    addTrackedListener(window, 'scroll', initialScrollListener);
+    // Create image for the SECOND paragraph (we're about to type it)
+    const currentStoryItem = storyData[currentParagraph];
+    if (currentStoryItem.image) {
+      currentScrollImage = createScrollImage(currentStoryItem.image, currentParagraph);
+      imageProgress = 0;
+      updateImagePosition(0);
+    }
+    
     addTrackedListener(window, 'wheel', handleWheel, { passive: false });
     addTrackedListener(window, 'touchstart', handleTouchStart, { passive: false });
     addTrackedListener(window, 'touchmove', handleTouchMove, { passive: false });
     addTrackedListener(window, 'touchend', handleTouchEnd, { passive: false });
+    lastScrollY = window.scrollY;
+
+    // Start typing first paragraph
+    setTimeout(typeNextChar, 500);
   }
 
   private renderGalleryCarousel(): string {
