@@ -745,7 +745,7 @@ class BiscoidinoApp {
           console.log('🖼️ Created image for current paragraph:', currentStoryItem.text.substring(0, 30) + '...');
  
           // Scroll to position where image is visible (with some offset for better view)
-          const targetScrollY = document.body.scrollHeight;
+          const targetScrollY = document.body.scrollHeight - 200;
           
           // Smooth scroll with longer duration for better UX
           window.scrollTo({
