@@ -1,11 +1,10 @@
 import { inject } from '@vercel/analytics';
-import './style.css?v=2'
+import './style.css?v=3'
 
 // BISCOIDINO - Main Application
-class BiscoidinApp {
+class BiscoidinoApp {
   private app: HTMLElement;
   private splashScreen: HTMLElement;
-  private typewriterInitialized: boolean = false;
   private typewriterRunning: boolean = false;
   private activeEventListeners: Array<{element: any, event: string, handler: any, options?: any}> = [];
 
@@ -34,7 +33,7 @@ class BiscoidinApp {
       this.app.classList.remove('hidden');
       this.app.classList.add('visible');
       this.render();
-    }, 800); // Match the CSS animation duration
+    }, 500); // Match the CSS animation duration
   }
 
   private initializePWA(): void {
@@ -84,27 +83,27 @@ class BiscoidinApp {
         <header class="header">
           <div class="logo">
             <h1><img src="/biscoidino_logo.png" alt="BISCOIDINO" class="header-logo"> BISCOIDINO</h1>
-            <p class="tagline">Biscoitos amanteigados caseiros</p>
           </div>
           <nav class="nav">
-            <a href="#home" class="nav-link active">
+            <a id="home-tab" href="#home" class="nav-link active">
+              <img src="/biscoidino_logo.png" alt="BISCOIDINO" class="header-logo">
               <svg class="nav-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M3 9L12 2L21 9V20C21 20.5304 20.7893 21.0391 20.4142 21.4142C20.0391 21.7893 19.5304 22 19 22H5C4.46957 22 3.96086 21.7893 3.58579 21.4142C3.21071 21.0391 3 20.5304 3 20V9Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                 <path d="M9 22V12H15V22" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
 
             </a>
-            <a href="#menu" class="nav-link">
+            <a id="menu-tab" href="#menu" class="nav-link">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chef-hat-icon lucide-chef-hat"><path d="M17 21a1 1 0 0 0 1-1v-5.35c0-.457.316-.844.727-1.041a4 4 0 0 0-2.134-7.589 5 5 0 0 0-9.186 0 4 4 0 0 0-2.134 7.588c.411.198.727.585.727 1.041V20a1 1 0 0 0 1 1Z"/><path d="M6 17h12"/>
             </svg>
 
             </a>
-            <a href="#about" class="nav-link">
+            <a id="about-tab" href="#about" class="nav-link">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-book-open-text-icon lucide-book-open-text"><path d="M12 7v14"/><path d="M16 12h2"/><path d="M16 8h2"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/><path d="M6 12h2"/><path d="M6 8h2"/>
               </svg>
 
             </a>
-            <a href="#gallery" class="nav-link">
+            <a id="gallery-tab" href="#gallery" class="nav-link">
               <svg class="nav-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <rect x="3" y="3" width="18" height="18" rx="2" ry="2" stroke="currentColor" stroke-width="2"/>
                 <circle cx="8.5" cy="8.5" r="1.5" stroke="currentColor" stroke-width="2"/>
@@ -112,7 +111,7 @@ class BiscoidinApp {
               </svg>
 
             </a>
-            <a href="#contact" class="nav-link">
+            <a id="contact-tab" href="#contact" class="nav-link">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-phone-icon lucide-phone"><path d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384"/>
               </svg>
 
@@ -124,7 +123,7 @@ class BiscoidinApp {
           <section id="home" class="home active">
             <div class="home-content">
               <h2>Seja Bem-vindo(a)</h2>
-              <p>Experimente os melhores biscoitos amanteigados caseiros feitos com receitas próprias e ingredientes premium.</p>
+              <p>Experimente os melhores <strong>biscoitos amanteigados caseiros</strong> feitos com receitas próprias e ingredientes premium.</p>
               <button class="cta-button">Ver nosso cardápio</button>
             </div>
             <div class="home-image" id="homeImageContainer">
@@ -168,7 +167,7 @@ class BiscoidinApp {
         </main>
 
         <footer class="footer">
-          <p>&copy; 2025 BISCOIDINO. Feito com <img src="/biscuits/biscoidino_biscuit1.png" alt="amor" class="footer-icon"> para amantes de biscoitos em todo lugar.</p>
+          <p>&copy; 2025 BISCOIDINO. Feito com <img src="/biscuits/heart_baunilha1.png" alt="amor" class="footer-icon"> por amantes de biscoitos para amantes de biscoitos.</p>
         </footer>
       </div>
     `;
@@ -179,15 +178,6 @@ class BiscoidinApp {
     setTimeout(() => {
       initHomePhysics();
     }, 100);
-
-    // Initialize typewriter effect immediately after DOM is ready
-    setTimeout(() => {
-      console.log('🚀 Initializing typewriter effect...');
-      if (!this.typewriterInitialized) {
-        this.initTypewriterEffect();
-        this.typewriterInitialized = true;
-      }
-    }, 300);
 
     // Initialize gallery carousel after DOM is ready (backup initialization)
     setTimeout(() => {
@@ -368,13 +358,9 @@ class BiscoidinApp {
       hint.remove();
     });
     
-    // Reset the initialization flag and reinitialize after a small delay
-    this.typewriterInitialized = false;
-    
     // Use a delay to ensure all cleanup is complete
     setTimeout(() => {
       this.initTypewriterEffect();
-      this.typewriterInitialized = true;
     }, 300);
     
     console.log('✅ Typewriter effect reset and restarted');
@@ -485,11 +471,11 @@ class BiscoidinApp {
       const verticalSpacing = isMobileDevice() ? 400 : 500; // Space between each image (increased for larger image sizes)
       const topPosition = baseTopOffset + (paragraphIndex - 1) * verticalSpacing;
       
-      img.style.top = `${topPosition}px`;
+      // img.style.top = `${topPosition}px`;
       
       // Add to about-content container for relative positioning
-      if (aboutContent) {
-        aboutContent.appendChild(img);
+      if (typewriterText) {
+        typewriterText.appendChild(img);
         console.log('✅ Image created and added to about-content at position:', topPosition);
       }
       
@@ -521,20 +507,11 @@ class BiscoidinApp {
         </div>
       `;
       
-      scrollHint.style.position = 'absolute';
-      scrollHint.style.top = `${imageRelativeTop + 20}px`; // 20px below image
-      scrollHint.style.left = '50%';
-      scrollHint.style.transform = 'translateX(-50%)';
-      scrollHint.style.textAlign = 'center';
-      scrollHint.style.zIndex = '1000';
       scrollHint.style.pointerEvents = 'none';
       scrollHint.style.opacity = '0';
       scrollHint.style.transition = 'opacity 0.4s ease-in-out';
       
-      // Add to aboutContent instead of body
-      if (aboutContent) {
-        aboutContent.appendChild(scrollHint);
-      }
+      document.body.appendChild(scrollHint);
       
       // Fade in after a brief moment
       setTimeout(() => {
@@ -571,7 +548,7 @@ class BiscoidinApp {
     
     // Function to get the appropriate center position based on device
     function getCenterPosition(): number {
-      return isMobileDevice() ? 15 : 27;
+      return isMobileDevice() ? 0 : 0;
     }
     
     function updateImagePosition(progress: number) {
@@ -766,17 +743,10 @@ class BiscoidinApp {
           imageProgress = 0;
           updateImagePosition(0);
           console.log('🖼️ Created image for current paragraph:', currentStoryItem.text.substring(0, 30) + '...');
-          
-          // Calculate scroll position to make the new image visible
-          // Each image is positioned at: baseTopOffset + (paragraphIndex - 1) * verticalSpacing
-          const baseTopOffset = 80;
-          const verticalSpacing = isMobileDevice() ? 400 : 500;
-          const imageTopPosition = baseTopOffset + (currentParagraph - 1) * verticalSpacing;
-          
+ 
           // Scroll to position where image is visible (with some offset for better view)
-          const targetScrollY = imageTopPosition - 100; // 100px above the image
+          const targetScrollY = document.body.scrollHeight;
           
-          console.log('📜 Auto-scrolling to make new image visible:', { imageTopPosition, targetScrollY });
           // Smooth scroll with longer duration for better UX
           window.scrollTo({
             top: targetScrollY,
@@ -879,13 +849,13 @@ class BiscoidinApp {
               console.log('📍 Using fallback paragraph position:', paragraphTopPosition);
             }
             
-            p.style.top = `${paragraphTopPosition}px`;
+            // p.style.top = `${paragraphTopPosition}px`;
           };
           
-          p.style.position = 'absolute';
+          // p.style.position = 'absolute';
           p.style.left = '50%';
-          p.style.transform = 'translateX(-50%)';
-          p.style.width = '80%';
+          // p.style.transform = 'translateX(-50%)';
+          // p.style.width = '80%';
           
           // Position immediately, and also when image loads (if not loaded yet)
           positionParagraph();
@@ -1042,9 +1012,9 @@ class BiscoidinApp {
 
 // Initialize the application
 document.addEventListener('DOMContentLoaded', () => {
-  const app = new BiscoidinApp();
+  const app = new BiscoidinoApp();
   // Make app globally available for PWA install function
-  (window as any).biscoidinApp = app;
+  (window as any).BiscoidinoApp = app;
 });
 
 // Preload the logo to ensure smooth animation
