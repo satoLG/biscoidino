@@ -595,7 +595,7 @@ section.active {
 .typewriter-text {
   text-align: center;
   position: relative;
-  min-height: 400px; /* Reserve space to prevent layout shifts */
+  /* min-height: 400px; Reserve space to prevent layout shifts */
 }
 
 .typewriter-cursor {
