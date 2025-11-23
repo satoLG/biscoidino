@@ -2542,7 +2542,7 @@ function setupHomePhysicsInteraction(canvas: HTMLCanvasElement, engine: any) {
   // Global event handlers for when mouse leaves canvas during drag
   const handleGlobalMouseMove = (e: MouseEvent) => {
     const homeSection = document.querySelector('.home.active');
-    if (!homeSection || !isDragging || !mouseConstraint.body || e.touches.length === 0) {
+    if (!homeSection || !isDragging || !mouseConstraint.body) {
       return; // Deixar comportamento normal
     }
 
@@ -2560,7 +2560,7 @@ function setupHomePhysicsInteraction(canvas: HTMLCanvasElement, engine: any) {
   
   const handleGlobalMouseUp = () => {
     const homeSection = document.querySelector('.home.active');
-    if (!homeSection || !isDragging || !mouseConstraint.body || e.touches.length === 0) {
+    if (!homeSection || !isDragging || !mouseConstraint.body) {
       return; // Deixar comportamento normal
     }
 
@@ -2594,7 +2594,7 @@ function setupHomePhysicsInteraction(canvas: HTMLCanvasElement, engine: any) {
   
   const handleGlobalTouchEnd = () => {
     const homeSection = document.querySelector('.home.active');
-    if (!homeSection || !isDragging || !mouseConstraint.body || e.touches.length === 0) {
+    if (!homeSection || !isDragging || !mouseConstraint.body) {
       return; // Deixar comportamento normal
     }
 
