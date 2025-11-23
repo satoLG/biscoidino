@@ -410,23 +410,27 @@ class BiscoidinoApp {
     // Story content with images
     const storyData = [
       { 
-        text: "A Biscoidino nasceu do amor entre mãe e filho.",
+        text: "A Biscoidino nasceu de uma inesperada oportunidade de se reinventar.",
         image: null
       },
       { 
-        text: "Quando Micaela Gregorio decidiu fazer biscoitos em formato de dinossauro para seu filho Lucas.",
+        text: "Quando Micaela Gregorio, que trabalhava com finanças há mais de 15 anos, viu sua rotina mudar radicalmente com o diagnóstico de TEA de seu filho Lucas.",
         image: "/about/mae_filho.png"
       },
       { 
-        text: "O que começou como brincadeira acabou se tornando uma receita de sucesso.",
+        text: "Imediatamente deixou seu emprego e passou a se dedicar em tempo integral ao tratamento e cuidados dele.",
         image: "/about/ingredientes.png"
       },
       { 
-        text: "Cada fornada é feita com amor e ingredientes especiais.",
+        text: "Um dos nossos desafios era a seletividade alimentar.",
         image: "/about/fornada.png"
       },
       { 
-        text: "Hoje, a Biscoidino é uma marca que leva carinho e sabor para todas as idades. 💚",
+        text: "Lucas ama dinossauros, disso surgiu a ideia de assar biscoitos nesse formato para se tornarem mais atrativos para ele.",
+        image: "/biscuits/biscoidino_biscuit1.png"
+      },
+      { 
+        text: "Sem nenhuma expectativa, levamos pra algumas pessoas experimentarem e rapidamente a receita se tornou um sucesso. 💚",
         image: "/about/estoque.png"
       }
     ];
