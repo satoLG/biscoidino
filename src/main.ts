@@ -1,5 +1,5 @@
 import { inject } from '@vercel/analytics';
-import './style.css?v=4'
+import './style.css?v=5'
 
 // BISCOIDINO - Main Application
 class BiscoidinoApp {
@@ -167,7 +167,7 @@ class BiscoidinoApp {
         </main>
 
         <footer class="footer">
-          <p>&copy; 2025 BISCOIDINO. Feito com <img src="/biscuits/heart_baunilha1.png" alt="amor" class="footer-icon"> por amantes de biscoitos para amantes de biscoitos.</p>
+          <p>&copy; 2025 BISCOIDINO ™. Feito com <img src="/biscuits/heart_baunilha1.png" alt="amor" class="footer-icon"> por amantes de biscoitos para amantes de biscoitos.</p>
         </footer>
       </div>
     `;
@@ -369,6 +369,10 @@ class BiscoidinoApp {
   //destroyTypewriterEffect code below
   private destroyTypewriterEffect(): void {
     console.log('🧨 Destroying typewriter effect...');
+
+    const existingHint = document.querySelector('.scroll-hint-floating');
+    if (existingHint) existingHint.remove();
+    
     // Force stop any running typewriter
     this.typewriterRunning = false;
     // Clear ALL tracked event listeners
@@ -444,8 +448,8 @@ class BiscoidinoApp {
     let typingStarted = false; // Flag to track if we've started typing the current paragraph
     let imageLocked = false; // Flag to prevent further image movement after reaching center
     
-    const typeSpeed = 35;
-    const pauseBetweenParagraphs = 800;
+    const typeSpeed = 55;
+    const pauseBetweenParagraphs = 1000;
     
     function createScrollImage(imageSrc: string, paragraphIndex: number): HTMLImageElement {
       console.log('🎨 Creating scroll image:', imageSrc, 'for paragraph:', paragraphIndex);
@@ -749,7 +753,7 @@ class BiscoidinoApp {
           
           // Smooth scroll with longer duration for better UX
           window.scrollTo({
-            top: targetScrollY,
+            top: currentParagraph <= 1 ? 0 : targetScrollY,
             behavior: 'smooth'
           });
           
@@ -2537,6 +2541,11 @@ function setupHomePhysicsInteraction(canvas: HTMLCanvasElement, engine: any) {
   
   // Global event handlers for when mouse leaves canvas during drag
   const handleGlobalMouseMove = (e: MouseEvent) => {
+    const homeSection = document.querySelector('.home.active');
+    if (!homeSection || !isDragging || !mouseConstraint.body || e.touches.length === 0) {
+      return; // Deixar comportamento normal
+    }
+
     if (isDragging && mouseConstraint.body) {
       // Continue updating mouse position when dragging outside canvas
       const rect = canvas.getBoundingClientRect();
@@ -2550,6 +2559,11 @@ function setupHomePhysicsInteraction(canvas: HTMLCanvasElement, engine: any) {
   };
   
   const handleGlobalMouseUp = () => {
+    const homeSection = document.querySelector('.home.active');
+    if (!homeSection || !isDragging || !mouseConstraint.body || e.touches.length === 0) {
+      return; // Deixar comportamento normal
+    }
+
     mouseDownInCanvas = false;
     
     // Force release any current drag in Matter.js when mouse released anywhere
@@ -2563,6 +2577,11 @@ function setupHomePhysicsInteraction(canvas: HTMLCanvasElement, engine: any) {
   };
   
   const handleGlobalTouchMove = (e: TouchEvent) => {
+    const homeSection = document.querySelector('.home.active');
+    if (!homeSection || !isDragging || !mouseConstraint.body || e.touches.length === 0) {
+      return; // Deixar comportamento normal
+    }
+
     if (isDragging && mouseConstraint.body && e.touches.length > 0) {
       const rect = canvas.getBoundingClientRect();
       const x = e.touches[0].clientX - rect.left;
@@ -2574,6 +2593,11 @@ function setupHomePhysicsInteraction(canvas: HTMLCanvasElement, engine: any) {
   };
   
   const handleGlobalTouchEnd = () => {
+    const homeSection = document.querySelector('.home.active');
+    if (!homeSection || !isDragging || !mouseConstraint.body || e.touches.length === 0) {
+      return; // Deixar comportamento normal
+    }
+
     mouseDownInCanvas = false;
     
     // Force release any current drag in Matter.js when touch ends anywhere

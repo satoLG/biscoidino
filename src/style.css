@@ -1,5 +1,7 @@
+@import url(https://db.onlinewebfonts.com/c/5f6f3fa262ae5a789f3aca5eb4aed03d?family=Wotfard);
+
 :root {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  font-family: "Wotfard", sans-serif;
   line-height: 1.5;
   font-weight: 400;
   
@@ -42,6 +44,11 @@ body {
 
 strong {
   color: var(--primary-color);
+}
+
+h1, h2 {
+    font-family: sans-serif !important;
+    font-weight: 600 !important;
 }
 
 /* Splash Screen Styles */
@@ -260,6 +267,7 @@ strong {
 
 .nav-link:hover,
 .nav-link.active {
+  box-shadow: 1px 2px 4px 0px var(--primary-dark);
   background-color: var(--primary-color);
   color: var(--white);
 }
@@ -291,10 +299,9 @@ strong {
 }
 
 .home-content {
-  z-index: 1;
-  margin-bottom: 10rem;
-  flex: 1;
-  position: relative;
+    z-index: 1;
+    height: min-content;
+    position: relative;
 }
 
 .home-content h2 {
