@@ -1,5 +1,5 @@
 import { inject } from '@vercel/analytics';
-import './style.css?v=5'
+import './style.css?v=6'
 
 // BISCOIDINO - Main Application
 class BiscoidinoApp {
@@ -82,7 +82,7 @@ class BiscoidinoApp {
       <div class="container">
         <header class="header">
           <div class="logo">
-            <h1><img src="/biscoidino_logo.png" alt="BISCOIDINO" class="header-logo"> BISCOIDINO</h1>
+            <h1 class="trademark-name"><img src="/biscoidino_logo.png" alt="BISCOIDINO" class="header-logo"> BISCOIDINO</h1>
           </div>
           <nav class="nav">
             <a id="home-tab" href="#home" class="nav-link active">
@@ -120,9 +120,14 @@ class BiscoidinoApp {
         </header>
 
         <main class="main">
-          <section id="home" class="home active">
+          <svg xmlns="http://www.w3.org/2000/svg" width="5120" height="456" fill="none" viewBox="0 0 5120 456" preserveAspectRatio="none" class="edge-decorator">
+            <path fill="var(--color-background)" d="M2641.4 401.5C2613.31 399.999 2525.75 198 2121.01 198C1862 198 1840 264.5 1806.88 259.5C1773.77 254.499 1723.34 129.991 1562.17 136C1401 142.009 1366.58 313.5 1339 321C1311.42 328.5 1279 226.5 1034.79 234.5C802.99 242.093 724.297 318.5 697 313C669.703 307.5 681 75.9996 430.496 32.4996C214.304 -5.042 99.7464 183.937 60.6394 266.475C51.4353 285.9 27.9703 295.392 8.5729 286.129C-15.3473 274.705 -43 292.144 -43 318.652V429.5C-43 443.859 -31.3592 455.5 -16.9999 455.5H5103C5127.3 455.5 5147 435.8 5147 411.5V232.89C5147 226.643 5146.46 220.404 5144.55 214.457C5136.92 190.729 5108.7 128.5 5022.5 128.5C4881 128.5 4935 253.704 4838.83 249C4808.16 247.499 4757.27 55.5004 4535 59C4312.73 62.4996 4283.98 270.5 4250.5 268.5C4217.02 266.5 4197 199 4037.27 189.5C3834.76 177.455 3790.86 285 3753.5 279C3716.14 273 3652.96 98.8238 3377.5 153.5C3156.46 197.374 3191.5 387.48 3139.82 376.5C3118.64 371.999 3078.5 339 2948.03 339C2894.2 339 2890.37 330.676 2837.19 339C2708.5 359.141 2669.5 403 2641.4 401.5Z">
+            </path>
+          </svg>
+
+          <section id="home" class="home-section active">
             <div class="home-content">
-              <h2>Seja Bem-vindo(a)</h2>
+              <h2 class="trademark-name">OLÁ</h2>
               <p>Experimente os melhores <strong>biscoitos amanteigados caseiros</strong> feitos com receitas próprias e ingredientes premium.</p>
               <button class="cta-button">Ver nosso cardápio</button>
             </div>
@@ -132,27 +137,27 @@ class BiscoidinoApp {
           </section>
 
           <section id="menu" class="menu-section">
-            <h2>Nosso Cardápio</h2>
+            <h2 class="trademark-name">CARDÁPIO</h2>
             <div class="menu-grid" id="menuGrid">
               <!-- Menu items will be loaded here -->
             </div>
           </section>
 
           <section id="about" class="about-section">
-            <h2>Nossa História</h2>
+            <h2 class="trademark-name">HISTÓRIA</h2>
             <div class="about-content" id="aboutContent">
               <div class="typewriter-text" id="typewriterText"></div>
             </div>
           </section>
 
           <section id="gallery" class="gallery-section">
-            <h2>Galeria</h2>
+            <h2 class="trademark-name">GALERIA</h2>
             <p class="gallery-subtitle">Veja alguns de nossos clientes satisfeitos e os bastidores dos biscoidinos!</p>
             ${this.renderGalleryCarousel()}
           </section>
 
           <section id="contact" class="contact-section">
-            <h2>Contatos</h2>
+            <h2 class="trademark-name">CONTATOS</h2>
             <div class="contact-info">
               <a href="https://wa.me/5511953826504?text=Olá,%20gostaria%20de%20encomendar%20biscoitos!" target="_blank" class="contact-link">
                 <img src="/contact/whatsapp.jpeg" alt="WhatsApp" class="contact-icon">
@@ -164,6 +169,11 @@ class BiscoidinoApp {
               </a>
             </div>
           </section>
+
+          <svg xmlns="http://www.w3.org/2000/svg" width="5120" height="456" fill="none" viewBox="0 0 5120 456" preserveAspectRatio="none" class="edge-decorator bottom">
+            <path fill="var(--color-background)" d="M2641.4 401.5C2613.31 399.999 2525.75 198 2121.01 198C1862 198 1840 264.5 1806.88 259.5C1773.77 254.499 1723.34 129.991 1562.17 136C1401 142.009 1366.58 313.5 1339 321C1311.42 328.5 1279 226.5 1034.79 234.5C802.99 242.093 724.297 318.5 697 313C669.703 307.5 681 75.9996 430.496 32.4996C214.304 -5.042 99.7464 183.937 60.6394 266.475C51.4353 285.9 27.9703 295.392 8.5729 286.129C-15.3473 274.705 -43 292.144 -43 318.652V429.5C-43 443.859 -31.3592 455.5 -16.9999 455.5H5103C5127.3 455.5 5147 435.8 5147 411.5V232.89C5147 226.643 5146.46 220.404 5144.55 214.457C5136.92 190.729 5108.7 128.5 5022.5 128.5C4881 128.5 4935 253.704 4838.83 249C4808.16 247.499 4757.27 55.5004 4535 59C4312.73 62.4996 4283.98 270.5 4250.5 268.5C4217.02 266.5 4197 199 4037.27 189.5C3834.76 177.455 3790.86 285 3753.5 279C3716.14 273 3652.96 98.8238 3377.5 153.5C3156.46 197.374 3191.5 387.48 3139.82 376.5C3118.64 371.999 3078.5 339 2948.03 339C2894.2 339 2890.37 330.676 2837.19 339C2708.5 359.141 2669.5 403 2641.4 401.5Z">
+            </path>
+          </svg>          
         </main>
 
         <footer class="footer">

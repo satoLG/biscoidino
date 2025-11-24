@@ -81,10 +81,11 @@ self.addEventListener('fetch', (event) => {
         if (event.request.mode === 'navigate') {
           return new Response(
             `<!DOCTYPE html>
-            <html>
+            <html lang="pt-BR">
             <head>
-              <title>Biscoidino - Offline</title>
+              <meta charset="UTF-8">
               <meta name="viewport" content="width=device-width, initial-scale=1.0">
+              <title>Biscoidino - Offline</title>
               <style>
                 body { 
                   font-family: Arial, sans-serif; 
@@ -92,6 +93,7 @@ self.addEventListener('fetch', (event) => {
                   padding: 2rem; 
                   background: #FFF8DC;
                   color: #2F2F2F;
+                  margin: 0;
                 }
                 .offline-container {
                   max-width: 400px;
@@ -109,8 +111,16 @@ self.addEventListener('fetch', (event) => {
                   justify-content: center;
                   font-size: 2rem;
                 }
-                h1 { color: #ffb6bf; margin-bottom: 1rem; }
-                p { margin-bottom: 1.5rem; line-height: 1.5; }
+                h1 { 
+                  color: #ffb6bf; 
+                  margin-bottom: 1rem; 
+                  font-size: 2rem;
+                }
+                p { 
+                  margin-bottom: 1.5rem; 
+                  line-height: 1.5; 
+                  font-size: 1.1rem;
+                }
                 button {
                   background: #ffb6bf;
                   color: white;
@@ -119,6 +129,10 @@ self.addEventListener('fetch', (event) => {
                   border-radius: 8px;
                   font-size: 1rem;
                   cursor: pointer;
+                  transition: background-color 0.3s ease;
+                }
+                button:hover {
+                  background: #d68891;
                 }
               </style>
             </head>
@@ -134,7 +148,7 @@ self.addEventListener('fetch', (event) => {
             </html>`,
             {
               headers: {
-                'Content-Type': 'text/html'
+                'Content-Type': 'text/html; charset=utf-8'
               }
             }
           );
