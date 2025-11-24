@@ -1,12 +1,13 @@
 @import url(https://db.onlinewebfonts.com/c/5f6f3fa262ae5a789f3aca5eb4aed03d?family=Wotfard);
+@import url('https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;500;700;800;900&display=swap');
 
 :root {
-  font-family: "Wotfard", sans-serif;
+  font-family: "Wotfard", sans-serif !important;
   line-height: 1.5;
   font-weight: 400;
   
   /* Color palette */
-  --primary-color: #ffb6bf;
+  --primary-color: #ffc7ce;
   --primary-light: #F4A460;
   --primary-dark: #d68891;
   --secondary-color: #DEB887;
@@ -36,7 +37,7 @@ html {
 }
 
 body {
-  background-color: var(--background);
+  background-color: var(--primary-color);
   color: var(--text-dark);
   font-size: 16px;
   overflow-x: hidden;
@@ -44,11 +45,6 @@ body {
 
 strong {
   color: var(--primary-color);
-}
-
-h1, h2 {
-    font-family: sans-serif !important;
-    font-weight: 600 !important;
 }
 
 /* Splash Screen Styles */
@@ -81,22 +77,29 @@ h1, h2 {
   width: 150px;
   height: 150px;
   object-fit: contain;
-  margin-bottom: 1rem;
+  /* margin-bottom: 1rem; */
   opacity: 0;
   /* transform: translateY(-50px) scale(0.5); */
   animation: splashLogoBounce 1.2s ease-out 0.4s both;
   /* filter: drop-shadow(0 8px 20px rgba(0, 0, 0, 0.3)); */
 }
 
+.trademark-name {
+    line-height: 1 !important;
+    font-family: "M PLUS Rounded 1c" !important;
+    font-weight: 900 !important;
+    font-style: normal !important;
+    color: #382212 !important;
+}
+
 .splash-title {
-  font-size: 3rem;
-  font-weight: bold;
-  color: var(--white);
-  margin: 0.5rem 0;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-  opacity: 0;
-  transform: translateX(-30px);
-  animation: splashTextSlide 0.6s ease-out 0.8s both;
+    line-height: 1;
+    font-size: 3rem;
+    font-weight: bold;
+    color: var(--white);
+    opacity: 0;
+    transform: translateX(-30px);
+    animation: splashTextSlide 0.6s ease-out 0.8s both;
 }
 
 .splash-subtitle {
@@ -203,9 +206,10 @@ h1, h2 {
 
 /* Header Styles */
 .header {
-  background: var(--white);
+  backdrop-filter: blur(5px);
+  background: #ffffff00;
   padding: 1rem 2rem;
-  box-shadow: 0 2px 10px var(--shadow);
+  /* box-shadow: 0 2px 10px var(--shadow); */
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -268,7 +272,7 @@ h1, h2 {
 .nav-link:hover,
 .nav-link.active {
   box-shadow: 1px 2px 4px 0px var(--primary-dark);
-  background-color: var(--primary-color);
+  background-color: var(--primary-dark);
   color: var(--white);
 }
 
@@ -278,22 +282,50 @@ h1, h2 {
 }
 
 /* Main Content */
+svg.edge-decorator {
+  fill: white;
+  position: absolute;
+  top: -95px;
+  height: 99px;
+  width: 100%;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  min-width: 50rem;
+}
+
 .main {
+  position: relative;
+  margin-top: 100px;
+  margin-bottom: 100px;
+  background-color: white;
   display: flex;
-  flex: 1;
-  padding: 2rem;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+}
+
+svg.edge-decorator.bottom {
+  transform: rotate(180deg);
+  top: unset !important;
+  bottom: -90px !important;
+}
+
+section {
+  max-width: 68rem;
 }
 
 /* Home Section */
-.home.active {
+.home-section.active {
   display: flex;
   align-items: center;
   gap: 3rem;
   /* margin-bottom: 1rem; */
   padding: 2rem;
   background: var(--white);
-  border-radius: 20px;
-  box-shadow: 0 4px 20px var(--shadow);
+  /* border-radius: 20px; */
+  /* box-shadow: 0 4px 20px var(--shadow); */
   position: relative;
   min-height: 550px;
 }
@@ -447,8 +479,8 @@ section.active {
 .contact-section {
   background: var(--white);
   padding: 3rem;
-  border-radius: 20px;
-  box-shadow: 0 4px 20px var(--shadow);
+  /* border-radius: 20px;
+  box-shadow: 0 4px 20px var(--shadow); */
   /* margin-bottom: 1rem; */
 }
 
@@ -456,8 +488,8 @@ section.active {
   overflow: hidden;
   background: var(--white);
   padding: 2rem 2rem 8rem 2rem !important; /* down needs to be bigger */
-  border-radius: 20px;
-  box-shadow: 0 4px 20px var(--shadow);
+  /* border-radius: 20px; */
+  /* box-shadow: 0 4px 20px var(--shadow); */
   position: relative;
 }
 
@@ -466,7 +498,7 @@ section.active {
 .gallery-section h2,
 .contact-section h2 {
   font-size: 2.5rem;
-  color: var(--primary-color);
+  color: var(--primary-dark) !important;
   text-align: center;
   margin-bottom: 2rem;
 }
@@ -955,8 +987,8 @@ section.active {
 
 /* Footer */
 .footer {
-  background: var(--primary-dark);
-  color: var(--white);
+  /* background: var(--primary-dark); */
+  color: var(--text-dark);
   text-align: center;
   padding: 2rem;
   margin-top: auto;
@@ -1368,7 +1400,7 @@ section.active {
   }
 }
   
-  .home {
+  .home-section {
     position: relative;
     flex-direction: column;
     text-align: center;
@@ -1401,10 +1433,6 @@ section.active {
     height: 120px;
     right: -30px;
     top: -10px;
-  }
-  
-  .main {
-    padding: 1rem;
   }
   
   .menu-section,
@@ -1455,16 +1483,8 @@ section.active {
 
 /* Orientation-specific styles for better responsivity */
 @media screen and (orientation: landscape) and (max-width: 968px) {
-  /* .home.active {
-    flex-direction: row;
-    align-items: center;
-    gap: 2rem;
-    min-height: 300px;
-    padding: 1.5rem;
-  } */
-  
   .home-content {
-    flex: 1;
+    /* flex: 1; */
     margin-bottom: 0;
     max-width: 50%;
   }
@@ -1478,28 +1498,9 @@ section.active {
     font-size: 1rem;
     margin-bottom: 1.5rem;
   }
-  
-  /* .home-image {
-    flex: 1;
-    position: relative;
-    max-width: 50%;
-    height: 250px;
-  } */
-  
-  /* #homePhysicsCanvas {
-    max-height: 250px;
-  } */
 }
 
 @media screen and (orientation: portrait) and (max-width: 768px) {
-  /* .home.active {
-    flex-direction: column;
-    text-align: center;
-    gap: 1.5rem;
-    min-height: 500px;
-    padding: 1.5rem 1rem;
-  } */
-  
   .home-content {
     flex: none;
     margin-bottom: 0;
@@ -1516,29 +1517,10 @@ section.active {
     font-size: 1.1rem;
     margin-bottom: 2rem;
   }
-  
-  /* .home-image {
-    flex: none;
-    position: relative;
-    width: 100%;
-    height: 300px;
-    order: 2;
-  } */
-  
-  /* #homePhysicsCanvas {
-    max-height: 300px;
-    width: 100%;
-  } */
 }
 
 /* Ultra-wide landscape phones */
 @media screen and (orientation: landscape) and (max-height: 500px) {
-  /* .home.active {
-    min-height: 200px;
-    padding: 1rem;
-    gap: 1rem;
-  } */
-  
   .home-content h2 {
     font-size: 1.8rem;
     margin-bottom: 0.5rem;
@@ -1548,14 +1530,6 @@ section.active {
     font-size: 0.9rem;
     margin-bottom: 1rem;
   }
-  
-  /* .home-image {
-    height: 180px;
-  } */
-  
-  /* #homePhysicsCanvas {
-    max-height: 180px;
-  } */
 }
 
 /* Navigation improvements for orientation changes */
