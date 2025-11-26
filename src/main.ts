@@ -1226,6 +1226,20 @@ function setupPhysicsInteraction(canvas: HTMLCanvasElement, engine: any) {
   // Add mouse constraint to world
   World.add(engine.world, mouseConstraint);
   
+  mouseConstraint.mouse.element.removeEventListener('wheel', mouseConstraint.mouse.mousewheel);
+  mouseConstraint.mouse.element.removeEventListener('DOMMouseScroll', mouseConstraint.mouse.mousewheel);
+
+  let scrollTimeout: any;
+  function handleScroll() {
+    canvas.style.pointerEvents = "none";
+    clearTimeout(scrollTimeout);
+    scrollTimeout = setTimeout(() => {
+      canvas.style.pointerEvents = "auto";
+    }, 200);
+  }
+
+  canvas.addEventListener("wheel", handleScroll);
+
   // Store mouse constraint globally for cleanup
   (window as any).physicsMouseConstraint = mouseConstraint;
   
@@ -2457,6 +2471,20 @@ function setupHomePhysicsInteraction(canvas: HTMLCanvasElement, engine: any) {
   // Add mouse constraint to world
   World.add(engine.world, mouseConstraint);
   
+  let scrollTimeout: any;
+  function handleScroll() {
+    canvas.style.pointerEvents = "none";
+    clearTimeout(scrollTimeout);
+    scrollTimeout = setTimeout(() => {
+      canvas.style.pointerEvents = "auto";
+    }, 200);
+  }
+    
+  canvas.addEventListener("wheel", handleScroll);
+
+  mouseConstraint.mouse.element.removeEventListener('wheel', mouseConstraint.mouse.mousewheel);
+  mouseConstraint.mouse.element.removeEventListener('DOMMouseScroll', mouseConstraint.mouse.mousewheel);
+
   // Store mouse constraint globally for cleanup
   (window as any).homePhysicsMouseConstraint = mouseConstraint;
   
