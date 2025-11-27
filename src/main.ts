@@ -418,17 +418,17 @@ class BiscoidinoApp {
         image: null
       },
       { 
-        text: "Quando Micaela Gregorio, que trabalhava com finanças há mais de 15 anos, viu sua rotina mudar radicalmente com o diagnóstico de TEA de seu filho Lucas.",
+        text: "Quando Micaela, que trabalhava com finanças há mais de 15 anos, viu sua rotina mudar radicalmente com o diagnóstico de TEA de seu filho Lucas.",
         image: "/about/mae_filho.png"
       },
       { 
         text: "Imediatamente deixou seu emprego e passou a se dedicar em tempo integral ao tratamento e cuidados dele.",
-        image: "/about/ingredientes.png"
+        image: "/about/tea.png"
       },
-      { 
-        text: "Um dos nossos desafios era a seletividade alimentar.",
-        image: "/about/fornada.png"
-      },
+      // { 
+      //   text: "Um dos nossos desafios era a seletividade alimentar.",
+      //   image: "/about/fornada.png"
+      // },
       { 
         text: "Lucas ama dinossauros, disso surgiu a ideia de assar biscoitos nesse formato para se tornarem mais atrativos para ele.",
         image: "/biscuits/biscoidino_biscuit1.png"
@@ -513,9 +513,9 @@ class BiscoidinoApp {
       const scrollHint = document.createElement('div');
       scrollHint.className = 'scroll-hint-floating';
       scrollHint.innerHTML = `
-        <span style="white-space: nowrap;color: var(--primary-color); font-style: italic; font-size: 1rem; background: rgba(255,255,255,0.9);">Role para baixo para continuar a história...</span>
+        <span style="white-space: nowrap;color: var(--primary-dark); font-style: italic; font-size: 1rem; background: rgba(255,255,255,0.9);">Role para baixo para continuar a história...</span>
         <div class="scroll-ball">
-          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M6 9L12 15L18 9" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+          <svg viewBox="0 -15.5 91 91" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M45.4294 49.6574C49.7395 44.2098 53.604 39.3621 57.4357 34.4856C63.7103 26.4986 69.8405 18.3922 76.2864 10.5477C78.9741 7.27712 82.2998 4.52502 85.3833 1.58791C86.7071 0.326427 88.4109 -0.774937 90.0065 0.720856C91.7786 2.38073 90.6629 4.19232 89.2846 5.57785C74.4514 20.4826 64.2741 38.9336 51.3705 55.3092C47.5677 60.1346 44.3654 60.7634 39.6608 56.6777C38.1526 55.4129 36.7389 54.0397 35.4308 52.569C26.2532 41.8805 16.9876 31.2622 8.06665 20.3624C5.20239 16.8628 3.23017 12.6177 1.00124 8.62848C0.621879 7.94851 0.775416 6.15672 1.08521 6.0504C2.22264 5.65659 3.88641 5.22532 4.71077 5.7727C7.95308 7.92746 11.3608 10.0744 13.9593 12.9097C20.2312 19.7534 26.0667 26.9954 32.111 34.0484C35.6657 38.1971 39.2913 42.2848 42.8663 46.4165C43.6467 47.3202 44.3523 48.2929 45.4294 49.6574Z" fill="#ffffff"></path> </g></svg>    
         </div>
       `;
       
@@ -523,7 +523,7 @@ class BiscoidinoApp {
       scrollHint.style.opacity = '0';
       scrollHint.style.transition = 'opacity 0.4s ease-in-out';
       
-      document.body.appendChild(scrollHint);
+      if (typewriterText) typewriterText.appendChild(scrollHint);
       
       // Fade in after a brief moment
       setTimeout(() => {
