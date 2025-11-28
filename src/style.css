@@ -255,7 +255,7 @@ strong {
   text-decoration: none;
   color: var(--text-dark);
   font-weight: 500;
-  padding: 0.8rem 1.2rem;
+  padding: 0.8rem;
   border-radius: 10px;
   transition: all 0.3s ease;
   position: relative;
