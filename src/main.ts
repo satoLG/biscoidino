@@ -1,5 +1,5 @@
 import { inject } from '@vercel/analytics';
-import './style.css?v=8'
+import './style.css?v=9'
 
 // BISCOIDINO - Main Application
 class BiscoidinoApp {
@@ -765,7 +765,7 @@ class BiscoidinoApp {
           
           // Smooth scroll with longer duration for better UX
           window.scrollTo({
-            top: currentParagraph <= 1 ? 0 : targetScrollY,
+            top: currentParagraph <= 1 ? 200 : targetScrollY,
             behavior: 'smooth'
           });
           
