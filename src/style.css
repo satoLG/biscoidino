@@ -565,32 +565,31 @@ section.active {
 }
 
 .menu-item {
-  background: var(--background);
-  border-radius: 15px;
-  padding: 2rem;
-  text-align: center;
-  transition: all 0.3s ease;
-  border: 2px solid transparent;
+    background: #fff6d1;
+    border-radius: 15px;
+    padding: 2rem;
+    text-align: center;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
 }
 
 .menu-item:hover {
   transform: translateY(-5px);
-  border-color: var(--primary-light);
-  box-shadow: 0 8px 25px var(--shadow);
+  box-shadow: 0 6px 4px var(--primary-dark);
 }
 
 .menu-item-image {
-    background-color: #ffb6bf;
-    border-radius: 25%;
-    padding: 10px;
-    width: 150px;
-    height: 150px;
-    object-fit: contain;
-    margin-bottom: 1rem;
+  background-color: var(--primary-color);
+  border-radius: 15px;
+  padding: 10px;
+  width: 250px;
+  height: 250px;
+  object-fit: contain;
+  margin-bottom: 1rem;
 }
 
 .menu-item h3 {
-  color: var(--primary-dark);
+  color: var(--primary-dark) !important;
   font-size: 1.4rem;
   margin-bottom: 0.5rem;
 }
@@ -601,10 +600,10 @@ section.active {
   line-height: 1.5;
 }
 
-.price {
+.menu-item .price {
   font-size: 1.5rem;
-  font-weight: bold;
-  color: var(--primary-color);
+  font-weight: 500 !important;
+  color: var(--primary-dark) !important;
   margin-bottom: 1rem;
 }
 
@@ -646,8 +645,6 @@ section.active {
 .typewriter-text {
   text-align: center;
   position: relative;
-  padding-bottom: 110px;
-  /* min-height: 400px; Reserve space to prevent layout shifts */
 }
 
 .typewriter-cursor {
@@ -707,7 +704,12 @@ section.active {
 }
 
 .about-section p {
-    background-color: #ffffffa8;
+  background-color: #ffffffa8;
+  margin: 1rem 0px;
+  font-size: 1.2rem;
+  color: var(--text-light);
+  line-height: 1.7;
+  text-align: center;
 }
 
 /* Scroll images for typewriter effect */
