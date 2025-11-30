@@ -1,12 +1,10 @@
 import { inject } from '@vercel/analytics';
-import './style.css?v=9'
+import './style.css?v=10'
 
 // BISCOIDINO - Main Application
 class BiscoidinoApp {
   private app: HTMLElement;
   private splashScreen: HTMLElement;
-  private typewriterRunning: boolean = false;
-  private activeEventListeners: Array<{element: any, event: string, handler: any, options?: any}> = [];
 
   constructor() {
     inject();
@@ -136,7 +134,29 @@ class BiscoidinoApp {
           <section id="about" class="about-section">
             <h2 class="trademark-name">HISTÓRIA</h2>
             <div class="about-content" id="aboutContent">
-              <div class="typewriter-text" id="typewriterText"></div>
+            <div class="typewriter-text" id="typewriterText">
+                <p>A Biscoidino nasceu de uma inesperada oportunidade de se reinventar.</p>
+                
+                <div class="about-row right">
+                  <img src="/about/tea.png" class="scroll-image" data-paragraph="1">
+                  <p class="right-p">Quando Micaela, que trabalhava com finanças há mais de 15 anos, viu sua rotina mudar radicalmente com o diagnóstico de TEA de seu filho Lucas.</p>
+                </div>
+                
+                <div class="about-row left">
+                  <p class="left-p">Imediatamente deixou seu emprego e passou a se dedicar em tempo integral ao tratamento e cuidados dele.</p>
+                  <img src="/about/mae_filho.png" class="scroll-image" data-paragraph="2" style="padding-top: 55px !important; padding-bottom: 0;">
+                </div>
+                
+                <div class="about-row right">
+                  <img src="/biscuits/biscoidino_biscuit1.png" class="scroll-image" data-paragraph="3">
+                  <p class="right-p">Lucas ama dinossauros, disso surgiu a ideia de assar biscoitos nesse formato para se tornarem mais atrativos para ele.</p>
+                </div> 
+                
+                <div class="about-row left">
+                  <p class="left-p">Sem nenhuma expectativa, levamos pra algumas pessoas experimentarem e rapidamente a receita se tornou um sucesso. 💚</p>
+                  <img src="/about/estoque.png" class="scroll-image" data-paragraph="4">
+                </div>  
+              </div>
             </div>
           </section>
 
@@ -159,6 +179,12 @@ class BiscoidinoApp {
                 </svg>
                 <span>@biscoidino</span>
               </a>
+
+              <div class="contact-link">
+                <svg viewBox="-30 0 162 162" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M27.5958 120.849C20.9996 122.189 12.5714 124.547 5.89444 130.952C2.54712 134.168 0.878113 138.021 1.20169 141.806C1.51148 145.436 3.66617 148.776 7.26881 151.209C11.1302 153.83 15.3871 155.815 19.8772 157.089C29.6068 159.807 39.6601 161.191 49.7622 161.207C57.3009 161.203 64.8192 160.424 72.1982 158.881C79.3523 157.39 87.632 155.139 94.7599 149.757C98.2037 147.158 100.23 143.963 100.621 140.516C101.015 137.037 99.7388 133.431 96.9271 130.08C93.0042 125.403 87.8171 122.195 81.0693 120.272C78.5444 119.55 75.921 119.068 73.3842 118.6C72.5507 118.446 71.7178 118.293 70.8849 118.13C71.9055 116.539 72.9307 114.954 73.9605 113.376C76.5622 109.372 79.2532 105.231 81.7302 101.058C89.1364 88.5795 97.8591 71.7897 99.5826 52.5642C101.399 32.303 95.0145 17.7991 80.0638 8.22578C69.6937 1.58496 58.122 -0.648498 45.6752 1.59158C26.8567 4.97632 14.5588 15.9805 9.12306 34.2989C5.88275 45.2216 7.06875 56.2665 8.46672 64.6696C10.756 78.4575 15.9286 92.2543 25.2401 109.405C26.6919 112.08 28.2257 114.63 29.8501 117.329C30.4159 118.268 30.983 119.214 31.5514 120.168L30.8295 120.285C29.7019 120.466 28.6426 120.637 27.5958 120.849ZM51.7895 127.563C51.3568 128.123 50.9212 128.686 50.4828 129.255C41.7279 121.787 36.1235 112.24 31.3723 103.015C25.2578 91.1438 18.7232 76.8586 16.6217 60.9068C14.8246 47.255 16.1694 37.1774 20.983 28.221C26.9629 17.0955 38.8498 10.0695 52.7806 9.42563C53.4627 9.39413 54.1411 9.37824 54.8153 9.37824C67.6341 9.37824 78.9684 15.0413 85.4208 24.7656C89.5275 30.9582 91.341 38.1747 91.131 47.475C90.8947 57.8307 88.0317 68.5074 82.1214 81.0723C75.4517 95.2564 66.7415 108.917 55.4939 122.834C54.239 124.385 53.0491 125.928 51.7895 127.563ZM34.7451 125.964C35.4474 125.995 36.1163 126.272 36.6354 126.747C40.5985 131.286 45.5055 134.904 51.0132 137.349C53.4239 138.412 55.5707 137.76 57.3888 135.412L58.6273 133.808C60.3049 131.63 62.0403 129.378 63.8472 127.264C64.3824 126.598 65.1522 126.161 65.9987 126.045C72.1936 126.548 78.7071 127.494 84.3654 130.981C86.7506 132.502 88.8876 134.381 90.7011 136.553C91.0949 136.944 91.404 137.412 91.6107 137.928C91.8175 138.443 91.9173 138.995 91.9035 139.55C91.8083 140.115 91.5989 140.655 91.2885 141.136C90.978 141.618 90.5731 142.032 90.0979 142.353C87.9549 144.058 85.6053 145.486 83.1033 146.602C73.7131 150.772 62.8882 152.85 49.0395 153.14C38.9923 152.77 29.2043 152.177 19.9158 149.047C16.8881 148.059 14.0059 146.671 11.3454 144.921C9.48011 143.663 8.44762 142.193 8.36033 140.668C8.27763 139.231 9.05342 137.771 10.603 136.446C13.9412 133.59 17.6803 131.24 21.7011 129.47C24.9119 128.071 28.4949 127.296 31.9603 126.547C32.809 126.364 33.6577 126.18 34.5004 125.987C34.5809 125.971 34.6629 125.963 34.7451 125.964Z" fill="#d12323"></path> <path d="M71.6559 44.1069C71.6559 43.927 71.6631 43.7473 71.6677 43.5681C71.6999 42.7805 71.6894 41.9917 71.6349 41.2053C71.4085 38.1778 70.4226 35.2566 68.7674 32.7113C67.1127 30.1662 64.8425 28.0794 62.1672 26.6444C59.5673 25.2742 56.6602 24.5922 53.7222 24.6635C50.7844 24.7349 47.9135 25.5573 45.3833 27.0521C39.4106 30.4401 35.6617 36.1457 34.5433 43.5518C33.0908 53.1685 39.9252 62.579 49.7769 64.529C51.1036 64.7941 52.453 64.9289 53.8061 64.9318C62.0976 64.9318 68.8665 59.6438 70.9274 51.0923C71.2463 49.6527 71.4885 48.197 71.6526 46.7316C71.7393 46.072 71.8246 45.4125 71.925 44.7562C71.9388 44.6664 71.9342 44.5746 71.9112 44.4866C71.8889 44.3987 71.8489 44.3162 71.7937 44.244C71.7543 44.1921 71.7077 44.1459 71.6559 44.1069ZM64.2051 44.9052L64.1913 45.1802C64.1775 45.4768 64.1585 45.8771 64.1257 46.2775C63.7812 50.4453 62.2557 53.6883 59.7144 55.6547C57.4546 57.4038 54.4993 58.0227 51.1625 57.4477C49.4206 57.0842 47.7699 56.3732 46.3093 55.357C44.8486 54.3408 43.6079 53.0401 42.6614 51.5333C41.7984 50.1604 41.244 48.6166 41.0368 47.0082C40.8296 45.3998 40.9747 43.7654 41.4617 42.2187C42.7186 37.9282 44.5755 33.7833 49.6102 32.5139C50.8258 32.2002 52.0755 32.0378 53.3309 32.0303C55.7094 31.9733 58.0361 32.7298 59.9263 34.1746C62.7512 36.4088 64.2707 40.22 64.2051 44.9023V44.9052Z" fill="#d12323"></path> </g>
+                </svg>
+                <span>São Paulo - SP</span>
+              </div>
             </div>
           </section>
 
@@ -181,6 +207,7 @@ class BiscoidinoApp {
     
     setTimeout(() => {
       initHomePhysics();
+      initializeGalleryCarousel();
     }, 100);
 
     // Initialize gallery carousel after DOM is ready (backup initialization)
@@ -195,7 +222,7 @@ class BiscoidinoApp {
   private loadMenu(): void {
     const menuItems = [
       {
-        name: "Biscoitos de Baunilha",
+        name: "BAUNILHA",
         description: "Deliciosos biscoitos artesanais com sabor suave de baunilha (150g)",
         price: "R$ 15,00",
         image: "/products/baunilha_package.png",
@@ -211,7 +238,7 @@ class BiscoidinoApp {
         ]
       },
       {
-        name: "Biscoitos de Parmesão",
+        name: "PARMESÃO",
         description: "Biscoitos salgados crocantes com queijo parmesão premium (150g)",
         price: "R$ 15,00",
         image: "/products/parmesao_biscuit_package1.png",
@@ -226,6 +253,8 @@ class BiscoidinoApp {
     // Armazenar os dados dos produtos globalmente para uso nos modais
     (window as any).menuItemsData = menuItems;
 
+    //openPhysicsView('${item.name.toLowerCase().includes('parmesão') ? 'parmesao' : 'baunilha'}')
+
     const menuGrid = document.getElementById('menuGrid');
     if (menuGrid) {
       menuGrid.innerHTML = menuItems.map((item, index) => `
@@ -234,16 +263,19 @@ class BiscoidinoApp {
             <img src="${item.image}" alt="${item.name}" class="menu-item-image">
             <div class="image-actions">
               <button class="action-button detail-button" onclick="openProductModal(${index})" title="Ver detalhes">
-                🔍
-              </button>
-              <button class="action-button physics-button" onclick="openPhysicsView('${item.name.toLowerCase().includes('parmesão') ? 'parmesao' : 'baunilha'}')" title="Ver dentro do pacote">
-                📦
+                <svg viewBox="0 -4.5 161 161" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M156.437 31.9991C152.685 24.4151 148.804 16.5752 143.055 9.92843C138.842 5.05579 134.537 2.62552 129.509 2.27831C128.17 2.18643 126.802 2.05097 125.481 1.9197C123.165 1.68999 120.77 1.45321 118.396 1.43418L116.405 1.41848C98.8406 1.27539 80.6778 1.1288 62.8141 1.26401C57.4636 1.3047 52.037 1.6723 46.7883 2.02738C44.0973 2.20985 41.3151 2.39838 38.5807 2.54015C31.8205 2.89129 26.7417 5.50343 23.0649 10.529C18.9641 16.1328 14.848 21.7253 10.7166 27.3064C8.38048 30.4703 6.0463 33.6353 3.71411 36.8015C2.1074 38.9838 0.597224 41.7239 1.57845 45.4848C1.85522 46.8724 1.92615 48.2935 1.78909 49.7019C1.7648 50.2513 1.74119 50.7987 1.73725 51.3428C1.71821 54.1722 1.67949 57.0024 1.64142 59.8319C1.56791 65.2139 1.49309 70.7788 1.5561 76.2553C1.62173 81.9733 1.77142 87.7845 1.91647 93.4041C2.06152 99.0237 2.21179 104.848 2.27677 110.569C2.30959 113.47 2.19798 116.431 2.08969 119.298C1.97745 122.283 1.86061 125.369 1.9059 128.411C1.984 133.539 3.64525 145.628 17.3614 147.145C17.9567 147.211 18.5428 147.328 19.1676 147.452C20.0086 147.641 20.8624 147.765 21.7221 147.826C38.9557 148.613 56.1899 149.384 73.4246 150.137L85.9679 150.691H85.9974C86.174 150.691 86.3433 150.622 86.4693 150.498C86.5953 150.375 86.6682 150.207 86.6721 150.03L86.6767 149.804C90.326 149.804 93.9752 149.806 97.6251 149.81C107.733 149.818 118.184 149.826 128.464 149.778C132.118 149.76 135.876 149.569 139.954 149.193C151.562 148.124 159.486 139.591 159.67 127.96C160.08 102.112 160.421 75.595 160.685 49.1465C160.726 44.9584 160.769 40.6273 158.624 36.3906C157.885 34.9289 157.161 33.4641 156.437 31.9991ZM96.5356 104.873L68.1752 105.982L64.7503 43.9641H96.5356V104.873ZM8.54942 61.9368C8.63015 59.2996 8.71081 56.6624 8.76266 54.0246C8.80336 51.9715 8.79351 49.9073 8.78235 47.7237C8.77841 46.8875 8.77448 46.0289 8.77316 45.1415L57.8903 43.9077C57.9257 44.0062 57.9598 44.0973 57.9919 44.184C58.0875 44.3965 58.1538 44.6211 58.1888 44.8515C58.3582 50.2435 58.5216 55.6353 58.6791 61.027C58.9843 71.2849 59.3001 81.8913 59.6775 92.3218C59.8744 97.7583 60.3253 103.269 60.7611 108.599L60.8878 110.155C61.1503 113.363 62.843 114.731 66.4307 114.655C68.3872 114.602 70.3687 114.465 72.2832 114.334C73.8959 114.222 75.5649 114.108 77.2005 114.044C81.7555 113.867 86.3893 113.722 90.8707 113.585C93.3832 113.505 95.8956 113.424 98.4094 113.342C102.653 113.201 104.548 111.439 104.95 107.259C105.331 103.438 105.52 99.5986 105.518 95.7577C105.475 83.775 105.374 71.5927 105.276 59.812C105.239 55.2829 105.202 50.7544 105.166 46.226C105.162 45.5618 105.163 44.8963 105.166 44.1737V43.6991H152.635C152.635 44.8135 152.639 45.9074 152.647 46.9807C152.66 49.757 152.671 52.3798 152.624 55.0222C152.524 60.4344 152.412 65.8462 152.288 71.258C152.156 77.1834 152.035 83.1088 151.923 89.0336C151.813 95.2661 151.718 101.499 151.638 107.731C151.551 113.963 151.456 120.194 151.354 126.424C151.189 135.683 146.432 140.918 137.591 141.563C127.456 142.303 117.385 142.668 107.691 142.655C84.4366 142.619 60.4105 142.382 36.2809 141.95C30.0331 141.725 23.8065 141.094 17.6409 140.058C12.2931 139.255 10.2034 137.128 9.35868 131.63C9.00118 128.84 8.83709 126.029 8.86774 123.218L8.7515 115.538C8.5546 102.654 8.34595 89.3309 8.28229 76.2278C8.258 71.4647 8.40568 66.6216 8.54942 61.9374V61.9368ZM11.9689 38.1452C14.1278 35.4127 16.2903 32.6839 18.4562 29.9592C22.7106 24.5989 27.1099 19.0562 31.386 13.5633C33.3793 11.0036 36.1412 10.4693 38.5795 10.2816C45.6023 9.74997 53.1442 9.20462 60.7164 8.81541C70.4153 8.31574 80.0156 8.0662 89.518 8.06712C101.896 8.06712 114.053 8.49112 125.876 9.33911C128.297 9.42935 130.663 10.0936 132.777 11.2773C134.891 12.461 136.694 14.1302 138.036 16.1473C142.351 22.2945 146.071 28.8383 149.146 35.6903L11.9689 38.1452Z" fill="#ffffff"></path> </g>
+                </svg>
               </button>
             </div>
           </div>
-          <h3>${item.name}</h3>
+          <h3 class="trademark-name">${item.name}</h3>
           <p>${item.description}</p>
-          <div class="price">${item.price}</div>
+          <div class="price trademark-name">${item.price}</div>
+          <a href="https://wa.me/5511953826504?text=Olá,%20gostaria%20de%20encomendar%20biscoitos!" target="_blank" class="get-cookie">
+            <svg width="140px" height="140px" viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M84.7925 257.334C1.81069 106.044 237.525 -11.6463 321.16 119.453C396.366 237.339 251.357 391.573 150.736 312.145" stroke="#219143" stroke-opacity="0.9" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M89.5909 265.912C34.5405 357.344 49.8143 347.445 133.267 311.303" stroke="#219143" stroke-opacity="0.9" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M170.381 113.42C60.1005 141.74 240.793 341.184 288.582 236.047" stroke="#219143" stroke-opacity="0.9" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M177.338 175.365C186.032 197.073 208.905 214.528 227.906 227.195" stroke="#219143" stroke-opacity="0.9" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M177.338 126.062C187.693 143.231 203.319 159.586 178.602 168.412" stroke="#219143" stroke-opacity="0.9" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M285.431 228.46C262.184 210.573 250.584 200.134 232.965 225.301" stroke="#219143" stroke-opacity="0.9" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"></path> </g>
+            </svg>
+            <span>Encomendar</span>
+          </a>
         </div>
       `).join('');
     }
@@ -267,32 +299,6 @@ class BiscoidinoApp {
         sections.forEach(section => {
           if (section.id === targetId) {
             section.classList.add('active');
-            
-            // Initialize gallery when gallery section becomes active
-            if (targetId === 'gallery') {
-              setTimeout(() => {
-                console.log('🎭 Gallery section activated, initializing carousel...');
-                initializeGalleryCarousel();
-              }, 50);
-            }
-            
-            // When about section becomes active, scroll to top and reset typewriter
-            if (targetId === 'about') {
-              // Smooth scroll to top of page first
-              window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-              });
-              
-              // Reset and restart typewriter after scrolling completes
-              setTimeout(() => {
-                console.log('📝 About section activated, resetting typewriter...');
-                this.resetAndRestartTypewriter();
-              }, 50); // Wait for smooth scroll to complete
-            }
-            else {
-              this.destroyTypewriterEffect();
-            }
           } else {
             section.classList.remove('active');
           }
@@ -308,656 +314,6 @@ class BiscoidinoApp {
         menuLink?.click();
       });
     }
-  }
-
-  private resetAndRestartTypewriter(): void {
-    console.log('🔄 Resetting typewriter effect...');
-    
-    // Get elements
-    const typewriterText = document.getElementById('typewriterText');
-    const aboutContent = document.getElementById('aboutContent');
-    
-    if (!typewriterText || !aboutContent) {
-      console.error('❌ Required elements not found for typewriter reset');
-      return;
-    }
-    
-    // Force stop any running typewriter
-    this.typewriterRunning = false;
-    
-    // Clear ALL tracked event listeners
-    this.activeEventListeners.forEach(({ element, event, handler }) => {
-      try {
-        element.removeEventListener(event, handler);
-        console.log(`🧹 Removed ${event} listener`);
-      } catch (e) {
-        console.warn(`⚠️ Could not remove ${event} listener:`, e);
-      }
-    });
-    this.activeEventListeners = [];
-    
-    // Clear all timeouts that might be running
-    for (let i = 1; i < 99999; i++) {
-      window.clearTimeout(i);
-    }
-    
-    // Clear all content
-    typewriterText.innerHTML = '';
-    
-    // Remove all scroll images from anywhere in the document
-    const scrollImages = document.querySelectorAll('.scroll-image');
-    scrollImages.forEach(img => img.remove());
-    
-    // Remove ALL scroll hints from anywhere in the document
-    const scrollHints = document.querySelectorAll('.scroll-hint-floating, .scroll-hint');
-    scrollHints.forEach(hint => {
-      console.log('🧹 Removing scroll hint:', hint);
-      hint.remove();
-    });
-    
-    // Also remove any orphaned elements that might be in body
-    const orphanedHints = document.body.querySelectorAll('[class*="scroll-hint"]');
-    orphanedHints.forEach(hint => {
-      console.log('🧹 Removing orphaned hint:', hint);
-      hint.remove();
-    });
-    
-    // Use a delay to ensure all cleanup is complete
-    setTimeout(() => {
-      this.initTypewriterEffect();
-    }, 300);
-    
-    console.log('✅ Typewriter effect reset and restarted');
-  }
-
-  //destroyTypewriterEffect code below
-  private destroyTypewriterEffect(): void {
-    console.log('🧨 Destroying typewriter effect...');
-
-    const existingHint = document.querySelector('.scroll-hint-floating');
-    if (existingHint) existingHint.remove();
-    
-    // Force stop any running typewriter
-    this.typewriterRunning = false;
-    // Clear ALL tracked event listeners
-    this.activeEventListeners.forEach(({ element, event, handler }) => {
-      try {
-        element.removeEventListener(event, handler);
-      } catch (e) {
-        console.warn(`⚠️ Could not remove ${event} listener:`, e);
-      }
-    });
-    this.activeEventListeners = [];
-  }
-
-  private initTypewriterEffect(): void {
-    // Prevent multiple instances running simultaneously
-    if (this.typewriterRunning) {
-      console.log('🚫 Typewriter already running, skipping initialization');
-      return;
-    }
-    
-    const typewriterText = document.getElementById('typewriterText');
-    const aboutContent = document.getElementById('aboutContent');
-    
-    if (!typewriterText || !aboutContent) return;
-    
-    this.typewriterRunning = true;
-    const self = this; // Store reference for inner functions
-    
-    // Helper function to track event listeners
-    const addTrackedListener = (element: any, event: string, handler: any, options?: any) => {
-      element.addEventListener(event, handler, options);
-      self.activeEventListeners.push({ element, event, handler, options });
-    };
-    
-    // Story content with images
-    const storyData = [
-      { 
-        text: "A Biscoidino nasceu de uma inesperada oportunidade de se reinventar.",
-        image: null
-      },
-      { 
-        text: "Quando Micaela, que trabalhava com finanças há mais de 15 anos, viu sua rotina mudar radicalmente com o diagnóstico de TEA de seu filho Lucas.",
-        image: "/about/mae_filho.png"
-      },
-      { 
-        text: "Imediatamente deixou seu emprego e passou a se dedicar em tempo integral ao tratamento e cuidados dele.",
-        image: "/about/tea.png"
-      },
-      // { 
-      //   text: "Um dos nossos desafios era a seletividade alimentar.",
-      //   image: "/about/fornada.png"
-      // },
-      { 
-        text: "Lucas ama dinossauros, disso surgiu a ideia de assar biscoitos nesse formato para se tornarem mais atrativos para ele.",
-        image: "/biscuits/biscoidino_biscuit1.png"
-      },
-      { 
-        text: "Sem nenhuma expectativa, levamos pra algumas pessoas experimentarem e rapidamente a receita se tornou um sucesso. 💚",
-        image: "/about/estoque.png"
-      }
-    ];
-    
-    // Clear any existing content
-    typewriterText.innerHTML = '';
-    
-    // State management
-    let currentParagraph = 0;
-    let currentChar = 0;
-    let currentScrollImage: HTMLImageElement | null = null;
-    let imageProgress = 0; // 0 to 1 (0 = right side, 1 = center)
-    let lastScrollY = window.scrollY; // Lock to current position
-    console.log('🔒 Initial scroll position locked at:', lastScrollY);
-    
-    // Control flags for progression
-    let paragraphCompleted = false;
-    let imageAtCenter = false;
-    let typingStarted = false; // Flag to track if we've started typing the current paragraph
-    let imageLocked = false; // Flag to prevent further image movement after reaching center
-    
-    const typeSpeed = 55;
-    const pauseBetweenParagraphs = 1000;
-    
-    function createScrollImage(imageSrc: string, paragraphIndex: number): HTMLImageElement {
-      console.log('🎨 Creating scroll image:', imageSrc, 'for paragraph:', paragraphIndex);
-      
-      // Remove any existing image for this paragraph to prevent duplicates
-      const existingImages = aboutContent?.querySelectorAll('.scroll-image');
-      existingImages?.forEach(img => {
-        const imgElement = img as HTMLImageElement;
-        if (imgElement.src.includes(imageSrc.split('/').pop() || '')) {
-          console.log('🗑️ Removing duplicate image');
-          imgElement.remove();
-        }
-      });
-      
-      const img = document.createElement('img');
-      img.src = imageSrc;
-      img.className = 'scroll-image';
-      img.style.opacity = '0.9';
-      img.dataset.paragraph = paragraphIndex.toString(); // Track which paragraph this image belongs to
-      
-      // Calculate vertical position based on paragraph index (starting from second paragraph)
-      const baseTopOffset = 70; // Start position in pixels from top of about-section (adjusted for larger images)
-      const verticalSpacing = isMobileDevice() ? 400 : 500; // Space between each image (increased for larger image sizes)
-      const topPosition = baseTopOffset + (paragraphIndex - 1) * verticalSpacing;
-      
-      // img.style.top = `${topPosition}px`;
-      
-      // Add to about-content container for relative positioning
-      if (typewriterText) {
-        typewriterText.appendChild(img);
-        console.log('✅ Image created and added to about-content at position:', topPosition);
-      }
-      
-      return img;
-    }
-    
-    function showScrollHint() {
-      // Remove existing hint first
-      const existingHint = document.querySelector('.scroll-hint-floating');
-      if (existingHint) existingHint.remove();
-      
-      if (!currentScrollImage) {
-        console.log('❌ No current image to show hint for');
-        return;
-      }
-      
-      // Get image position relative to its parent (aboutContent)
-      const aboutContentRect = aboutContent!.getBoundingClientRect();
-      const imageRect = currentScrollImage.getBoundingClientRect();
-      const imageRelativeTop = imageRect.bottom - aboutContentRect.top;
-      
-      // Create floating hint at same height as image
-      const scrollHint = document.createElement('div');
-      scrollHint.className = 'scroll-hint-floating';
-      // <span style="white-space: nowrap;color: var(--primary-dark); font-style: italic; font-size: 1rem;">Role para baixo para continuar a história...</span>
-      scrollHint.innerHTML = `
-        
-        <div class="scroll-ball">
-          <svg viewBox="0 -15.5 91 91" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M45.4294 49.6574C49.7395 44.2098 53.604 39.3621 57.4357 34.4856C63.7103 26.4986 69.8405 18.3922 76.2864 10.5477C78.9741 7.27712 82.2998 4.52502 85.3833 1.58791C86.7071 0.326427 88.4109 -0.774937 90.0065 0.720856C91.7786 2.38073 90.6629 4.19232 89.2846 5.57785C74.4514 20.4826 64.2741 38.9336 51.3705 55.3092C47.5677 60.1346 44.3654 60.7634 39.6608 56.6777C38.1526 55.4129 36.7389 54.0397 35.4308 52.569C26.2532 41.8805 16.9876 31.2622 8.06665 20.3624C5.20239 16.8628 3.23017 12.6177 1.00124 8.62848C0.621879 7.94851 0.775416 6.15672 1.08521 6.0504C2.22264 5.65659 3.88641 5.22532 4.71077 5.7727C7.95308 7.92746 11.3608 10.0744 13.9593 12.9097C20.2312 19.7534 26.0667 26.9954 32.111 34.0484C35.6657 38.1971 39.2913 42.2848 42.8663 46.4165C43.6467 47.3202 44.3523 48.2929 45.4294 49.6574Z" fill="#ffffff"></path> </g></svg>    
-        </div>
-      `;
-      
-      scrollHint.style.pointerEvents = 'none';
-      scrollHint.style.opacity = '0';
-      scrollHint.style.transition = 'opacity 0.4s ease-in-out';
-      
-      if (typewriterText) typewriterText.appendChild(scrollHint);
-      
-      // Fade in after a brief moment
-      setTimeout(() => {
-        scrollHint.style.opacity = '1';
-      }, 50);
-      
-      console.log('📝 Scroll hint shown at image position:', imageRelativeTop + 20);
-    }
-    
-    function hideScrollHint() {
-      const scrollHint = document.querySelector('.scroll-hint-floating') as HTMLElement;
-      if (scrollHint) {
-        // Fade out smoothly
-        scrollHint.style.opacity = '0';
-        
-        // Remove after fade completes
-        setTimeout(() => {
-          if (scrollHint.parentNode) {
-            scrollHint.remove();
-          }
-        }, 400); // Match the transition duration
-        
-        console.log('📝 Scroll hint fading out');
-      }
-    }
-    
-    let scrollTimeout: number | null = null;
-    
-    // Function to detect if device is mobile
-    function isMobileDevice(): boolean {
-      return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) 
-             || window.innerWidth <= 768;
-    }
-    
-    // Function to get the appropriate center position based on device
-    function getCenterPosition(): number {
-      return isMobileDevice() ? 0 : 0;
-    }
-    
-    function updateImagePosition(progress: number) {
-      if (!currentScrollImage) return;
-      
-      // Move from right (120%) to center (mobile: 30%, desktop: 40%) based on progress
-      const startPosition = 120;
-      const centerPosition = getCenterPosition();
-      const currentPosition = startPosition - (progress * (startPosition - centerPosition));
-      
-      currentScrollImage.style.right = `${currentPosition}%`;
-      
-      console.log('🖼️ Image position:', { progress, currentPosition, centerPosition, isMobile: isMobileDevice(), isAtCenter: progress >= 1 });
-    }
-
-    // Handle wheel events for more precise control when image is active
-    function handleWheel(e: WheelEvent) {
-      // Prevent default scroll behavior when we have an active image
-      e.preventDefault();
-      e.stopPropagation();
-
-      // ALWAYS hide scroll hint when user wheels (regardless of image state)
-      hideScrollHint();
-      
-      // Clear any existing timeout and set a new one to show hint again if user stops
-      if (scrollTimeout) clearTimeout(scrollTimeout);
-      scrollTimeout = setTimeout(() => {
-        if (currentScrollImage && !imageLocked) {
-          showScrollHint();
-        }
-      }, 500); // Show hint again after 0.5 seconds of no wheel activity
-      
-
-      if (currentScrollImage && !imageLocked) {  
-        // Use wheel delta for image movement
-        const wheelSensitivity = 0.001;
-        const progressChange = e.deltaY * wheelSensitivity;
-        
-        const oldProgress = imageProgress;
-        imageProgress = Math.max(0, Math.min(1, imageProgress + progressChange));
-        
-        console.log('🎡 WHEEL controlling image:', { wheelDelta: e.deltaY, progressChange, oldProgress, newProgress: imageProgress });
-        
-        updateImagePosition(imageProgress);
-        
-        // Update imageAtCenter flag
-        const wasAtCenter = imageAtCenter;
-        imageAtCenter = imageProgress >= 1;
-        
-        // If image just reached center for the first time AND we haven't started typing yet
-        if (imageAtCenter && !wasAtCenter && !typingStarted) {
-          typingStarted = true;
-          imageLocked = true; // Lock the image at center position - no more movement
-          // Force image to exact center position when locking
-          if (currentScrollImage) {
-            currentScrollImage.style.right = `${getCenterPosition()}%`;
-          }
-          console.log('🔒 Image reached center and locked - starting to type paragraph');
-          setTimeout(() => typeNextChar(), pauseBetweenParagraphs);
-        }
-        
-        // Check if both conditions are met for progression (only if we've already started typing)
-        if (typingStarted) {
-          checkForProgression();
-        }
-        
-        return false;
-      }
-    }
-
-    // Touch handling for mobile devices
-    let touchStartY = 0;
-    let touchLastY = 0;
-    
-    function handleTouchStart(e: TouchEvent) {
-      if (currentScrollImage && !imageLocked) {
-        touchStartY = e.touches[0].clientY;
-        touchLastY = touchStartY;
-        console.log('👆 TOUCH START:', { touchStartY });
-      }
-    }
-    
-    function handleTouchMove(e: TouchEvent) {
-      // Prevent default scroll behavior when we have an active image
-      e.preventDefault();
-      e.stopPropagation();
-  
-      // ALWAYS hide scroll hint when user starts touching (regardless of image state)
-      hideScrollHint();
-      
-      // Clear any existing timeout and set a new one to show hint again if user stops
-      if (scrollTimeout) clearTimeout(scrollTimeout);
-      scrollTimeout = setTimeout(() => {
-        if (currentScrollImage && !imageLocked) {
-          showScrollHint();
-        }
-      }, 500); // Show hint again after 0.5 seconds of no touching
-      
-      if (currentScrollImage && !imageLocked) {
-        const touchCurrentY = e.touches[0].clientY;
-        const touchDelta = touchLastY - touchCurrentY; // Inverted for natural scroll direction
-        
-        // Use touch delta for image movement (similar to wheel)
-        const touchSensitivity = 0.003;
-        const progressChange = touchDelta * touchSensitivity;
-        
-        const oldProgress = imageProgress;
-        imageProgress = Math.max(0, Math.min(1, imageProgress + progressChange));
-        
-        console.log('👆 TOUCH controlling image:', { touchDelta, progressChange, oldProgress, newProgress: imageProgress });
-        
-        updateImagePosition(imageProgress);
-        
-        // Update imageAtCenter flag
-        const wasAtCenter = imageAtCenter;
-        imageAtCenter = imageProgress >= 1;
-        
-        // If image just reached center for the first time AND we haven't started typing yet
-        if (imageAtCenter && !wasAtCenter && !typingStarted) {
-          // Remove scroll hint when image reaches center
-          const scrollHint = document.querySelector('.scroll-hint');
-          if (scrollHint) {
-            scrollHint.remove();
-            console.log('📝 Scroll hint removed - image reached center');
-          }
-          
-          typingStarted = true;
-          imageLocked = true; // Lock the image at center position - no more movement
-          // Force image to exact center position when locking
-          if (currentScrollImage) {
-            currentScrollImage.style.right = `${getCenterPosition()}%`;
-          }
-          console.log('🔒 Image reached center and locked - starting to type paragraph');
-          setTimeout(() => typeNextChar(), pauseBetweenParagraphs);
-        }
-        
-        // Check if both conditions are met for progression (only if we've already started typing)
-        if (typingStarted) {
-          checkForProgression();
-        }
-        
-        touchLastY = touchCurrentY;
-        return false;
-      }
-    }
-    
-    function handleTouchEnd(_e: TouchEvent) {
-      if (currentScrollImage && !imageLocked) {
-        console.log('👆 TOUCH END');
-        // Reset touch tracking
-        touchStartY = 0;
-        touchLastY = 0;
-      }
-    }
-    
-    function checkForProgression() {
-      // Only advance if BOTH conditions are true: paragraph completed AND image at center
-      if (paragraphCompleted && (currentParagraph == 0 || imageAtCenter) && currentParagraph < storyData.length - 1) {
-        console.log('🎯 Both conditions met - advancing to next paragraph');
-        console.log('   📝 Paragraph completed:', paragraphCompleted);
-        console.log('   🖼️ Image at center:', imageAtCenter);
-        
-        // Remove scroll hint if it exists
-        const scrollHint = document.querySelector('.scroll-hint');
-        if (scrollHint) {
-          scrollHint.remove();
-          console.log('📝 Scroll hint removed - advancing to next paragraph');
-        }
-        
-        // Lock current image at center
-        if (currentScrollImage) {
-          currentScrollImage.style.right = `${getCenterPosition()}%`;
-          console.log('🔒 Image locked at center position');
-        }
-        
-        // Reset flags
-        paragraphCompleted = false;
-        imageAtCenter = false;
-        typingStarted = false; // Reset typing flag for the new paragraph
-        imageLocked = false; // Unlock for the new image
-        
-        // Advance to next paragraph
-        currentParagraph++;
-        currentChar = 0;
-        currentScrollImage = null;
-        imageProgress = 0;
-        
-        // Create image for the NEW current paragraph (if it has one)
-        const currentStoryItem = storyData[currentParagraph];
-        if (currentStoryItem && currentStoryItem.image) {
-          currentScrollImage = createScrollImage(currentStoryItem.image, currentParagraph);
-          imageProgress = 0;
-          updateImagePosition(0);
-          console.log('🖼️ Created image for current paragraph:', currentStoryItem.text.substring(0, 30) + '...');
- 
-          // Scroll to position where image is visible (with some offset for better view)
-          const aboutContentRect = aboutContent!.getBoundingClientRect();
-          const imageRect = currentScrollImage.getBoundingClientRect();
-          const imageRelativeTop = imageRect.bottom - aboutContentRect.top;
-          const targetScrollY = imageRelativeTop - 300;
-          
-          // Smooth scroll with longer duration for better UX
-          window.scrollTo({
-            top: currentParagraph <= 1 ? 200 : targetScrollY,
-            behavior: 'smooth'
-          });
-          
-          // Update locked scroll position
-          lastScrollY = targetScrollY;
-
-          setTimeout(() => {
-            showScrollHint();
-          }, 800); // Show hint after scroll completes
-        } else {
-          // No image for this paragraph, start typing immediately
-          setTimeout(() => typeNextChar(), pauseBetweenParagraphs);
-        }
-      } else {
-        console.log('⏳ Waiting for conditions:', { 
-          paragraphCompleted, 
-          imageAtCenter, 
-          canProgress: currentParagraph < storyData.length - 1 
-        });
-      }
-    }
-    
-    function typeNextChar() {
-      if (currentParagraph >= storyData.length) {
-        // Finished typing, cleanup
-        setTimeout(() => {
-          const cursor = document.querySelector('.typewriter-cursor');
-          if (cursor) cursor.remove();
-
-          // DON'T remove the last image - let it stay visible
-          // Keep the last image locked at center position
-          if (currentScrollImage) {
-            currentScrollImage.style.right = `${getCenterPosition()}%`;
-            console.log('🔒 Last image locked at center - keeping visible');
-            currentScrollImage = null; // Clear reference but don't remove from DOM
-          }
-          
-          // Mark typewriter as no longer running
-          self.typewriterRunning = false;
-          console.log('✅ Typewriter finished and flag cleared');
-
-          // Remove scroll event listeners
-          window.removeEventListener('wheel', handleWheel);
-          window.removeEventListener('touchstart', handleTouchStart);
-          window.removeEventListener('touchmove', handleTouchMove);
-          window.removeEventListener('touchend', handleTouchEnd);
-          console.log('🧹 Removed scroll and touch event listeners after completion');
-        }, 2000);
-        return;
-      }
-      
-      const currentStoryItem = storyData[currentParagraph];
-      const currentText = currentStoryItem.text;
-      
-      if (currentChar === 0) {
-        // Start new paragraph
-        const p = document.createElement('p');
-        
-        // Calculate position based on paragraph index and corresponding image
-        if (currentParagraph > 0) {
-          // For paragraphs with images, position them below the actual image
-          const positionParagraph = () => {
-            let paragraphTopPosition = 0;
-            
-            if (currentScrollImage) {
-              // Get the image's top position (from its style.top)
-              const imageTop = parseInt(currentScrollImage.style.top) || 0;
-              
-              if (currentScrollImage.complete && currentScrollImage.naturalHeight > 0) {
-                // Image is loaded, use actual height
-                const imageHeight = currentScrollImage.offsetHeight;
-                paragraphTopPosition = imageTop + imageHeight + 20; // 20px below the image
-                
-                console.log('📍 Positioning paragraph below loaded image:', {
-                  imageTop,
-                  imageHeight,
-                  paragraphTop: paragraphTopPosition
-                });
-              } else {
-                // Image not loaded yet, estimate height
-                const estimatedImageHeight = 150; // Reasonable estimate
-                paragraphTopPosition = imageTop + estimatedImageHeight + 20; // 20px below estimated image
-                
-                console.log('📍 Using estimated paragraph position:', {
-                  imageTop,
-                  estimatedHeight: estimatedImageHeight,
-                  paragraphTop: paragraphTopPosition
-                });
-              }
-            } else {
-              // Fallback - no current image
-              const baseTopOffset = 80;
-              const verticalSpacing = isMobileDevice() ? 400 : 500;
-              const imageTopPosition = baseTopOffset + (currentParagraph - 1) * verticalSpacing;
-              paragraphTopPosition = imageTopPosition + 170; // Estimated image + spacing
-              
-              console.log('📍 Using fallback paragraph position:', paragraphTopPosition);
-            }
-            
-            // p.style.top = `${paragraphTopPosition}px`;
-          };
-          
-          // p.style.position = 'absolute';
-          p.style.left = '50%';
-          // p.style.transform = 'translateX(-50%)';
-          // p.style.width = '80%';
-          
-          // Position immediately, and also when image loads (if not loaded yet)
-          positionParagraph();
-          
-          if (currentScrollImage && !currentScrollImage.complete) {
-            addTrackedListener(currentScrollImage, 'load', positionParagraph, { once: true });
-          }
-        }
-        
-        p.style.margin = '1rem 0';
-        p.style.fontSize = '1.2rem';
-        p.style.color = 'var(--text-light)';
-        p.style.lineHeight = '1.7';
-        p.style.textAlign = 'center';
-        if (typewriterText) typewriterText.appendChild(p);
-      }
-      
-      if (currentChar < currentText.length) {
-        // Remove previous cursor
-        const existingCursor = document.querySelector('.typewriter-cursor');
-        if (existingCursor) existingCursor.remove();
-        
-        // Add next character
-        const currentP = typewriterText?.lastElementChild as HTMLParagraphElement;
-        const textContent = currentText.substring(0, currentChar + 1);
-        
-        // Create cursor
-        const cursor = document.createElement('span');
-        cursor.className = 'typewriter-cursor';
-        cursor.textContent = '|';
-        
-        currentP.innerHTML = textContent + cursor.outerHTML;
-        
-        currentChar++;
-        setTimeout(typeNextChar, typeSpeed);
-      } else {
-        // Finished current paragraph
-        const existingCursor = document.querySelector('.typewriter-cursor');
-        if (existingCursor) existingCursor.remove();
-        
-        console.log(`✅ Finished paragraph ${currentParagraph}: "${currentText}"`);
-        
-        if (currentParagraph < storyData.length - 1) {
-          // Middle paragraphs - set flag that paragraph is completed
-          paragraphCompleted = true;
-          console.log('📝 Paragraph completed, waiting for image to reach center');
-          
-          // Check if we can advance immediately
-          checkForProgression();
-        } else {
-          // Last paragraph - finish and ensure image is at center
-          if (currentScrollImage) {
-            currentScrollImage.style.right = `${getCenterPosition()}%`;
-            console.log('🔒 Final image repositioned to center');
-          }
-          currentParagraph = storyData.length; // Trigger completion
-          setTimeout(typeNextChar, pauseBetweenParagraphs);
-        }
-      }
-    }
-    
-    currentParagraph = 0; // First paragraph
-    currentChar = 0;
-    
-    // Reset progression flags
-    paragraphCompleted = false;
-    imageAtCenter = false;
-    typingStarted = false; // Reset typing flag - we'll wait for image to reach center
-    imageLocked = false; // Unlock for the new image
-    
-    // Create image for the SECOND paragraph (we're about to type it)
-    const currentStoryItem = storyData[currentParagraph];
-    if (currentStoryItem.image) {
-      currentScrollImage = createScrollImage(currentStoryItem.image, currentParagraph);
-      imageProgress = 0;
-      updateImagePosition(0);
-    }
-    
-    addTrackedListener(window, 'wheel', handleWheel, { passive: false });
-    addTrackedListener(window, 'touchstart', handleTouchStart, { passive: false });
-    addTrackedListener(window, 'touchmove', handleTouchMove, { passive: false });
-    addTrackedListener(window, 'touchend', handleTouchEnd, { passive: false });
-    lastScrollY = window.scrollY;
-
-    // Start typing first paragraph
-    setTimeout(typeNextChar, 500);
   }
 
   private renderGalleryCarousel(): string {
@@ -1013,11 +369,11 @@ class BiscoidinoApp {
               </div>
             `).join('')}
           </div>
-          <button class="gallery-nav-btn prev" onclick="galleryPrevSlide()">‹</button>
-          <button class="gallery-nav-btn next" onclick="galleryNextSlide()">›</button>
+          <button class="gallery-nav-btn prev" onclick="galleryPrevSlide()"><svg viewBox="-16.5 0 93 93" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M10.7064 48.1102C17.149 53.632 23.1985 59.3212 29.7705 64.3264C38.6199 71.0663 47.8545 77.3022 56.9606 83.7028C59.4671 85.465 60.3893 87.9492 59.0937 90.1007C57.7619 92.3106 54.8812 92.8397 52.5066 91.0623C40.8894 82.3658 29.2283 73.7159 17.7673 64.8127C12.7745 60.9344 8.23591 56.4772 3.4663 52.3075C-0.143558 49.1571 -0.122472 46.0926 3.55171 43.0531C16.0899 32.683 28.6195 22.303 41.1402 11.9132C45.2489 8.48711 49.1474 4.8116 53.2534 1.37829C54.2138 0.544365 55.4274 0.0587681 56.6979 0C58.5672 0.0656338 59.2918 2.26633 58.0047 4.03385C56.7172 5.79958 55.2582 7.4337 53.6492 8.9124C40.2941 21.1724 26.9112 33.4021 13.5004 45.6017C12.703 46.3309 11.8937 47.0457 10.7064 48.1102Z" fill="#ffffff"></path> </g></svg></button>
+          <button class="gallery-nav-btn next" onclick="galleryNextSlide()"><svg viewBox="-15 0 91 91" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M50.4346 45.4919C44.987 41.1817 40.1398 37.3172 35.2626 33.4855C27.2756 27.2103 19.1692 21.0806 11.3247 14.6347C8.05416 11.9437 5.30221 8.62145 2.3651 5.53797C1.10427 4.21414 0.00225389 2.50952 1.49805 0.913964C3.15793 -0.858149 4.96936 0.25769 6.35488 1.636C21.2597 16.4653 39.7113 26.6458 56.0863 39.5501C60.9117 43.3529 61.5404 46.5544 57.4547 51.2597C56.19 52.7677 54.8172 54.1815 53.3468 55.4898C42.6584 64.6667 32.0394 73.9329 21.1403 82.8538C17.6407 85.7181 13.3954 87.6905 9.40551 89.9187C8.72554 90.2987 6.9344 90.1445 6.82807 89.8354C6.43427 88.6973 6.00249 87.0334 6.55054 86.2097C8.70464 82.9667 10.8522 79.5598 13.6876 76.9607C20.5305 70.6887 27.7726 64.8532 34.8263 58.809C38.9743 55.2543 43.0627 51.6292 47.1936 48.0535C48.0974 47.2711 49.0701 46.5657 50.4346 45.4919Z" fill="#ffffff"></path> </g></svg></button>
           <div class="gallery-indicators" id="galleryIndicators">
             ${galleryData.map((_, index) => `
-              <span class="gallery-indicator ${index === 0 ? 'active' : ''}" onclick="galleryGoToSlide(${index})"></span>
+              <span class="dot ${index === 0 ? 'active' : ''}" onclick="galleryGoToSlide(${index})"></span>
             `).join('')}
           </div>
         </div>
@@ -1047,8 +403,8 @@ preloadLogo.src = '/biscoidino_logo.png';
     <div id="productModal" class="modal">
       <div class="modal-content">
         <div class="modal-header">
-          <h2>${product.name}</h2>
-          <button class="close-modal" onclick="closeProductModal()">&times;</button>
+          <h2 class="trademark-name">${product.name}</h2>
+          <button class="close-modal" onclick="closeProductModal()"><svg viewBox="0 -1.5 130 130" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g clip-path="url(#clip0)"> <path d="M62.3649 76.0626C51.1451 86.1072 40.1732 95.8365 29.311 105.687C23.0183 111.394 16.9509 117.348 10.6729 123.069C9.0008 124.632 7.07937 125.903 4.98785 126.828C3.95649 127.261 1.72933 126.828 1.22143 126.035C0.549397 124.982 0.748089 123.114 1.11261 121.74C1.37779 120.738 2.45753 119.908 3.27208 119.104C18.7627 103.852 34.2604 88.6091 49.7649 73.3765C51.5045 71.6681 53.2942 70.0117 55.293 68.1144C48.5175 60.6052 41.7314 53.3593 35.2529 45.844C24.9134 33.8442 14.7813 21.6659 4.56355 9.56215C4.19212 9.12226 3.87261 8.64079 3.49773 8.20091C1.70969 6.08722 0.449103 3.80904 2.48505 1.24507C4.00964 -0.674661 7.65428 -0.387934 10.1921 2.22366C16.5124 8.7258 22.6693 15.3855 28.7745 22.0963C39.9226 34.3429 50.9837 46.6692 62.092 58.9522C62.5675 59.399 63.0731 59.8124 63.6053 60.1895C72.1948 51.9798 80.6892 43.7969 89.2545 35.6841C99.1881 26.2803 109.157 16.9135 119.16 7.58361C122.912 4.07666 125.921 3.44455 128.224 5.49071C130.61 7.61046 130.388 11.1519 126.582 14.9489C116.293 25.2161 105.755 35.2339 95.2268 45.2629C87.2065 52.9054 79.0583 60.4164 70.5224 68.3992C77.4586 75.5733 84.0927 82.724 91.0479 89.5439C97.7284 96.0945 104.782 102.265 111.594 108.681C114.257 111.095 116.751 113.69 119.058 116.449C120.918 118.763 121.193 121.636 118.906 123.919C116.652 126.17 114.043 125.375 111.869 123.67C107.71 120.58 103.724 117.264 99.9275 113.736C88.3069 102.355 76.8913 90.7657 65.4012 79.2517C64.4925 78.3424 63.6243 77.3883 62.3649 76.0626Z" fill="#ffffff"></path> </g> <defs> <clipPath id="clip0"> <rect width="129" height="127" fill="white" transform="translate(0.777344)"></rect> </clipPath> </defs> </g></svg></button>
         </div>
         <div class="carousel-container">
           <div class="carousel">
@@ -1059,12 +415,12 @@ preloadLogo.src = '/biscoidino_logo.png';
                 </div>
               `).join('')}
             </div>
-            <button class="carousel-btn prev" onclick="changeCarouselImage(-1)" title="Imagem anterior">‹</button>
-            <button class="carousel-btn next" onclick="changeCarouselImage(1)" title="Próxima imagem">›</button>
+            <button class="gallery-nav-btn prev" onclick="changeCarouselImage(-1)" title="Imagem anterior"><svg viewBox="-16.5 0 93 93" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M10.7064 48.1102C17.149 53.632 23.1985 59.3212 29.7705 64.3264C38.6199 71.0663 47.8545 77.3022 56.9606 83.7028C59.4671 85.465 60.3893 87.9492 59.0937 90.1007C57.7619 92.3106 54.8812 92.8397 52.5066 91.0623C40.8894 82.3658 29.2283 73.7159 17.7673 64.8127C12.7745 60.9344 8.23591 56.4772 3.4663 52.3075C-0.143558 49.1571 -0.122472 46.0926 3.55171 43.0531C16.0899 32.683 28.6195 22.303 41.1402 11.9132C45.2489 8.48711 49.1474 4.8116 53.2534 1.37829C54.2138 0.544365 55.4274 0.0587681 56.6979 0C58.5672 0.0656338 59.2918 2.26633 58.0047 4.03385C56.7172 5.79958 55.2582 7.4337 53.6492 8.9124C40.2941 21.1724 26.9112 33.4021 13.5004 45.6017C12.703 46.3309 11.8937 47.0457 10.7064 48.1102Z" fill="#ffffff"></path> </g></svg></button>
+            <button class="gallery-nav-btn next" onclick="changeCarouselImage(1)" title="Próxima imagem"><svg viewBox="-15 0 91 91" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M50.4346 45.4919C44.987 41.1817 40.1398 37.3172 35.2626 33.4855C27.2756 27.2103 19.1692 21.0806 11.3247 14.6347C8.05416 11.9437 5.30221 8.62145 2.3651 5.53797C1.10427 4.21414 0.00225389 2.50952 1.49805 0.913964C3.15793 -0.858149 4.96936 0.25769 6.35488 1.636C21.2597 16.4653 39.7113 26.6458 56.0863 39.5501C60.9117 43.3529 61.5404 46.5544 57.4547 51.2597C56.19 52.7677 54.8172 54.1815 53.3468 55.4898C42.6584 64.6667 32.0394 73.9329 21.1403 82.8538C17.6407 85.7181 13.3954 87.6905 9.40551 89.9187C8.72554 90.2987 6.9344 90.1445 6.82807 89.8354C6.43427 88.6973 6.00249 87.0334 6.55054 86.2097C8.70464 82.9667 10.8522 79.5598 13.6876 76.9607C20.5305 70.6887 27.7726 64.8532 34.8263 58.809C38.9743 55.2543 43.0627 51.6292 47.1936 48.0535C48.0974 47.2711 49.0701 46.5657 50.4346 45.4919Z" fill="#ffffff"></path> </g></svg></button>
             <div class="zoom-controls">
-              <button class="zoom-btn" onclick="zoomImage(-1)" title="Diminuir zoom">🔍-</button>
-              <button class="zoom-btn" onclick="zoomImage(1)" title="Aumentar zoom">🔍+</button>
-              <button class="zoom-btn" onclick="resetZoom()" title="Resetar zoom">⌂</button>
+              <button class="zoom-btn" onclick="zoomImage(-1)" title="Diminuir zoom"><svg viewBox="0 -2.5 159 159" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g clip-path="url(#clip0)"> <path d="M154.779 142.458C152.264 139.504 149.475 136.556 146.256 133.445C133.915 121.518 121.335 109.429 109.168 97.7371L99.3713 88.3217C98.2692 87.2632 97.1522 86.2183 96.0644 85.2027L95.0052 84.2098L95.0384 84.1449C95.0878 84.0383 95.145 83.9363 95.2107 83.8388C95.5611 83.4405 95.9363 83.0474 96.3251 82.6698C103.581 75.5995 107.548 66.75 108.116 56.3616C109.1 38.3741 102.984 23.1158 89.9375 11.0102C83.6325 5.0228 75.4834 1.34732 66.8194 0.583593C58.1679 -0.273856 49.4329 0.718459 41.1947 3.49464C28.7946 7.74168 18.6429 15.4963 10.1597 27.2035C2.62383 37.6047 -0.36515 49.0865 1.27662 61.3305C2.42423 69.8859 5.9945 77.9192 12.5135 86.6121C17.0161 92.6168 22.6508 96.741 29.2595 98.8717C34.5154 100.57 39.9921 101.49 45.5147 101.601C59.5592 101.895 73.3358 98.1342 86.5005 90.4602C87.072 90.1268 87.6475 89.798 88.2158 89.4731L88.5194 89.299C89.5994 90.503 90.6657 91.698 91.7178 92.8832C94.2815 95.7631 96.7029 98.4818 99.2374 101.2C112.215 115.117 126.291 128.354 139.903 141.155C142.434 143.538 144.964 145.921 147.492 148.303C149.068 149.708 150.76 150.976 152.55 152.095L153.476 152.714C154.148 153.178 154.941 153.439 155.758 153.464C156.139 153.474 156.517 153.395 156.861 153.233C157.206 153.071 157.508 152.83 157.743 152.531C158.493 151.578 158.978 149.711 158.483 148.553C157.554 146.35 156.307 144.296 154.779 142.458ZM53.347 12.2655C54.7775 12.1091 56.2064 11.9506 57.6338 11.7899C77.4405 11.1141 89.2606 24.6466 93.7132 37.5332C96.8017 46.4743 97.435 54.045 95.7074 61.3597C94.604 66.2497 92.1963 70.7501 88.7405 74.3824C83.8561 79.5586 77.7045 83.395 69.3812 86.4536C59.5607 90.1697 48.9678 91.3796 38.5614 89.9741C30.3428 88.8805 24.1268 85.2144 19.5545 78.7633C15.2983 72.7586 12.7222 67.4362 11.4458 62.0121C9.67648 54.7328 10.1844 47.0861 12.901 40.1044C17.4004 28.4225 25.2393 19.987 36.2005 15.0336C38.1563 14.1499 40.4606 13.8348 42.6889 13.5294L42.7877 13.5164C46.2956 13.0362 49.8808 12.6443 53.3483 12.2655H53.347Z" fill="#ffffff"></path> <path d="M24.17 48.4609C22.3241 48.663 21.2195 49.8962 21.3554 51.6045C21.449 52.7741 22.0881 54.1725 24.5998 54.1738C28.7891 54.1738 32.979 54.177 37.1488 54.177H47.8083C50.3549 54.0904 52.8907 54.0081 55.4157 53.9302C62.0478 53.719 68.9106 53.5007 75.6266 53.1862C77.5896 53.0291 79.533 52.6845 81.4303 52.1569C81.8159 52.0633 82.2008 51.9692 82.5851 51.8788C82.9934 51.7938 83.3803 51.6264 83.7223 51.3867C84.0637 51.147 84.3524 50.8402 84.5708 50.485C84.7366 50.1976 84.8394 49.8784 84.8732 49.5484C84.907 49.2183 84.8706 48.8849 84.7659 48.57C84.55 48.0316 84.2171 47.5479 83.7906 47.1545C83.3641 46.7611 82.8549 46.4677 82.3003 46.2958C80.8296 45.9733 79.3185 45.871 77.8172 45.9923C75.4764 46.0989 73.0999 46.2411 70.8021 46.3789C67.9769 46.5478 65.0563 46.722 62.1844 46.8337C57.0172 47.0326 51.7603 47.1983 46.677 47.3588C42.1815 47.5011 37.6859 47.6421 33.1911 47.8078C30.1279 47.9202 27.0934 48.1399 24.17 48.4609Z" fill="#ffffff"></path> </g> <defs> <clipPath id="clip0"> <rect width="158" height="154" fill="white" transform="translate(0.777344)"></rect> </clipPath> </defs> </g></svg></button>
+              <button class="zoom-btn" onclick="zoomImage(1)" title="Aumentar zoom"><svg viewBox="0 -2.5 159 159" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g clip-path="url(#clip0)"> <path d="M14.5584 89.0236C18.4681 93.6319 23.5945 97.0394 29.3482 98.8536C34.6977 100.546 40.2627 101.455 45.8709 101.552C54.1115 101.739 62.3897 100.355 71.1899 97.3279C77.2152 95.2655 82.9732 92.487 88.3413 89.0516C88.4689 89.3108 88.6249 89.5558 88.8062 89.7806C98.6488 101.542 109.39 112.293 118.602 121.262C127.92 130.332 137.524 139.404 146.562 147.919C147.982 149.195 149.492 150.368 151.078 151.428C151.532 151.749 151.991 152.069 152.442 152.396C153.183 152.982 154.089 153.318 155.032 153.359C155.728 153.357 156.402 153.119 156.946 152.684C158.44 151.526 158.732 149.642 157.689 147.883L157.16 146.983C156.104 145 154.817 143.151 153.326 141.473C147.01 134.934 140.206 128.106 133.102 121.18C125.232 113.508 117.189 105.75 109.411 98.2487C105.177 94.166 100.946 90.0815 96.7192 85.9936C96.1603 85.453 95.6391 84.8598 95.1353 84.286C95.011 84.1437 94.8873 84.0033 94.7649 83.8656L94.9656 83.6434C95.2557 83.3185 95.5484 82.9975 95.8554 82.6953C103.119 75.6263 107.098 66.7872 107.68 56.4243C108.692 38.4186 102.638 23.1455 89.6882 11.0282C83.3403 4.94621 75.1088 1.22828 66.3631 0.493103C57.8576 -0.323972 49.2761 0.660071 41.1736 3.38146C28.8548 7.59665 18.375 15.6449 10.0269 27.3015C2.58018 37.6942 -0.35512 49.0752 1.29352 61.1269C2.63393 70.9822 6.97568 80.1072 14.5584 89.0236ZM53.5404 12.2042C54.8614 12.0795 56.1823 11.9565 57.5033 11.8352C77.2088 11.0633 88.9506 24.6094 93.3707 37.5369C96.3915 46.3741 97.0319 53.8414 95.3872 61.0456C94.3058 66.0536 91.8672 70.6638 88.3407 74.3696C84.2411 78.6452 79.334 82.0585 73.9057 84.4095C61.8295 89.8287 50.0896 91.6046 38.0182 89.8365C30.2788 88.7039 24.3965 85.2938 20.0353 79.4119C15.5524 73.3689 12.7304 67.6261 11.4075 61.8637C9.48402 53.9318 10.2635 45.582 13.6214 38.1464C17.4814 29.5504 22.6028 23.2111 29.2783 18.7672C34.5797 15.2375 39.4531 13.4045 44.6153 13.0003C47.594 12.7644 50.6167 12.4791 53.5404 12.2042Z" fill="#ffffff"></path> <path d="M20.9158 50.6481C20.8311 51.3752 21.0303 52.107 21.4715 52.6899C21.9128 53.2729 22.5619 53.6617 23.2826 53.7749C24.5126 54.0906 25.7779 54.246 27.0474 54.2375C31.9092 54.0497 36.8486 53.8061 41.6255 53.5709L46.3046 53.3421C47.1069 53.3031 47.9092 53.2603 48.8158 53.2122L49.6356 53.1692L49.6673 53.4513C49.7198 53.9126 49.7586 54.2519 49.7884 54.5924C49.9132 56.0219 50.0364 57.4513 50.1581 58.8808C50.4664 62.4826 50.7856 66.2053 51.1456 69.8656C51.1769 71.095 51.5271 72.2945 52.1616 73.3465C52.954 74.4213 54.0921 75.188 55.3832 75.5168C55.5466 75.5486 55.7127 75.5649 55.8792 75.5655C57.1924 75.5655 58.3295 74.535 58.7394 72.9014C59.0875 71.6688 59.2465 70.39 59.2108 69.1092C59.0411 66.5276 58.7808 63.9149 58.5283 61.3885C58.4311 60.4142 58.3357 59.4395 58.242 58.4645L57.6762 52.5454L57.9176 52.5181C58.3644 52.4661 58.705 52.4272 59.0463 52.3934L63.8012 51.921C68.0971 51.4967 72.5386 51.058 76.9043 50.5824C78.1165 50.5183 79.2944 50.1579 80.3363 49.5324C80.8025 49.1734 81.1794 48.7107 81.4364 48.1808C81.6942 47.6508 81.8263 47.0681 81.8211 46.4784C81.6987 45.4244 80.6691 44.3756 79.7638 43.8473C78.8398 43.4262 77.818 43.2671 76.8104 43.3873C73.7728 43.5036 70.1725 43.6602 66.5048 43.9357C64.1606 44.1118 61.8637 44.3465 59.4329 44.5954C58.5928 44.682 57.7452 44.7685 56.89 44.8552L56.8583 44.3783C56.8123 43.6922 56.7741 43.119 56.7418 42.5452L56.4762 37.8018C56.2988 34.6113 56.1171 31.4212 55.931 28.2317C55.8222 26.4123 54.8716 25.2731 53.2534 25.0184C52.9221 24.9655 52.5836 24.9802 52.2581 25.0615C51.9325 25.1428 51.6267 25.289 51.3587 25.4914C50.9638 25.8099 50.6353 26.2033 50.3922 26.6494C50.1491 27.0954 49.9961 27.5851 49.9419 28.0906C49.7698 29.4454 49.6965 30.8111 49.7224 32.1765C49.7062 35.5372 49.7088 38.8986 49.7113 42.3509V45.7571C48.7569 45.8604 47.8283 45.963 46.9179 46.0631C44.5511 46.323 42.3158 46.572 40.0759 46.7779C34.6178 47.2763 29.0587 47.7331 23.8647 48.1522C21.6158 48.3348 21.0182 49.6104 20.9158 50.6481Z" fill="#ffffff"></path> </g> <defs> <clipPath id="clip0"> <rect width="158" height="154" fill="white" transform="translate(0.777344)"></rect> </clipPath> </defs> </g></svg></button>
+              <button class="zoom-btn" onclick="resetZoom()" title="Resetar zoom"><svg viewBox="0 -14 179 179" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g clip-path="url(#clip0)"> <path d="M150.623 103.636C148.858 103.225 146.502 103.451 145.306 106.835C143.604 111.644 140.529 115.536 137.746 118.709C129.821 127.745 119.481 134.093 107.019 137.576C97.6028 140.207 86.4064 142.551 74.7526 139.977C57.3729 136.137 43.2279 126.557 32.7116 111.499C28.0394 104.808 25.3576 98.4163 24.5131 91.9506C23.0129 80.9426 23.5155 69.7536 25.9964 58.9252C26.6187 56.2632 27.4517 53.5879 28.3417 50.7319C28.4747 50.3071 28.6088 49.8765 28.7439 49.44C29.3377 50.5601 29.8483 51.4998 30.4226 52.4416L30.5691 52.6794C31.6685 54.5713 32.894 56.3867 34.238 58.1129C36.1174 60.4195 38.8158 61.116 40.9551 59.8468C42.6441 58.8432 43.9679 56.448 42.1249 53.0003C40.0396 49.1023 37.2479 43.9922 34.1472 39.0294C31.8455 35.3442 28.9669 34.3466 24.8144 35.7973C17.8114 38.2446 11.0957 40.874 5.44972 43.1208C3.84767 43.7529 2.46897 44.8481 1.48974 46.267C0.658856 47.5688 0.824715 49.7167 1.45421 50.9534C2.30264 52.6274 4.13638 53.0919 6.36073 52.197C10.7231 50.4396 15.1553 48.7847 19.6891 47.1042C20.3621 46.8542 21.0836 46.6486 21.8073 46.4533C17.8666 55.5888 15.6889 65.892 15.1575 77.8952C14.526 92.1361 16.6833 102.696 22.1493 112.134C31.6008 128.45 45.6482 140.213 63.9023 147.096C69.345 149.134 75.0676 150.324 80.8702 150.628C82.3462 150.71 83.8475 150.751 85.3325 150.751C93.9006 150.706 102.417 149.416 110.615 146.922C124.527 142.821 135.611 136.141 144.5 126.489C148.832 121.787 151.581 117.339 153.149 112.489C153.606 111.221 153.879 109.894 153.962 108.549C154.048 105.143 152.195 103.997 150.623 103.636Z" fill="#ffffff"></path> <path d="M177.792 69.6636C176.872 68.453 175.276 67.9323 173.413 68.2349C171.382 68.5604 169.467 69.8738 168.216 70.9165C166.111 72.6738 164.098 74.5665 161.967 76.5679L161.895 76.6337C161.741 76.7788 161.585 76.9233 161.429 77.0704C162.249 70.0606 162.18 62.9755 161.226 55.9828C159.312 41.5989 152.548 28.3021 142.057 18.2977C131.583 8.35446 118.029 2.27283 102.858 0.708808C87.2457 -0.89752 71.5953 1.70918 56.3439 8.46511C51.5366 10.596 45.9876 13.378 41.3154 17.8559C40.0522 19.1485 39.0501 20.6734 38.3642 22.3468C37.8646 23.4826 38.512 25.7965 39.7567 26.368C40.3876 26.5925 41.06 26.6758 41.7265 26.6124C42.393 26.5489 43.0377 26.3404 43.6152 26.0009C44.3559 25.5452 45.0484 25.0154 45.6827 24.4198C46.1211 24.014 46.5877 23.6394 47.0784 23.2989C66.3073 10.7223 86.8228 6.45397 108.052 10.6071C121.053 13.1539 131.664 19.4434 139.587 29.2994C148.726 40.666 152.958 54.1844 152.168 69.4787C151.972 72.2859 151.63 75.0814 151.144 77.8527C151.044 78.4906 150.945 79.1284 150.847 79.7669C150.05 78.8765 149.231 77.9569 148.458 77.0196C146.787 74.9889 145.124 72.9498 143.47 70.9015L143.37 70.7779C142.189 69.3206 141.007 67.8633 139.8 66.3865C139.28 65.7076 138.694 65.0819 138.05 64.5194C136.334 63.1044 134.342 63.0029 132.723 64.2473C131.965 64.8024 131.438 65.6185 131.244 66.5388C131.05 67.4591 131.202 68.4185 131.67 69.2334C132.309 70.4915 133.059 71.6897 133.911 72.8131C138.747 79.0438 143.495 85.0767 147.503 90.156C149.192 92.296 150.781 93.2508 152.656 93.2508C153.962 93.1942 155.238 92.8356 156.382 92.2023C163.569 88.549 170.083 83.6975 175.645 77.856C176.612 76.8758 177.406 75.7381 177.993 74.4923C178.821 72.6797 178.747 70.9165 177.792 69.6636Z" fill="#ffffff"></path> </g> <defs> <clipPath id="clip0"> <rect width="178" height="151" fill="white" transform="translate(0.777344)"></rect> </clipPath> </defs> </g></svg></button>
             </div>
           </div>
           <div class="carousel-dots" id="carouselDots">
@@ -1105,7 +461,7 @@ preloadLogo.src = '/biscoidino_logo.png';
 
 (window as any).changeCarouselImage = function(direction: number) {
   const slides = document.querySelectorAll('.carousel-slide');
-  const dots = document.querySelectorAll('.dot');
+  const dots = document.querySelectorAll('.carousel-dots .dot');
   
   // Remove active class from current slide and dot
   slides[(window as any).currentImageIndex].classList.remove('active');
@@ -1147,8 +503,8 @@ preloadLogo.src = '/biscoidino_logo.png';
     <div id="physicsModal" class="modal physics-modal">
       <div class="modal-content physics-content">
         <div class="modal-header">
-          <h2>Dentro do Pacote - ${productType === 'baunilha' ? 'Baunilha' : 'Parmesão'}</h2>
-          <button class="close-modal" onclick="closePhysicsModal()">&times;</button>
+          <h2 class="trademark-name">${productType === 'baunilha' ? 'BAUNILHA' : 'PARMESÃO'} (DENTRO DO PACOTE)</h2>
+          <button class="close-modal" onclick="closePhysicsModal()"><svg viewBox="0 -1.5 130 130" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g clip-path="url(#clip0)"> <path d="M62.3649 76.0626C51.1451 86.1072 40.1732 95.8365 29.311 105.687C23.0183 111.394 16.9509 117.348 10.6729 123.069C9.0008 124.632 7.07937 125.903 4.98785 126.828C3.95649 127.261 1.72933 126.828 1.22143 126.035C0.549397 124.982 0.748089 123.114 1.11261 121.74C1.37779 120.738 2.45753 119.908 3.27208 119.104C18.7627 103.852 34.2604 88.6091 49.7649 73.3765C51.5045 71.6681 53.2942 70.0117 55.293 68.1144C48.5175 60.6052 41.7314 53.3593 35.2529 45.844C24.9134 33.8442 14.7813 21.6659 4.56355 9.56215C4.19212 9.12226 3.87261 8.64079 3.49773 8.20091C1.70969 6.08722 0.449103 3.80904 2.48505 1.24507C4.00964 -0.674661 7.65428 -0.387934 10.1921 2.22366C16.5124 8.7258 22.6693 15.3855 28.7745 22.0963C39.9226 34.3429 50.9837 46.6692 62.092 58.9522C62.5675 59.399 63.0731 59.8124 63.6053 60.1895C72.1948 51.9798 80.6892 43.7969 89.2545 35.6841C99.1881 26.2803 109.157 16.9135 119.16 7.58361C122.912 4.07666 125.921 3.44455 128.224 5.49071C130.61 7.61046 130.388 11.1519 126.582 14.9489C116.293 25.2161 105.755 35.2339 95.2268 45.2629C87.2065 52.9054 79.0583 60.4164 70.5224 68.3992C77.4586 75.5733 84.0927 82.724 91.0479 89.5439C97.7284 96.0945 104.782 102.265 111.594 108.681C114.257 111.095 116.751 113.69 119.058 116.449C120.918 118.763 121.193 121.636 118.906 123.919C116.652 126.17 114.043 125.375 111.869 123.67C107.71 120.58 103.724 117.264 99.9275 113.736C88.3069 102.355 76.8913 90.7657 65.4012 79.2517C64.4925 78.3424 63.6243 77.3883 62.3649 76.0626Z" fill="#ffffff"></path> </g> <defs> <clipPath id="clip0"> <rect width="129" height="127" fill="white" transform="translate(0.777344)"></rect> </clipPath> </defs> </g></svg></button>
         </div>
         <div class="physics-container">
           <canvas id="physicsCanvas"></canvas>
@@ -1402,7 +758,7 @@ function createPhysicsWorld(productType: 'baunilha' | 'parmesao') {
   });
   
   // Create boundaries (thicker invisible walls to prevent escape)
-  const wallThickness = 50; // Much thicker walls
+  const wallThickness = 100; // Much thicker walls
   const walls = [
     // Top wall
     Bodies.rectangle(canvas.width / 2, -wallThickness/2, canvas.width + wallThickness*2, wallThickness, { isStatic: true, render: { visible: false } }),
@@ -1731,7 +1087,7 @@ const totalGallerySlides = 9;
 
 function updateGallerySlide() {
   const slides = document.querySelectorAll('.gallery-slide');
-  const indicators = document.querySelectorAll('.gallery-indicator');
+  const indicators = document.querySelectorAll('.gallery-indicators .dot');
   
   if (slides.length === 0) return;
   
@@ -1863,6 +1219,16 @@ function setupGalleryDrag() {
   // Set initial cursor style to indicate draggable
   galleryContainer.style.cursor = 'grab';
   
+  // Remove event listeners before add
+  galleryContainer.removeEventListener('mousedown', handleStart);
+  galleryContainer.removeEventListener('touchstart', handleStart);
+  
+  document.removeEventListener('mousemove', handleMove);
+  document.removeEventListener('touchmove', handleMove);
+  
+  document.removeEventListener('mouseup', handleEnd);
+  document.removeEventListener('touchend', handleEnd);
+
   // Add event listeners
   galleryContainer.addEventListener('mousedown', handleStart);
   galleryContainer.addEventListener('touchstart', handleStart, { passive: false });
@@ -1984,15 +1350,15 @@ function openGalleryImageModal(imageSrc: string) {
     <div id="galleryImageModal" class="modal gallery-image-modal">
       <div class="modal-content gallery-modal-content">
         <div class="modal-header">
-          <h2>Galeria</h2>
-          <button class="close-modal" onclick="closeGalleryImageModal()">&times;</button>
+          <h2 class="trademark-name">GALERIA</h2>
+          <button class="close-modal" onclick="closeGalleryImageModal()"><svg viewBox="0 -1.5 130 130" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g clip-path="url(#clip0)"> <path d="M62.3649 76.0626C51.1451 86.1072 40.1732 95.8365 29.311 105.687C23.0183 111.394 16.9509 117.348 10.6729 123.069C9.0008 124.632 7.07937 125.903 4.98785 126.828C3.95649 127.261 1.72933 126.828 1.22143 126.035C0.549397 124.982 0.748089 123.114 1.11261 121.74C1.37779 120.738 2.45753 119.908 3.27208 119.104C18.7627 103.852 34.2604 88.6091 49.7649 73.3765C51.5045 71.6681 53.2942 70.0117 55.293 68.1144C48.5175 60.6052 41.7314 53.3593 35.2529 45.844C24.9134 33.8442 14.7813 21.6659 4.56355 9.56215C4.19212 9.12226 3.87261 8.64079 3.49773 8.20091C1.70969 6.08722 0.449103 3.80904 2.48505 1.24507C4.00964 -0.674661 7.65428 -0.387934 10.1921 2.22366C16.5124 8.7258 22.6693 15.3855 28.7745 22.0963C39.9226 34.3429 50.9837 46.6692 62.092 58.9522C62.5675 59.399 63.0731 59.8124 63.6053 60.1895C72.1948 51.9798 80.6892 43.7969 89.2545 35.6841C99.1881 26.2803 109.157 16.9135 119.16 7.58361C122.912 4.07666 125.921 3.44455 128.224 5.49071C130.61 7.61046 130.388 11.1519 126.582 14.9489C116.293 25.2161 105.755 35.2339 95.2268 45.2629C87.2065 52.9054 79.0583 60.4164 70.5224 68.3992C77.4586 75.5733 84.0927 82.724 91.0479 89.5439C97.7284 96.0945 104.782 102.265 111.594 108.681C114.257 111.095 116.751 113.69 119.058 116.449C120.918 118.763 121.193 121.636 118.906 123.919C116.652 126.17 114.043 125.375 111.869 123.67C107.71 120.58 103.724 117.264 99.9275 113.736C88.3069 102.355 76.8913 90.7657 65.4012 79.2517C64.4925 78.3424 63.6243 77.3883 62.3649 76.0626Z" fill="#ffffff"></path> </g> <defs> <clipPath id="clip0"> <rect width="129" height="127" fill="white" transform="translate(0.777344)"></rect> </clipPath> </defs> </g></svg></button>
         </div>
         <div class="gallery-image-container">
           <img id="galleryModalImage" src="${imageSrc}" alt="Imagem da galeria" class="gallery-modal-image" />
-          <div class="zoom-controls gallery-zoom-controls">
-            <button class="zoom-btn gallery-zoom-btn" onclick="galleryZoomImage(-1)" title="Diminuir zoom">🔍-</button>
-            <button class="zoom-btn gallery-zoom-btn" onclick="galleryZoomImage(1)" title="Aumentar zoom">🔍+</button>
-            <button class="zoom-btn gallery-zoom-btn" onclick="galleryResetZoom()" title="Resetar zoom">⌂</button>
+          <div class="zoom-controls">
+            <button class="zoom-btn" onclick="galleryZoomImage(-1)" title="Diminuir zoom"><svg viewBox="0 -2.5 159 159" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g clip-path="url(#clip0)"> <path d="M154.779 142.458C152.264 139.504 149.475 136.556 146.256 133.445C133.915 121.518 121.335 109.429 109.168 97.7371L99.3713 88.3217C98.2692 87.2632 97.1522 86.2183 96.0644 85.2027L95.0052 84.2098L95.0384 84.1449C95.0878 84.0383 95.145 83.9363 95.2107 83.8388C95.5611 83.4405 95.9363 83.0474 96.3251 82.6698C103.581 75.5995 107.548 66.75 108.116 56.3616C109.1 38.3741 102.984 23.1158 89.9375 11.0102C83.6325 5.0228 75.4834 1.34732 66.8194 0.583593C58.1679 -0.273856 49.4329 0.718459 41.1947 3.49464C28.7946 7.74168 18.6429 15.4963 10.1597 27.2035C2.62383 37.6047 -0.36515 49.0865 1.27662 61.3305C2.42423 69.8859 5.9945 77.9192 12.5135 86.6121C17.0161 92.6168 22.6508 96.741 29.2595 98.8717C34.5154 100.57 39.9921 101.49 45.5147 101.601C59.5592 101.895 73.3358 98.1342 86.5005 90.4602C87.072 90.1268 87.6475 89.798 88.2158 89.4731L88.5194 89.299C89.5994 90.503 90.6657 91.698 91.7178 92.8832C94.2815 95.7631 96.7029 98.4818 99.2374 101.2C112.215 115.117 126.291 128.354 139.903 141.155C142.434 143.538 144.964 145.921 147.492 148.303C149.068 149.708 150.76 150.976 152.55 152.095L153.476 152.714C154.148 153.178 154.941 153.439 155.758 153.464C156.139 153.474 156.517 153.395 156.861 153.233C157.206 153.071 157.508 152.83 157.743 152.531C158.493 151.578 158.978 149.711 158.483 148.553C157.554 146.35 156.307 144.296 154.779 142.458ZM53.347 12.2655C54.7775 12.1091 56.2064 11.9506 57.6338 11.7899C77.4405 11.1141 89.2606 24.6466 93.7132 37.5332C96.8017 46.4743 97.435 54.045 95.7074 61.3597C94.604 66.2497 92.1963 70.7501 88.7405 74.3824C83.8561 79.5586 77.7045 83.395 69.3812 86.4536C59.5607 90.1697 48.9678 91.3796 38.5614 89.9741C30.3428 88.8805 24.1268 85.2144 19.5545 78.7633C15.2983 72.7586 12.7222 67.4362 11.4458 62.0121C9.67648 54.7328 10.1844 47.0861 12.901 40.1044C17.4004 28.4225 25.2393 19.987 36.2005 15.0336C38.1563 14.1499 40.4606 13.8348 42.6889 13.5294L42.7877 13.5164C46.2956 13.0362 49.8808 12.6443 53.3483 12.2655H53.347Z" fill="#ffffff"></path> <path d="M24.17 48.4609C22.3241 48.663 21.2195 49.8962 21.3554 51.6045C21.449 52.7741 22.0881 54.1725 24.5998 54.1738C28.7891 54.1738 32.979 54.177 37.1488 54.177H47.8083C50.3549 54.0904 52.8907 54.0081 55.4157 53.9302C62.0478 53.719 68.9106 53.5007 75.6266 53.1862C77.5896 53.0291 79.533 52.6845 81.4303 52.1569C81.8159 52.0633 82.2008 51.9692 82.5851 51.8788C82.9934 51.7938 83.3803 51.6264 83.7223 51.3867C84.0637 51.147 84.3524 50.8402 84.5708 50.485C84.7366 50.1976 84.8394 49.8784 84.8732 49.5484C84.907 49.2183 84.8706 48.8849 84.7659 48.57C84.55 48.0316 84.2171 47.5479 83.7906 47.1545C83.3641 46.7611 82.8549 46.4677 82.3003 46.2958C80.8296 45.9733 79.3185 45.871 77.8172 45.9923C75.4764 46.0989 73.0999 46.2411 70.8021 46.3789C67.9769 46.5478 65.0563 46.722 62.1844 46.8337C57.0172 47.0326 51.7603 47.1983 46.677 47.3588C42.1815 47.5011 37.6859 47.6421 33.1911 47.8078C30.1279 47.9202 27.0934 48.1399 24.17 48.4609Z" fill="#ffffff"></path> </g> <defs> <clipPath id="clip0"> <rect width="158" height="154" fill="white" transform="translate(0.777344)"></rect> </clipPath> </defs> </g></svg></button>
+            <button class="zoom-btn" onclick="galleryZoomImage(1)" title="Aumentar zoom"><svg viewBox="0 -2.5 159 159" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g clip-path="url(#clip0)"> <path d="M14.5584 89.0236C18.4681 93.6319 23.5945 97.0394 29.3482 98.8536C34.6977 100.546 40.2627 101.455 45.8709 101.552C54.1115 101.739 62.3897 100.355 71.1899 97.3279C77.2152 95.2655 82.9732 92.487 88.3413 89.0516C88.4689 89.3108 88.6249 89.5558 88.8062 89.7806C98.6488 101.542 109.39 112.293 118.602 121.262C127.92 130.332 137.524 139.404 146.562 147.919C147.982 149.195 149.492 150.368 151.078 151.428C151.532 151.749 151.991 152.069 152.442 152.396C153.183 152.982 154.089 153.318 155.032 153.359C155.728 153.357 156.402 153.119 156.946 152.684C158.44 151.526 158.732 149.642 157.689 147.883L157.16 146.983C156.104 145 154.817 143.151 153.326 141.473C147.01 134.934 140.206 128.106 133.102 121.18C125.232 113.508 117.189 105.75 109.411 98.2487C105.177 94.166 100.946 90.0815 96.7192 85.9936C96.1603 85.453 95.6391 84.8598 95.1353 84.286C95.011 84.1437 94.8873 84.0033 94.7649 83.8656L94.9656 83.6434C95.2557 83.3185 95.5484 82.9975 95.8554 82.6953C103.119 75.6263 107.098 66.7872 107.68 56.4243C108.692 38.4186 102.638 23.1455 89.6882 11.0282C83.3403 4.94621 75.1088 1.22828 66.3631 0.493103C57.8576 -0.323972 49.2761 0.660071 41.1736 3.38146C28.8548 7.59665 18.375 15.6449 10.0269 27.3015C2.58018 37.6942 -0.35512 49.0752 1.29352 61.1269C2.63393 70.9822 6.97568 80.1072 14.5584 89.0236ZM53.5404 12.2042C54.8614 12.0795 56.1823 11.9565 57.5033 11.8352C77.2088 11.0633 88.9506 24.6094 93.3707 37.5369C96.3915 46.3741 97.0319 53.8414 95.3872 61.0456C94.3058 66.0536 91.8672 70.6638 88.3407 74.3696C84.2411 78.6452 79.334 82.0585 73.9057 84.4095C61.8295 89.8287 50.0896 91.6046 38.0182 89.8365C30.2788 88.7039 24.3965 85.2938 20.0353 79.4119C15.5524 73.3689 12.7304 67.6261 11.4075 61.8637C9.48402 53.9318 10.2635 45.582 13.6214 38.1464C17.4814 29.5504 22.6028 23.2111 29.2783 18.7672C34.5797 15.2375 39.4531 13.4045 44.6153 13.0003C47.594 12.7644 50.6167 12.4791 53.5404 12.2042Z" fill="#ffffff"></path> <path d="M20.9158 50.6481C20.8311 51.3752 21.0303 52.107 21.4715 52.6899C21.9128 53.2729 22.5619 53.6617 23.2826 53.7749C24.5126 54.0906 25.7779 54.246 27.0474 54.2375C31.9092 54.0497 36.8486 53.8061 41.6255 53.5709L46.3046 53.3421C47.1069 53.3031 47.9092 53.2603 48.8158 53.2122L49.6356 53.1692L49.6673 53.4513C49.7198 53.9126 49.7586 54.2519 49.7884 54.5924C49.9132 56.0219 50.0364 57.4513 50.1581 58.8808C50.4664 62.4826 50.7856 66.2053 51.1456 69.8656C51.1769 71.095 51.5271 72.2945 52.1616 73.3465C52.954 74.4213 54.0921 75.188 55.3832 75.5168C55.5466 75.5486 55.7127 75.5649 55.8792 75.5655C57.1924 75.5655 58.3295 74.535 58.7394 72.9014C59.0875 71.6688 59.2465 70.39 59.2108 69.1092C59.0411 66.5276 58.7808 63.9149 58.5283 61.3885C58.4311 60.4142 58.3357 59.4395 58.242 58.4645L57.6762 52.5454L57.9176 52.5181C58.3644 52.4661 58.705 52.4272 59.0463 52.3934L63.8012 51.921C68.0971 51.4967 72.5386 51.058 76.9043 50.5824C78.1165 50.5183 79.2944 50.1579 80.3363 49.5324C80.8025 49.1734 81.1794 48.7107 81.4364 48.1808C81.6942 47.6508 81.8263 47.0681 81.8211 46.4784C81.6987 45.4244 80.6691 44.3756 79.7638 43.8473C78.8398 43.4262 77.818 43.2671 76.8104 43.3873C73.7728 43.5036 70.1725 43.6602 66.5048 43.9357C64.1606 44.1118 61.8637 44.3465 59.4329 44.5954C58.5928 44.682 57.7452 44.7685 56.89 44.8552L56.8583 44.3783C56.8123 43.6922 56.7741 43.119 56.7418 42.5452L56.4762 37.8018C56.2988 34.6113 56.1171 31.4212 55.931 28.2317C55.8222 26.4123 54.8716 25.2731 53.2534 25.0184C52.9221 24.9655 52.5836 24.9802 52.2581 25.0615C51.9325 25.1428 51.6267 25.289 51.3587 25.4914C50.9638 25.8099 50.6353 26.2033 50.3922 26.6494C50.1491 27.0954 49.9961 27.5851 49.9419 28.0906C49.7698 29.4454 49.6965 30.8111 49.7224 32.1765C49.7062 35.5372 49.7088 38.8986 49.7113 42.3509V45.7571C48.7569 45.8604 47.8283 45.963 46.9179 46.0631C44.5511 46.323 42.3158 46.572 40.0759 46.7779C34.6178 47.2763 29.0587 47.7331 23.8647 48.1522C21.6158 48.3348 21.0182 49.6104 20.9158 50.6481Z" fill="#ffffff"></path> </g> <defs> <clipPath id="clip0"> <rect width="158" height="154" fill="white" transform="translate(0.777344)"></rect> </clipPath> </defs> </g></svg></button>
+            <button class="zoom-btn" onclick="galleryResetZoom()" title="Resetar zoom"><svg viewBox="0 -14 179 179" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g clip-path="url(#clip0)"> <path d="M150.623 103.636C148.858 103.225 146.502 103.451 145.306 106.835C143.604 111.644 140.529 115.536 137.746 118.709C129.821 127.745 119.481 134.093 107.019 137.576C97.6028 140.207 86.4064 142.551 74.7526 139.977C57.3729 136.137 43.2279 126.557 32.7116 111.499C28.0394 104.808 25.3576 98.4163 24.5131 91.9506C23.0129 80.9426 23.5155 69.7536 25.9964 58.9252C26.6187 56.2632 27.4517 53.5879 28.3417 50.7319C28.4747 50.3071 28.6088 49.8765 28.7439 49.44C29.3377 50.5601 29.8483 51.4998 30.4226 52.4416L30.5691 52.6794C31.6685 54.5713 32.894 56.3867 34.238 58.1129C36.1174 60.4195 38.8158 61.116 40.9551 59.8468C42.6441 58.8432 43.9679 56.448 42.1249 53.0003C40.0396 49.1023 37.2479 43.9922 34.1472 39.0294C31.8455 35.3442 28.9669 34.3466 24.8144 35.7973C17.8114 38.2446 11.0957 40.874 5.44972 43.1208C3.84767 43.7529 2.46897 44.8481 1.48974 46.267C0.658856 47.5688 0.824715 49.7167 1.45421 50.9534C2.30264 52.6274 4.13638 53.0919 6.36073 52.197C10.7231 50.4396 15.1553 48.7847 19.6891 47.1042C20.3621 46.8542 21.0836 46.6486 21.8073 46.4533C17.8666 55.5888 15.6889 65.892 15.1575 77.8952C14.526 92.1361 16.6833 102.696 22.1493 112.134C31.6008 128.45 45.6482 140.213 63.9023 147.096C69.345 149.134 75.0676 150.324 80.8702 150.628C82.3462 150.71 83.8475 150.751 85.3325 150.751C93.9006 150.706 102.417 149.416 110.615 146.922C124.527 142.821 135.611 136.141 144.5 126.489C148.832 121.787 151.581 117.339 153.149 112.489C153.606 111.221 153.879 109.894 153.962 108.549C154.048 105.143 152.195 103.997 150.623 103.636Z" fill="#ffffff"></path> <path d="M177.792 69.6636C176.872 68.453 175.276 67.9323 173.413 68.2349C171.382 68.5604 169.467 69.8738 168.216 70.9165C166.111 72.6738 164.098 74.5665 161.967 76.5679L161.895 76.6337C161.741 76.7788 161.585 76.9233 161.429 77.0704C162.249 70.0606 162.18 62.9755 161.226 55.9828C159.312 41.5989 152.548 28.3021 142.057 18.2977C131.583 8.35446 118.029 2.27283 102.858 0.708808C87.2457 -0.89752 71.5953 1.70918 56.3439 8.46511C51.5366 10.596 45.9876 13.378 41.3154 17.8559C40.0522 19.1485 39.0501 20.6734 38.3642 22.3468C37.8646 23.4826 38.512 25.7965 39.7567 26.368C40.3876 26.5925 41.06 26.6758 41.7265 26.6124C42.393 26.5489 43.0377 26.3404 43.6152 26.0009C44.3559 25.5452 45.0484 25.0154 45.6827 24.4198C46.1211 24.014 46.5877 23.6394 47.0784 23.2989C66.3073 10.7223 86.8228 6.45397 108.052 10.6071C121.053 13.1539 131.664 19.4434 139.587 29.2994C148.726 40.666 152.958 54.1844 152.168 69.4787C151.972 72.2859 151.63 75.0814 151.144 77.8527C151.044 78.4906 150.945 79.1284 150.847 79.7669C150.05 78.8765 149.231 77.9569 148.458 77.0196C146.787 74.9889 145.124 72.9498 143.47 70.9015L143.37 70.7779C142.189 69.3206 141.007 67.8633 139.8 66.3865C139.28 65.7076 138.694 65.0819 138.05 64.5194C136.334 63.1044 134.342 63.0029 132.723 64.2473C131.965 64.8024 131.438 65.6185 131.244 66.5388C131.05 67.4591 131.202 68.4185 131.67 69.2334C132.309 70.4915 133.059 71.6897 133.911 72.8131C138.747 79.0438 143.495 85.0767 147.503 90.156C149.192 92.296 150.781 93.2508 152.656 93.2508C153.962 93.1942 155.238 92.8356 156.382 92.2023C163.569 88.549 170.083 83.6975 175.645 77.856C176.612 76.8758 177.406 75.7381 177.993 74.4923C178.821 72.6797 178.747 70.9165 177.792 69.6636Z" fill="#ffffff"></path> </g> <defs> <clipPath id="clip0"> <rect width="178" height="151" fill="white" transform="translate(0.777344)"></rect> </clipPath> </defs> </g></svg></button>
           </div>
         </div>
       </div>
@@ -2169,6 +1535,15 @@ function setupGalleryModalInteractions() {
     }
   };
   
+  // Remove event listeners before
+  image.removeEventListener('mousedown', handleMouseDown);
+  document.removeEventListener('mousemove', handleMouseMove);
+  document.removeEventListener('mouseup', handleMouseUp);
+  
+  image.removeEventListener('touchstart', handleTouchStart);
+  document.removeEventListener('touchmove', handleTouchMove);
+  document.removeEventListener('touchend', handleTouchEnd);
+
   // Add event listeners
   image.addEventListener('mousedown', handleMouseDown);
   document.addEventListener('mousemove', handleMouseMove);
