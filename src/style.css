@@ -1971,3 +1971,22 @@ p.inside-package-text {
 }
 
 
+@supports (-webkit-touch-callout: none) {
+  /* iOS-specific styles */
+  svg {
+    transform: translateZ(0); /* Force hardware acceleration */
+    -webkit-transform: translateZ(0);
+  }
+  
+  .nav-icon svg {
+    display: block !important;
+    fill: currentColor !important;
+  }
+}
+
+/* Alternative iOS detection */
+@media screen and (-webkit-min-device-pixel-ratio: 1) {
+  svg {
+    will-change: transform;
+  }
+}
