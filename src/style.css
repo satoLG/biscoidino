@@ -44,7 +44,7 @@ body {
 }
 
 strong {
-  color: var(--primary-color);
+  color: var(--primary-dark);
 }
 
 /* Splash Screen Styles */
@@ -532,15 +532,17 @@ p.left-p {
 /* Menu Grid */
 .menu-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(300px, .3fr));
   gap: 2rem;
 }
 
 /* Product Image Container */
 .product-image-container {
-  position: relative;
-  display: inline-block;
-  margin-bottom: .5rem;
+    position: relative;
+    display: inline-block;
+    /* margin-bottom: .5rem; */
+    line-height: 0;
+    width: 100%;
 }
 
 .image-actions {
@@ -578,6 +580,9 @@ p.left-p {
 }
 
 .menu-item {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
     background: #fff6d1;
     border-radius: 15px;
     padding: 2rem;
@@ -595,20 +600,20 @@ p.left-p {
     background-color: var(--primary-color);
     border-radius: 5px;
     padding: 10px;
-    width: 250px;
-    height: 300px;
+    width: 100%;
+    height: 200px;
     object-fit: contain;
 }
 
 .menu-item h3 {
   color: var(--primary-dark) !important;
   font-size: 1.4rem;
-  margin-bottom: 0.5rem;
+  /* margin-bottom: 0.5rem; */
 }
 
 .menu-item p {
   color: var(--text-light);
-  margin-bottom: 1rem;
+  /* margin-bottom: 1rem; */
   line-height: 1.5;
 }
 
@@ -616,7 +621,7 @@ p.left-p {
   font-size: 1.5rem;
   font-weight: 500 !important;
   color: var(--primary-dark) !important;
-  margin-bottom: 1rem;
+  /* margin-bottom: 1rem; */
 }
 
 .get-cookie svg path {
@@ -1065,7 +1070,7 @@ a.get-cookie {
   width: 95%;
   /* max-height: 80vh !important; */
   height: 80vh !important;
-  overflow-y: auto;
+  overflow-y: hidden;
   position: relative;
   animation: modalSlideIn 0.4s ease-out;
 }
@@ -1081,6 +1086,90 @@ a.get-cookie {
   justify-content: space-between;
   align-items: center;
   padding-bottom: 1rem;
+}
+
+#productModal .modal-header {
+    flex-direction: column;
+    padding-bottom: 2rem;
+}
+
+.modal-body::-webkit-scrollbar {
+  width: 10px; /* Width of the scrollbar */
+}
+
+.modal-body::-webkit-scrollbar-track {
+    background: #f1f1f100;
+}
+
+.modal-body::-webkit-scrollbar-thumb {
+  background: #d6889168; /* Color of the scrollbar thumb */
+  border-radius: 5px; /* Rounded corners for the thumb */
+}
+
+.modal-body::-webkit-scrollbar-thumb:hover {
+  background: #d68891af; /* Color of the thumb on hover */
+}
+
+.modal-top-header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #80808024;
+    padding-bottom: 1rem;
+    margin-bottom: 1rem;
+}
+
+.modal-body {
+    overflow-y: scroll;
+    position: relative;
+    height: calc(100% - 170px);
+}
+
+.info-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0px 10px;
+}
+
+.ingridients-container {
+    max-width: 60%;
+    margin-bottom: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.ingridients-container p {
+    text-align: justify;
+}
+
+.package-labels {
+    max-width: 60%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+img.front-label-image {
+    width: 50% !important;
+}
+
+@media (max-width: 700px) {
+.ingridients-container {
+    max-width: 100% !important;
+}
+
+.package-labels {
+    max-width: 100% !important;
+}  
+}
+
+.package-labels img {
+    width: 100%;
+    filter: grayscale(60%) sepia(20%) brightness(110%) contrast(90%) saturate(120%);
 }
 
 .modal-header h2 {
@@ -1237,7 +1326,13 @@ a.get-cookie {
 
 /* Product Info in Modal */
 .product-info {
-  text-align: center;
+    width: 100%;
+    gap: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+    text-align: left;
 }
 
 .price-large {
@@ -1267,33 +1362,31 @@ a.get-cookie {
 
 /* Physics Modal Styles */
 .physics-container {
-  text-align: center;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
-.physics-instructions {
-  background: var(--primary-light);
-  color: var(--white);
-  padding: 0.8rem 1rem;
-  border-radius: 10px;
-  margin-bottom: 1rem;
-  font-size: 0.9rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-.physics-instructions strong {
-  color: var(--white);
+p.inside-package-text {
+    z-index: 0;
+    width: 280px;
+    position: absolute;
+    top: 10px;
 }
 
 #physicsCanvas {
-  border: 3px solid var(--primary-color);
-  border-radius: 15px;
-  background: var(--background);
-  margin-bottom: 1rem;
-  cursor: pointer;
-  user-select: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
+    z-index: 2;
+    box-shadow: inset 0 0 13px 2px #231d16ab;
+    /* border: 3px solid var(--primary-color); */
+    border-radius: 15px;
+    background: var(--background);
+    margin-bottom: 1rem;
+    cursor: pointer;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
 }
 
 .physics-controls {
@@ -1595,7 +1688,7 @@ a.get-cookie {
 }
 
 /* Menu and gallery adaptations */
-@media screen and (orientation: portrait) and (max-width: 768px) {
+@media (max-width: 768px) {
   .menu-grid {
     grid-template-columns: 1fr;
     gap: 1.5rem;
@@ -1617,17 +1710,6 @@ a.get-cookie {
     width: 50px;
     height: 50px;
     font-size: 2rem;
-  }
-}
-
-@media screen and (orientation: landscape) and (max-width: 968px) and (min-width: 569px) {
-  .menu-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1.5rem;
-  }
-  
-  .gallery-slides-container {
-    height: 300px !important;
   }
 }
 
