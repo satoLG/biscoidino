@@ -1194,6 +1194,13 @@ img.front-label-image {
     transition: all 0.3s ease;
 }
 
+.close-modal svg {
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+    display: block;
+}
+
 .close-modal:hover {
   background: var(--primary-color);
   color: var(--white);
@@ -1296,6 +1303,13 @@ img.front-label-image {
   justify-content: center;
   transition: all 0.3s ease;
   backdrop-filter: blur(10px);
+}
+
+.zoom-btn svg {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+  display: block;
 }
 
 .zoom-btn:hover {
@@ -1981,6 +1995,31 @@ p.inside-package-text {
   .nav-icon svg {
     display: block !important;
     fill: currentColor !important;
+  }
+
+  /* Fix iOS Safari SVG rendering in buttons */
+  .close-modal,
+  .zoom-btn {
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+  }
+
+  .close-modal svg,
+  .zoom-btn svg {
+    width: 24px !important;
+    height: 24px !important;
+    min-width: 24px !important;
+    min-height: 24px !important;
+    display: block !important;
+    flex-shrink: 0 !important;
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+  }
+
+  /* Remove backdrop-filter on iOS as it breaks SVG rendering */
+  .zoom-btn {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
   }
 }
 
