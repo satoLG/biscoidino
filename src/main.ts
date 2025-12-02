@@ -1,5 +1,5 @@
 import { inject } from '@vercel/analytics';
-import './style.css?v=13'
+import './style.css?v=14'
 
 // BISCOIDINO - Main Application
 class BiscoidinoApp {
