@@ -1819,46 +1819,76 @@ function createHomePhysicsWorld() {
 function createHomeBiscuits(canvasWidth: number, canvasHeight: number) {
   const Matter = (window as any).Matter;
   
-  const centerX = canvasWidth / 2;
-  
   // Check if we have saved biscuit states from resize
   const savedStates = (window as any).homeBiscuitStates;
   let useDefaultPositions = !savedStates || savedStates.length === 0;
   
-  // Default positions for first load - distributed equally across 3 formats
-  const defaultPositions = [
-    { x: centerX + 100, y: 20, texture: '/biscuits/biscoidino_biscuit1.png' },
-    { x: centerX - 100, y: 50, texture: '/biscuits/flower_baunilha1.png' },
-    { x: centerX - 100, y: 50, texture: '/biscuits/flower_baunilha2.png' },
-    { x: centerX + 80, y: 60, texture: '/biscuits/heart_baunilha1.png' },
-    { x: centerX + 80, y: 60, texture: '/biscuits/heart_baunilha2.png' },
-    { x: centerX - 40, y: 40, texture: '/biscuits/star_baunilha1.png' },
-    { x: centerX - 40, y: 40, texture: '/biscuits/star_baunilha2.png' },
-    { x: centerX + 50, y: 55, texture: '/biscuits/flower_baunilha1.png' },
-    { x: centerX - 60, y: 65, texture: '/biscuits/heart_baunilha1.png' },
-    { x: centerX - 40, y: 40, texture: '/biscuits/star_baunilha2.png' },
-    { x: centerX + 50, y: 55, texture: '/biscuits/flower_baunilha1.png' },
-    { x: centerX - 60, y: 65, texture: '/biscuits/heart_baunilha1.png' },
-    { x: centerX - 40, y: 40, texture: '/biscuits/star_baunilha2.png' },
-    { x: centerX + 50, y: 55, texture: '/biscuits/flower_baunilha1.png' },
-  ];
+  // Calculate how many biscuits based on canvas area
+  // Mobile (~400x500 = 200000) = base amount
+  // Desktop (~1200x550 = 660000) = more biscuits
+  const canvasArea = canvasWidth * canvasHeight;
+  const baseArea = 200000; // Mobile reference
+  const areaRatio = canvasArea / baseArea;
+  
+  // Scale biscuit count more aggressively for wider screens
+  // Mobile: 4 each type, Desktop: scales linearly with area ratio
+  const baseCount = 4; // Base count per type (hearts, flowers, stars)
+  const scaledCount = Math.max(baseCount, Math.floor(baseCount * areaRatio));
+  
+  // Biscuit textures for each type
+  const flowerTextures = ['/biscuits/flower_baunilha1.png', '/biscuits/flower_baunilha2.png'];
+  const heartTextures = ['/biscuits/heart_baunilha1.png', '/biscuits/heart_baunilha2.png'];
+  const starTextures = ['/biscuits/star_baunilha1.png', '/biscuits/star_baunilha2.png'];
+  
+  const biscuitPositions: { x: number, y: number, texture: string }[] = [];
+  
+  // Always add exactly 1 biscoidino_biscuit1
+  biscuitPositions.push({
+    x: Math.random() * (canvasWidth - 100) + 50,
+    y: Math.random() * 100 + 30,
+    texture: '/biscuits/biscoidino_biscuit1.png'
+  });
+  
+  // Add scaled amount of flowers, hearts, and stars (equal distribution)
+  for (let i = 0; i < scaledCount; i++) {
+    // Flower
+    biscuitPositions.push({
+      x: Math.random() * (canvasWidth - 100) + 50,
+      y: Math.random() * 100 + 30,
+      texture: flowerTextures[i % flowerTextures.length]
+    });
+    
+    // Heart
+    biscuitPositions.push({
+      x: Math.random() * (canvasWidth - 100) + 50,
+      y: Math.random() * 100 + 30,
+      texture: heartTextures[i % heartTextures.length]
+    });
+    
+    // Star
+    biscuitPositions.push({
+      x: Math.random() * (canvasWidth - 100) + 50,
+      y: Math.random() * 100 + 30,
+      texture: starTextures[i % starTextures.length]
+    });
+  }
   
   const biscuits = [];
   
-  for (let i = 0; i < defaultPositions.length; i++) {
-    const defaultPos = defaultPositions[i];
+  for (let i = 0; i < biscuitPositions.length; i++) {
+    const pos = biscuitPositions[i];
     const savedState = savedStates && savedStates[i];
     
-    // Use saved position if available, otherwise use default
-    const x = savedState ? savedState.x * canvasWidth : defaultPos.x;
-    const y = savedState ? savedState.y * canvasHeight : defaultPos.y;
+    // Use saved position if available, otherwise use generated position
+    const x = savedState ? savedState.x * canvasWidth : pos.x;
+    const y = savedState ? savedState.y * canvasHeight : pos.y;
 
-    const biscuit = createStandardBiscuit(Matter, x, y, defaultPos.texture);
+    const biscuit = createStandardBiscuit(Matter, x, y, pos.texture);
     
     // Restore velocity and rotation if saved
     if (savedState && !useDefaultPositions) {
       Matter.Body.setVelocity(biscuit, { 
-        x: savedState.velocityX * 0.8, // Dampen velocity slightly
+        x: savedState.velocityX * 0.8,
         y: savedState.velocityY * 0.8 
       });
       Matter.Body.setAngle(biscuit, savedState.angle);
@@ -1871,9 +1901,51 @@ function createHomeBiscuits(canvasWidth: number, canvasHeight: number) {
   // Clear saved states after use
   (window as any).homeBiscuitStates = null;
   
-  console.log(`🎯 Created ${biscuits.length} biscuits with ${savedStates ? 'restored' : 'default'} positions`);
+  // Animate biscuits popping in (only on first load, not resize)
+  if (useDefaultPositions) {
+    animateBiscuitSpawn(biscuits);
+  }
+  
+  console.log(`🎯 Created ${biscuits.length} biscuits (${scaledCount} each type) for canvas ${canvasWidth}x${canvasHeight}`);
   
   return biscuits;
+}
+
+// Simple pop-in animation for biscuits
+function animateBiscuitSpawn(biscuits: any[]) {
+  biscuits.forEach((biscuit, index) => {
+    const targetScale = biscuit.render.sprite.xScale;
+    
+    // Start at scale 0
+    biscuit.render.sprite.xScale = 0;
+    biscuit.render.sprite.yScale = 0;
+    
+    // Stagger the animation for each biscuit
+    const delay = index * 40; // 80ms between each biscuit
+    
+    setTimeout(() => {
+      const duration = 250; // 250ms animation
+      const startTime = performance.now();
+      
+      function animate() {
+        const elapsed = performance.now() - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        
+        // Ease-out-back for bouncy pop effect
+        const eased = 1 + 2.70158 * Math.pow(progress - 1, 3) + 1.70158 * Math.pow(progress - 1, 2);
+        
+        const currentScale = targetScale * eased;
+        biscuit.render.sprite.xScale = currentScale;
+        biscuit.render.sprite.yScale = currentScale;
+        
+        if (progress < 1) {
+          requestAnimationFrame(animate);
+        }
+      }
+      
+      requestAnimationFrame(animate);
+    }, delay);
+  });
 }
 
 function setupHomePhysicsInteraction(canvas: HTMLCanvasElement, engine: any) {
