@@ -1,5 +1,8 @@
 // Service Worker for Biscoidino PWA
-const CACHE_NAME = 'biscoidino-v1.0.0';
+// INCREMENT THIS VERSION TO FORCE CACHE REFRESH
+const CACHE_VERSION = '22';
+const CACHE_NAME = `biscoidino-v${CACHE_VERSION}`;
+
 const STATIC_CACHE_URLS = [
   '/',
   '/index.html',
@@ -10,7 +13,7 @@ const STATIC_CACHE_URLS = [
 
 // Install event - cache static resources
 self.addEventListener('install', (event) => {
-  console.log('🔧 Service Worker installing...');
+  console.log('🔧 Service Worker installing... Version:', CACHE_VERSION);
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then((cache) => {
@@ -19,20 +22,20 @@ self.addEventListener('install', (event) => {
       })
       .then(() => {
         console.log('✅ Service Worker installed successfully');
-        return self.skipWaiting();
+        return self.skipWaiting(); // Force activation immediately
       })
   );
 });
 
 // Activate event - clean up old caches
 self.addEventListener('activate', (event) => {
-  console.log('🚀 Service Worker activating...');
+  console.log('🚀 Service Worker activating... Version:', CACHE_VERSION);
   event.waitUntil(
     caches.keys()
       .then((cacheNames) => {
         return Promise.all(
           cacheNames
-            .filter((cacheName) => cacheName !== CACHE_NAME)
+            .filter((cacheName) => cacheName.startsWith('biscoidino-') && cacheName !== CACHE_NAME)
             .map((cacheName) => {
               console.log('🗑️ Deleting old cache:', cacheName);
               return caches.delete(cacheName);
@@ -41,12 +44,12 @@ self.addEventListener('activate', (event) => {
       })
       .then(() => {
         console.log('✅ Service Worker activated');
-        return self.clients.claim();
+        return self.clients.claim(); // Take control of all clients immediately
       })
   );
 });
 
-// Fetch event - serve cached content when offline
+// Fetch event - NETWORK FIRST for JS/CSS, cache-first for images
 self.addEventListener('fetch', (event) => {
   // Skip non-GET requests
   if (event.request.method !== 'GET') return;
@@ -54,30 +57,55 @@ self.addEventListener('fetch', (event) => {
   // Skip external requests
   if (!event.request.url.startsWith(self.location.origin)) return;
 
+  const url = new URL(event.request.url);
+  
+  // For JS, CSS, and HTML files - ALWAYS try network first
+  if (url.pathname.endsWith('.js') || 
+      url.pathname.endsWith('.css') || 
+      url.pathname.endsWith('.html') ||
+      url.pathname === '/' ||
+      url.pathname.endsWith('.ts')) {
+    event.respondWith(
+      fetch(event.request)
+        .then((response) => {
+          // Cache the fresh response
+          if (response && response.status === 200) {
+            const responseToCache = response.clone();
+            caches.open(CACHE_NAME).then((cache) => {
+              cache.put(event.request, responseToCache);
+            });
+          }
+          return response;
+        })
+        .catch(() => {
+          // Network failed, try cache
+          return caches.match(event.request);
+        })
+    );
+    return;
+  }
+
+  // For other assets (images, fonts) - cache first, then network
   event.respondWith(
     caches.match(event.request)
       .then((response) => {
-        // Return cached version or fetch from network
-        return response || fetch(event.request)
+        if (response) {
+          return response;
+        }
+        return fetch(event.request)
           .then((response) => {
-            // Don't cache responses that aren't successful
             if (!response || response.status !== 200 || response.type !== 'basic') {
               return response;
             }
-
-            // Clone the response for caching
             const responseToCache = response.clone();
-
-            caches.open(CACHE_NAME)
-              .then((cache) => {
-                cache.put(event.request, responseToCache);
-              });
-
+            caches.open(CACHE_NAME).then((cache) => {
+              cache.put(event.request, responseToCache);
+            });
             return response;
           });
       })
       .catch(() => {
-        // If both cache and network fail, return a basic offline page for navigation requests
+        // If both cache and network fail, return offline page for navigation
         if (event.request.mode === 'navigate') {
           return new Response(
             `<!DOCTYPE html>

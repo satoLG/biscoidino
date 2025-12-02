@@ -4,9 +4,20 @@ import { defineConfig } from 'vite'
 export default defineConfig({
   server: {
     open: true,
-    port: 3000
+    port: 3000,
+    headers: {
+      'Cache-Control': 'no-store' // Disable caching in dev
+    }
   },
   build: {
-    outDir: 'dist'
+    outDir: 'dist',
+    // Add content hash to filenames for automatic cache busting
+    rollupOptions: {
+      output: {
+        entryFileNames: 'assets/[name]-[hash].js',
+        chunkFileNames: 'assets/[name]-[hash].js',
+        assetFileNames: 'assets/[name]-[hash].[ext]'
+      }
+    }
   }
 })
