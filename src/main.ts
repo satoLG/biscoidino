@@ -248,7 +248,7 @@ class BiscoidinoApp {
         type: "parmesao",
         description: "Biscoitos salgados crocantes com queijo parmesão premium (150g)",
         price: "R$ 15,00",
-        ingridients: "farinha de trigo enriquecida com ferro e ácido fólico, manteiga sem sal (leite), queijo ralado (leite), gemas de ovo",
+        ingridients: "farinha de trigo enriquecida com ferro e ácido fólico, manteiga com sal (leite), queijo ralado (leite), gemas de ovo",
         ingridients_complement: "trigo, leite e ovos",
         inside_package_description: "Em média 20 biscoitos, mas sem dinossauros por aqui.",
         nutritional_table: "/products/parmesao_nutritional_values.jpeg",

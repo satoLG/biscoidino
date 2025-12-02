@@ -1,6 +1,6 @@
 // Service Worker for Biscoidino PWA
 // INCREMENT THIS VERSION TO FORCE CACHE REFRESH
-const CACHE_VERSION = '22';
+const CACHE_VERSION = '23';
 const CACHE_NAME = `biscoidino-v${CACHE_VERSION}`;
 
 const STATIC_CACHE_URLS = [
