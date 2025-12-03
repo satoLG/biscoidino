@@ -13,10 +13,20 @@ export class ProductModal {
   private currentZoomLevel = 0;
   private imagePosition = { x: 0, y: 0 };
   private cleanupCarouselDrag: (() => void) | null = null;
+  private originalBodyOverflow: string = '';
+  private originalBodyPosition: string = '';
+  private scrollPosition: number = 0;
+  private escapeKeyHandler: ((e: KeyboardEvent) => void) | null = null;
 
   async open(productId: number): Promise<void> {
     const product = products[productId];
     if (!product) return;
+
+    // Block body scroll
+    this.blockBodyScroll();
+
+    // Add escape key handler
+    this.setupEscapeKeyHandler();
 
     // Create modal HTML
     this.createModalHTML(product, productId);
@@ -477,6 +487,60 @@ export class ProductModal {
     return biscuits;
   }
 
+  private blockBodyScroll(): void {
+    // Save current scroll position and body styles
+    this.scrollPosition = window.pageYOffset || document.documentElement.scrollTop;
+    this.originalBodyOverflow = document.body.style.overflow;
+    this.originalBodyPosition = document.body.style.position;
+    
+    // Apply scroll blocking styles
+    document.body.style.overflow = 'hidden';
+    document.body.style.position = 'fixed';
+    document.body.style.top = `-${this.scrollPosition}px`;
+    document.body.style.width = '100%';
+    
+    // Prevent touch scrolling on modal background
+    document.body.addEventListener('touchmove', this.preventScroll, { passive: false });
+  }
+
+  private preventScroll = (e: TouchEvent): void => {
+    // Allow scrolling within modal content
+    const target = e.target as HTMLElement;
+    if (!target.closest('.modal-content')) {
+      e.preventDefault();
+    }
+  }
+
+  private restoreBodyScroll(): void {
+    // Remove touch scroll prevention
+    document.body.removeEventListener('touchmove', this.preventScroll);
+    
+    // Restore original body styles
+    document.body.style.overflow = this.originalBodyOverflow;
+    document.body.style.position = this.originalBodyPosition;
+    document.body.style.top = '';
+    document.body.style.width = '';
+    
+    // Restore scroll position
+    window.scrollTo(0, this.scrollPosition);
+  }
+
+  private setupEscapeKeyHandler(): void {
+    this.escapeKeyHandler = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        this.close();
+      }
+    };
+    document.addEventListener('keydown', this.escapeKeyHandler);
+  }
+
+  private removeEscapeKeyHandler(): void {
+    if (this.escapeKeyHandler) {
+      document.removeEventListener('keydown', this.escapeKeyHandler);
+      this.escapeKeyHandler = null;
+    }
+  }
+
   private setupPhysicsInteraction(canvas: HTMLCanvasElement): void {
     const handleInteraction = (clientX: number, clientY: number) => {
       const rect = canvas.getBoundingClientRect();
@@ -566,6 +630,12 @@ export class ProductModal {
   }
 
   close(): void {
+    // Restore body scroll
+    this.restoreBodyScroll();
+
+    // Remove escape key handler
+    this.removeEscapeKeyHandler();
+
     // Cleanup physics
     if (this.boundaryCheckInterval) {
       clearInterval(this.boundaryCheckInterval);

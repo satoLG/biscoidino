@@ -4,8 +4,18 @@ export class GalleryModal {
   private zoomLevel = 0;
   private imagePosition = { x: 0, y: 0 };
   private cleanupFn: (() => void) | null = null;
+  private originalBodyOverflow: string = '';
+  private originalBodyPosition: string = '';
+  private scrollPosition: number = 0;
+  private escapeKeyHandler: ((e: KeyboardEvent) => void) | null = null;
 
   open(imageSrc: string): void {
+    // Block body scroll
+    this.blockBodyScroll();
+    
+    // Add escape key handler
+    this.setupEscapeKeyHandler();
+    
     this.createModalHTML(imageSrc);
     this.setupInteractions();
   }
@@ -222,7 +232,67 @@ export class GalleryModal {
     image.style.cursor = this.zoomLevel > 0 ? 'move' : 'zoom-in';
   }
 
+  private blockBodyScroll(): void {
+    // Save current scroll position and body styles
+    this.scrollPosition = window.pageYOffset || document.documentElement.scrollTop;
+    this.originalBodyOverflow = document.body.style.overflow;
+    this.originalBodyPosition = document.body.style.position;
+    
+    // Apply scroll blocking styles
+    document.body.style.overflow = 'hidden';
+    document.body.style.position = 'fixed';
+    document.body.style.top = `-${this.scrollPosition}px`;
+    document.body.style.width = '100%';
+    
+    // Prevent touch scrolling on mobile
+    document.body.addEventListener('touchmove', this.preventScroll, { passive: false });
+  }
+
+  private restoreBodyScroll(): void {
+    // Remove touch scroll prevention
+    document.body.removeEventListener('touchmove', this.preventScroll);
+    
+    // Restore original body styles
+    document.body.style.overflow = this.originalBodyOverflow;
+    document.body.style.position = this.originalBodyPosition;
+    document.body.style.top = '';
+    document.body.style.width = '';
+    
+    // Restore scroll position
+    window.scrollTo(0, this.scrollPosition);
+  }
+
+  private setupEscapeKeyHandler(): void {
+    this.escapeKeyHandler = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        this.close();
+      }
+    };
+    document.addEventListener('keydown', this.escapeKeyHandler);
+  }
+
+  private removeEscapeKeyHandler(): void {
+    if (this.escapeKeyHandler) {
+      document.removeEventListener('keydown', this.escapeKeyHandler);
+      this.escapeKeyHandler = null;
+    }
+  }
+
+  // Prevent scroll outside modal
+  private preventScroll = (e: TouchEvent): void => {
+    const target = e.target as Element;
+    if (!target.closest('.modal-content')) {
+      e.preventDefault();
+    }
+  };
+
   close(): void {
+    // Restore body scroll
+    this.restoreBodyScroll();
+    
+    // Remove escape key handler
+    this.removeEscapeKeyHandler();
+    
     if (this.cleanupFn) {
       this.cleanupFn();
     }
