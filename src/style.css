@@ -956,6 +956,44 @@ a.get-cookie {
     padding: 5px 5px 5px 10px;
 }
 
+/* Carousel Navigation */
+.carousel-nav-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: var(--primary-dark);
+    border: none;
+    color: var(--primary-color);
+    /* padding: 5px 5px 5px 10px; */
+    font-size: 2.5rem;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    z-index: 10;
+    backdrop-filter: blur(10px);
+}
+
+.carousel-nav-btn:hover {
+  background: var(--primary-color);
+  color: var(--white);
+  transform: translateY(-50%) scale(1.1);
+}
+
+.carousel-nav-btn.prev {
+    left: 10px;
+    padding: 5px 10px 5px 5px;
+}
+
+.carousel-nav-btn.next {
+    right: 10px;
+    padding: 5px 5px 5px 10px;
+}
+
 /* Gallery Indicators */
 .gallery-indicators {
   position: absolute;
@@ -1729,6 +1767,12 @@ p.inside-package-text {
     height: 50px;
     font-size: 2rem;
   }
+  
+  .carousel-nav-btn {
+    width: 50px;
+    height: 50px;
+    font-size: 2rem;
+  }
 }
 
 /* Splash screen orientation fixes */
@@ -1831,11 +1875,25 @@ p.inside-package-text {
     font-size: 2rem;
   }
   
+  .carousel-nav-btn {
+    width: 40px;
+    height: 40px;
+    font-size: 2rem;
+  }
+  
   .gallery-nav-btn.prev {
     left: 10px;
   }
   
   .gallery-nav-btn.next {
+    right: 10px;
+  }
+  
+  .carousel-nav-btn.prev {
+    left: 10px;
+  }
+  
+  .carousel-nav-btn.next {
     right: 10px;
   }
   
