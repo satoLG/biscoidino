@@ -5,6 +5,7 @@ export default defineConfig({
   server: {
     open: true,
     port: 3000,
+    host: process.env.CI ? '0.0.0.0' : 'localhost',
     headers: {
       'Cache-Control': 'no-store' // Disable caching in dev
     }
