@@ -4,6 +4,9 @@
   "version": "1.0.0",
   "description": "BISCOIDINO - Biscuit Business Website",
   "type": "module",
+  "engines": {
+    "node": ">=20.19.0"
+  },
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
