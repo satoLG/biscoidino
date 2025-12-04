@@ -2,9 +2,14 @@ name: 🧪 Automated Testing
 
 on:
   push:
-    branches: [ main, develop, test_workflow ]
+    branches: [ main, develop ]
   pull_request:
     branches: [ main, develop ]
+
+# Prevent duplicate workflows from running
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   test:

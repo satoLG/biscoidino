@@ -12,7 +12,7 @@ export default defineConfig({
   /* Retry on CI only */
   retries: process.env.CI ? 2 : 0,
   /* Use multiple workers in CI for faster test execution */
-  workers: undefined,
+  workers: process.env.CI ? 4 : undefined,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: 'html',
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
@@ -31,7 +31,18 @@ export default defineConfig({
   },
 
   /* Configure projects for major browsers */
-  projects: [
+  projects: process.env.CI ? [
+    // In CI: Test main desktop browsers only (mobile testing is separate job)
+    {
+      name: 'chromium',
+      use: { ...devices['Desktop Chrome'] },
+    },
+    {
+      name: 'firefox', 
+      use: { ...devices['Desktop Firefox'] },
+    },
+  ] : [
+    // Locally: Test all browsers for comprehensive coverage
     {
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] },
@@ -56,6 +67,7 @@ export default defineConfig({
       name: 'Mobile Safari',
       use: { ...devices['iPhone 12'] },
     },
+  ],
 
     /* Test against branded browsers. */
     // {

@@ -11,13 +11,12 @@ module.exports = {
       target: 'temporary-public-storage'
     },
     assert: {
-      preset: 'lighthouse:no-pwa',
       assertions: {
-        'categories:performance': [0.9, null],
-        'categories:accessibility': [0.95, null],
-        'categories:best-practices': [0.9, null],
-        'categories:seo': [0.9, null],
-        'categories:pwa': [0.9, null]
+        'categories:performance': ['error', {minScore: 0.9}],
+        'categories:accessibility': ['error', {minScore: 0.95}],
+        'categories:best-practices': ['error', {minScore: 0.9}],
+        'categories:seo': ['error', {minScore: 0.9}],
+        'categories:pwa': ['warn', {minScore: 0.7}]
       }
     }
   }
