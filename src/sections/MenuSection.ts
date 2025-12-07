@@ -13,6 +13,20 @@ export class MenuSection extends Section {
         <div class="menu-grid" id="menuGrid">
           ${this.renderMenuItems()}
         </div>
+
+        <div id="payment-iframe-container" style="display: none;">
+          <div class="payment-modal">
+            <div class="payment-header">
+              <h3>Finalizar Pagamento</h3>
+              <button id="close-payment" class="close-btn">&times;</button>
+            </div>
+            <iframe id="payment-iframe" width="100%" height="600" frameborder="0"></iframe>
+          </div>
+        </div>
+        
+        <button id="checkout-button" class="mercadopago-button">
+          Pagar com Mercado Pago
+        </button>
       </section>
     `;
   }
@@ -45,6 +59,68 @@ export class MenuSection extends Section {
 
   init(): void {
     this.element = document.getElementById('menu');
+    this.setupPaymentButton();
+  }
+
+  private setupPaymentButton(): void {
+    const checkoutButton = document.getElementById('checkout-button');
+    const iframeContainer = document.getElementById('payment-iframe-container');
+    const closeButton = document.getElementById('close-payment');
+    const iframe = document.getElementById('payment-iframe') as HTMLIFrameElement;
+
+    checkoutButton?.addEventListener('click', async () => {
+      try {
+        // Criar Payment Link no backend
+        const response = await fetch("http://localhost:8000/create_payment_link", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            items: [
+              { 
+                title: "Biscoitos Artesanais", 
+                unit_price: 25.00, 
+                quantity: 1,
+                currency_id: "BRL"
+              }
+            ],
+            external_reference: "pedido_123"
+          })
+        });
+        
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const data = await response.json();
+        
+        // Carregar o Payment Link no iframe
+        iframe.src = data.init_point;
+        iframeContainer!.style.display = 'block';
+        
+        // Bloquear scroll da página
+        document.body.style.overflow = 'hidden';
+        
+      } catch (error) {
+        console.error('Erro ao criar payment link:', error);
+        alert('Erro ao processar pagamento. Tente novamente.');
+      }
+    });
+
+    // Fechar o modal de pagamento
+    closeButton?.addEventListener('click', () => {
+      iframeContainer!.style.display = 'none';
+      iframe.src = '';
+      document.body.style.overflow = 'auto';
+    });
+    
+    // Fechar ao clicar fora do modal
+    iframeContainer?.addEventListener('click', (e) => {
+      if (e.target === iframeContainer) {
+        iframeContainer.style.display = 'none';
+        iframe.src = '';
+        document.body.style.overflow = 'auto';
+      }
+    });
   }
 
   getProduct(index: number): Product | undefined {
