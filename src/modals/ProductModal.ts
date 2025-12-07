@@ -421,7 +421,7 @@ export class ProductModal {
     this.updateImageTransform();
   }
 
-  private createPhysicsWorld(productType: 'baunilha' | 'parmesao'): void {
+  private createPhysicsWorld(productType: 'baunilha' | 'parmesao' | 'cafe_cacau'): void {
     const Matter = getMatter();
     if (!Matter) return;
 
@@ -463,12 +463,17 @@ export class ProductModal {
     Matter.Render.run(render);
   }
 
-  private createBiscuits(productType: 'baunilha' | 'parmesao', canvasWidth: number, _canvasHeight: number): any[] {
+  private createBiscuits(productType: 'baunilha' | 'parmesao' | 'cafe_cacau', canvasWidth: number, _canvasHeight: number): any[] {
     const Matter = getMatter();
     if (!Matter) return [];
 
     const biscuits: any[] = [];
     const configs = modalBiscuitConfigs[productType];
+
+    // Set physics properties based on product type
+    const physicsProps = productType === 'parmesao' ? 
+      { restitution: 0.2, friction: 0.5 } : 
+      { restitution: 0.3, friction: 0.4 };
 
     configs.forEach((config) => {
       for (let i = 0; i < config.count; i++) {
@@ -476,8 +481,8 @@ export class ProductModal {
         const y = Math.random() * 100 + 50;
 
         const biscuit = createBiscuitBody(x, y, config.image, {
-          restitution: productType === 'baunilha' ? 0.3 : 0.2,
-          friction: productType === 'baunilha' ? 0.4 : 0.5
+          restitution: physicsProps.restitution,
+          friction: physicsProps.friction
         });
 
         biscuits.push(biscuit);

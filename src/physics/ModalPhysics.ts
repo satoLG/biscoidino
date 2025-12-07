@@ -17,12 +17,12 @@ export class ModalPhysics {
   private boundaryCheckInterval: ReturnType<typeof setInterval> | null = null;
   private interactionCleanup: (() => void) | null = null;
 
-  async init(productType: 'baunilha' | 'parmesao'): Promise<void> {
+  async init(productType: 'baunilha' | 'parmesao' | 'cafe_cacau'): Promise<void> {
     await loadMatter();
     this.createWorld(productType);
   }
 
-  private createWorld(productType: 'baunilha' | 'parmesao'): void {
+  private createWorld(productType: 'baunilha' | 'parmesao' | 'cafe_cacau'): void {
     const Matter = getMatter();
     
     this.canvas = document.getElementById('physicsCanvas') as HTMLCanvasElement;
@@ -71,45 +71,31 @@ export class ModalPhysics {
     Matter.Render.run(this.render);
   }
 
-  private createBiscuits(productType: 'baunilha' | 'parmesao'): any[] {
+  private createBiscuits(productType: 'baunilha' | 'parmesao' | 'cafe_cacau'): any[] {
     if (!this.canvas) return [];
     
     const biscuits: any[] = [];
     const canvasWidth = this.canvas.width;
+    const configs = modalBiscuitConfigs[productType];
     
-    if (productType === 'baunilha') {
-      const configs = modalBiscuitConfigs.baunilha;
-      
-      configs.forEach(config => {
-        for (let i = 0; i < config.count; i++) {
-          const x = Math.random() * (canvasWidth - 100) + 50;
-          const y = Math.random() * 100 + 50;
-          
-          const biscuit = createBiscuitBody(x, y, config.image, {
-            restitution: 0.3,
-            friction: 0.4
-          });
-          
-          biscuits.push(biscuit);
-        }
-      });
-    } else {
-      const configs = modalBiscuitConfigs.parmesao;
-      
-      configs.forEach(config => {
-        for (let i = 0; i < config.count; i++) {
-          const x = Math.random() * (canvasWidth - 100) + 50;
-          const y = Math.random() * 150 + 50;
-          
-          const biscuit = createBiscuitBody(x, y, config.image, {
-            restitution: 0.2,
-            friction: 0.5
-          });
-          
-          biscuits.push(biscuit);
-        }
-      });
-    }
+    // Set physics properties based on product type
+    const physicsProps = productType === 'parmesao' ? 
+      { restitution: 0.2, friction: 0.5, yRange: 150 } : 
+      { restitution: 0.3, friction: 0.4, yRange: 100 };
+    
+    configs.forEach(config => {
+      for (let i = 0; i < config.count; i++) {
+        const x = Math.random() * (canvasWidth - 100) + 50;
+        const y = Math.random() * physicsProps.yRange + 50;
+        
+        const biscuit = createBiscuitBody(x, y, config.image, {
+          restitution: physicsProps.restitution,
+          friction: physicsProps.friction
+        });
+        
+        biscuits.push(biscuit);
+      }
+    });
     
     return biscuits;
   }

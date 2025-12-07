@@ -6,7 +6,7 @@ export interface ProductIngredients {
 
 export interface Product {
   name: string;
-  type: 'baunilha' | 'parmesao';
+  type: 'baunilha' | 'parmesao' | 'cafe_cacau';
   description: string;
   price: string;
   ingredients: ProductIngredients;
@@ -32,13 +32,8 @@ export const products: Product[] = [
     frontLabel: "/products/baunilha_front_label.jpeg",
     image: "/products/baunilha_package.png",
     images: [
-      "/products/baunilha_package.png",
       "/biscuits/biscoidino_biscuit1.png",
-      "/biscuits/flower_baunilha1.png", 
-      "/biscuits/heart_baunilha1.png",
-      "/biscuits/star_baunilha1.png",
-      "/biscuits/flower_baunilha2.png",
-      "/biscuits/heart_baunilha2.png",
+      "/products/baunilha_package.png",
       "/products/baunilha_biscuits.png"
     ]
   },
@@ -60,5 +55,25 @@ export const products: Product[] = [
       "/products/parmesao_biscuit_package2.png",
       "/products/parmesao_biscuits.png"
     ]
-  }
+  },
+  {
+    name: "CAFÉ & CACAU",
+    type: "cafe_cacau",
+    description: "Deliciosos biscoitos artesanais com sabor de café e cacau (150g)",
+    price: "R$ 15,00",
+    ingredients: {
+      main: "farinha de trigo enriquecida com ferro e ácido fólico, açúcar refinado, manteiga sem sal, ovos, café solúvel diluído em água quente, cacau em pó 100%, sal",
+      complement: "trigo, leite e ovos"
+    },
+    insidePackageDescription: "Em média 13 biscoitos, e sempre um de dinossauro.",
+    nutritionalTable: "/products/coffee_nutritional_values.jpeg",
+    frontLabel: "/products/coffee_front_label.jpeg",
+    image: "/products/coffee_package.png",
+    images: [
+      "/biscuits/biscoidino_coffee_biscuit1.png",
+      "/products/coffee_package.png",
+      "/products/coffee_biscuits1.png",
+      "/products/coffee_biscuits2.png"
+    ]
+  },
 ];
