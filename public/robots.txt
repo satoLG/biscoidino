@@ -1,0 +1,30 @@
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://biscoidino.com.br/sitemap.xml
+
+# Allow important files
+Allow: /manifest.json
+Allow: /sw.js
+Allow: *.css
+Allow: *.js
+Allow: *.png
+Allow: *.jpg
+Allow: *.jpeg
+Allow: *.gif
+Allow: *.webp
+Allow: *.ico
+
+# Block unnecessary files and directories
+Disallow: /node_modules/
+Disallow: /src/
+Disallow: /tests/
+Disallow: /test-results/
+Disallow: /playwright-report/
+Disallow: *.map
+Disallow: /vite.config.ts
+Disallow: /tsconfig.json
+Disallow: /package.json
+Disallow: /playwright.config.ts
+Disallow: /lighthouserc.cjs
