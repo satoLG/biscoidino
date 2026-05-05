@@ -1,6 +1,6 @@
 // BISCOIDINO - Main Application (Refactored)
 import { inject } from '@vercel/analytics';
-import './style.css?v=14';
+import './style.css';
 
 // Import modules
 import { HomeSection, MenuSection, AboutSection, GallerySection, ContactSection, Section } from './sections';
@@ -117,7 +117,7 @@ class BiscoidinoApp {
         </main>
 
         <footer class="footer">
-          <p>© 2025 BISCOIDINO™</p>
+          <p>© ${new Date().getFullYear()} BISCOIDINO™</p>
           <br>
           <p>Feito com <img src="/biscuits/heart_baunilha1.png" alt="amor" class="footer-icon"> por amantes de biscoitos para amantes de biscoitos.</p>
         </footer>

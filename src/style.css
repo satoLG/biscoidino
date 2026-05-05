@@ -298,7 +298,7 @@ strong {
 
 /* Main Content */
 svg.edge-decorator {
-  fill: white;
+  fill: #fbf2d9;
   position: absolute;
   top: -95px;
   height: 99px;
@@ -313,8 +313,8 @@ svg.edge-decorator {
 .main {
   position: relative;
   margin-top: 100px;
-  margin-bottom: 100px;
-  background-color: white;
+  margin-bottom: 50px;
+  background-color: #fbf2d9;
   display: flex;
   width: 100%;
   justify-content: center;
@@ -342,7 +342,7 @@ section {
   /* border-radius: 20px; */
   /* box-shadow: 0 4px 20px var(--shadow); */
   position: relative;
-  min-height: 550px;
+  min-height: 450px;
 }
 
 .home-content {
@@ -352,7 +352,7 @@ section {
 }
 
 .home-content h2 {
-  font-size: 1.8rem;
+  font-size: 2.5rem;
   color: var(--primary-dark) !important;
   margin-bottom: 1rem;
   font-weight: bold;
@@ -593,6 +593,7 @@ p.left-p {
     text-align: center;
     transition: all 0.3s ease;
     border: 2px solid transparent;
+    box-shadow: 0 2px 4px #d688914f;
 }
 
 .menu-item:hover {
@@ -1135,20 +1136,20 @@ a.get-cookie {
     padding-bottom: 2rem;
 }
 
-.modal-body::-webkit-scrollbar {
+*::-webkit-scrollbar {
   width: 10px; /* Width of the scrollbar */
 }
 
-.modal-body::-webkit-scrollbar-track {
-    background: #f1f1f100;
+*::-webkit-scrollbar-track {
+    background: #ffd5daaf;
 }
 
-.modal-body::-webkit-scrollbar-thumb {
+*::-webkit-scrollbar-thumb {
   background: #d6889168; /* Color of the scrollbar thumb */
   border-radius: 5px; /* Rounded corners for the thumb */
 }
 
-.modal-body::-webkit-scrollbar-thumb:hover {
+*::-webkit-scrollbar-thumb:hover {
   background: #d68891af; /* Color of the thumb on hover */
 }
 
@@ -1597,11 +1598,6 @@ p.inside-package-text {
     text-align: center;
   }
   
-  .home-content h2 {
-    white-space: nowrap;
-    font-size: 1.2rem;
-  }
-  
   .floating-biscuits {
     width: 250px;
     height: 220px;
@@ -1681,7 +1677,7 @@ p.inside-package-text {
   }
   
   .home-content h2 {
-    font-size: 1.8rem;
+    font-size: 2.5rem;
     margin-bottom: 0.8rem;
   }
   
@@ -1700,7 +1696,7 @@ p.inside-package-text {
   }
   
   .home-content h2 {
-    font-size: 1.8rem;
+    font-size: 2.5rem;
     margin-bottom: 1rem;
   }
   
@@ -1713,7 +1709,7 @@ p.inside-package-text {
 /* Ultra-wide landscape phones */
 @media screen and (orientation: landscape) and (max-height: 500px) {
   .home-content h2 {
-    font-size: 1.8rem;
+    font-size: 2.5rem;
     margin-bottom: 0.5rem;
   }
   
