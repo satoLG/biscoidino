@@ -6,6 +6,7 @@ import './style.css';
 import { HomeSection, MenuSection, AboutSection, GallerySection, ContactSection, Section } from './sections';
 import { ProductModal, GalleryModal } from './modals';
 import { loadMatter } from './physics';
+import { RunningGame } from './game';
 
 class BiscoidinoApp {
   private app: HTMLElement;
@@ -14,6 +15,7 @@ class BiscoidinoApp {
   private activeSection: string = 'home';
   private productModal: ProductModal | null = null;
   private galleryModal: GalleryModal | null = null;
+  private game: RunningGame | null = null;
 
   constructor() {
     inject();
@@ -133,6 +135,7 @@ class BiscoidinoApp {
     // Initialize home physics after DOM is ready (same timing as original)
     setTimeout(() => {
       this.initializeHomePhysics();
+      this.initializeRunningGame();
     }, 0);
     
     // Show navigation after initial render
@@ -211,6 +214,11 @@ class BiscoidinoApp {
   }
 
   private navigateToSection(sectionId: string): void {
+    // Stop running game if leaving home
+    if (this.activeSection === 'home' && sectionId !== 'home') {
+      this.stopGameSession();
+    }
+
     // Deactivate current section
     const currentSection = this.sections.get(this.activeSection);
     if (currentSection) {
@@ -290,6 +298,101 @@ class BiscoidinoApp {
     } catch (error) {
       console.error('❌ Failed to initialize home physics:', error);
     }
+  }
+
+  private async initializeRunningGame(): Promise<void> {
+    const canvas = document.getElementById('runningGameCanvas') as HTMLCanvasElement;
+    const container = document.getElementById('homeImageContainer') as HTMLElement;
+    const playBtn = document.getElementById('playGameBtn') as HTMLButtonElement;
+    const scoreEl = document.getElementById('gameScoreText') as HTMLSpanElement;
+
+    if (!canvas || !container || !playBtn) return;
+
+    const game = new RunningGame(canvas, container);
+    this.game = game;
+
+    // Load assets (async)
+    await game.loadAssets();
+
+    // Wire up play button
+    playBtn.addEventListener('click', () => {
+      this.startGameSession(game, canvas, playBtn, scoreEl);
+    });
+
+    // Keyboard jump
+    document.addEventListener('keydown', (e) => {
+      if (e.code === 'Space') {
+        e.preventDefault();
+        if (!canvas.classList.contains('game-active')) return;
+        game.jump();
+      }
+    });
+
+    // Touch/click to jump on canvas
+    canvas.addEventListener('click', () => {
+      if (!canvas.classList.contains('game-active')) return;
+      game.jump();
+    });
+
+    canvas.addEventListener('touchstart', (e) => {
+      e.preventDefault();
+      if (!canvas.classList.contains('game-active')) return;
+      game.jump();
+    });
+
+    // Update score display
+    game.onScoreChange = (score) => {
+      if (scoreEl) scoreEl.textContent = String(score);
+    };
+
+    // Handle game over
+    game.onGameOver = (score) => {
+      canvas.classList.remove('game-active');
+      playBtn.textContent = '🔄 Jogar Novamente';
+      playBtn.classList.remove('hidden');
+      if (scoreEl) scoreEl.textContent = String(score);
+    };
+  }
+
+  private startGameSession(game: RunningGame, canvas: HTMLCanvasElement, playBtn: HTMLButtonElement, scoreEl: HTMLSpanElement): void {
+    // Hide physics canvas, show game canvas
+    const physicsCanvas = document.getElementById('homePhysicsCanvas') as HTMLCanvasElement;
+    if (physicsCanvas) physicsCanvas.style.display = 'none';
+    
+    canvas.classList.add('game-active');
+    playBtn.classList.add('hidden');
+
+    // Start the game
+    game.start();
+
+    // Update score display
+    if (scoreEl) {
+      scoreEl.textContent = '0';
+      const scoreOverlay = document.getElementById('gameScore');
+      if (scoreOverlay) scoreOverlay.classList.remove('hidden');
+    }
+  }
+
+  private stopGameSession(): void {
+    if (this.game) {
+      this.game.stop();
+      this.game = null;
+    }
+
+    const physicsCanvas = document.getElementById('homePhysicsCanvas') as HTMLCanvasElement;
+    if (physicsCanvas) physicsCanvas.style.display = '';
+
+    const gameCanvas = document.getElementById('runningGameCanvas') as HTMLCanvasElement;
+    if (gameCanvas) gameCanvas.classList.remove('game-active');
+
+    const playBtn = document.getElementById('playGameBtn') as HTMLButtonElement;
+    if (playBtn) {
+      playBtn.textContent = '🎮 Jogar Biscoidino Runner';
+      playBtn.classList.remove('hidden');
+    }
+
+    const scoreOverlay = document.getElementById('gameScore');
+    if (scoreOverlay) scoreOverlay.classList.add('hidden');
   }
 }
 
