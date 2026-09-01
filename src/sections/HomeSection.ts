@@ -1,4 +1,4 @@
-// Home Section - Landing page with physics canvas
+// Home Section - Landing page with physics canvas and running game
 import { Section } from './Section';
 import { HomePhysics } from '../physics';
 
@@ -12,9 +12,14 @@ export class HomeSection extends Section {
           <h2 class="trademark-name">BOAS-VINDAS!</h2>
           <p>Experimente os melhores <strong class="trademark-name" style="color: var(--primary-dark) !important;">biscoitos amanteigados caseiros</strong> feitos com receitas próprias e ingredientes premium.</p>
           <button class="cta-button">Ver nosso cardápio</button>
+          <button class="game-button" id="playGameBtn">🎮 Jogar Biscoidino Runner</button>
         </div>
         <div class="home-image" id="homeImageContainer">
           <canvas id="homePhysicsCanvas"></canvas>
+          <canvas id="runningGameCanvas" class="game-canvas"></canvas>
+          <div id="gameScore" class="game-score-overlay hidden">
+            <span id="gameScoreText">0</span>
+          </div>
         </div>
       </section>
     `;
