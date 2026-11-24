@@ -59,6 +59,24 @@ export interface OrderOut {
   payment_url: string | null;
 }
 
+/** GET /orders/{id}: visão do comprador, sem CPF, e-mail ou telefone. */
+export interface OrderView extends OrderOut {
+  cancel_reason: 'expirado' | null;
+  created_at: string;
+  items: { product_id: string; name: string | null; quantity: number; unit_price_cents: number }[];
+  delivery: {
+    type: 'melhor_envio' | 'retirada';
+    service_id: number | null;
+    price_cents: number;
+    delivery_days: number | null;
+    address: (Omit<AddressIn, 'complement'> & { complement: string | null }) | null;
+    tracking_code: string | null;
+    tracking_url: string | null;
+  };
+  items_cents: number;
+  shipping_cents: number;
+}
+
 export interface PaymentOut {
   preference_id: string;
   init_point: string;
@@ -86,6 +104,10 @@ export function productionAvailability(quantity: number): Promise<ProductionDay[
 /** Mesma `idempotencyKey` em retentativas devolve o mesmo pedido em vez de criar outro. */
 export function createOrder(body: OrderIn, idempotencyKey: string): Promise<OrderOut> {
   return apiFetch<OrderOut>('/orders', json(body, { 'Idempotency-Key': idempotencyKey }));
+}
+
+export function fetchOrder(orderId: string): Promise<OrderView> {
+  return apiFetch<OrderView>(`/orders/${encodeURIComponent(orderId)}`);
 }
 
 export function createPayment(orderId: string): Promise<PaymentOut> {

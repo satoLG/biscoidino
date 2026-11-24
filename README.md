@@ -63,6 +63,9 @@ WhatsApp continua funcionando. A API só aceita chamadas do `SITE_URL` configura
   configurada e o catálogo carregado. A `Idempotency-Key` é reaproveitada enquanto o pedido não muda,
   então duplo clique ou retentativa não criam dois pedidos. O id do último pedido fica em
   `localStorage['biscoidino-last-order']`.
+- `src/order/` - página `/pedido/{id}` (volta do Mercado Pago e link direto; rewrite em `vercel.json`):
+  status, botão de pagar, refazer pedido expirado e rastreio. Aguardando pagamento, consulta de novo
+  a cada 5 s por 1 min (o webhook pode chegar depois do cliente).
 
 ## Project Structure
 
