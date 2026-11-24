@@ -14,7 +14,7 @@ concurrency:
 jobs:
   test:
     name: 🎭 Run Playwright Tests
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     
     steps:
     - name: 📥 Checkout repository
@@ -49,7 +49,7 @@ jobs:
 
   lighthouse:
     name: 🚨 Lighthouse Performance Audit
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     
     steps:
     - name: 📥 Checkout repository
@@ -81,7 +81,7 @@ jobs:
 
   accessibility:
     name: ♿ Accessibility Testing
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     
     steps:
     - name: 📥 Checkout repository
@@ -107,7 +107,7 @@ jobs:
 
   security:
     name: 🔒 Security Scan
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     
     steps:
     - name: 📥 Checkout repository
@@ -135,7 +135,7 @@ jobs:
   notify:
     name: 📢 Notify Results
     needs: [test, lighthouse, accessibility, security]
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     if: always()
     
     steps:
