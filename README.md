@@ -49,6 +49,16 @@ npm run build
 npm run preview
 ```
 
+## API (biscoidino_api)
+
+O site lê preços e disponibilidade de [`biscoidino_api`](https://github.com/satoLG/biscoidino_api).
+Configure `VITE_API_URL` (ver `.env.example`; na Vercel em *Settings → Environment Variables*).
+Sem a variável, ou com a API fora, valem os preços de `src/data/products.ts` e a encomenda pelo
+WhatsApp continua funcionando. A API só aceita chamadas do `SITE_URL` configurado nela (CORS).
+
+- `src/api/client.ts` - `fetch` com timeout (60 s: a API dorme no plano free do Render) e `ApiError`
+- `src/api/catalog.ts` - `GET /products`; textos e imagens continuam em `src/data`
+
 ## Project Structure
 
 ```

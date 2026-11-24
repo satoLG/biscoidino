@@ -2087,3 +2087,11 @@ p.inside-package-text {
     will-change: transform;
   }
 }
+/* Produto que a API não lista (inativo): fica visível, mas sem encomenda */
+.menu-item.unavailable .price::after {
+  content: ' · indisponível';
+  font-size: 0.7em;
+}
+.menu-item.unavailable .add-to-cart {
+  display: none;
+}
