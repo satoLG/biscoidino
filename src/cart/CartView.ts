@@ -1,6 +1,7 @@
 // Botão flutuante e gaveta do carrinho
 import { Product, products } from '../data';
 import { formatCents } from '../api/catalog';
+import { isApiConfigured } from '../api/client';
 import { Cart, MAX_ITEMS } from './cart';
 
 const WHATSAPP_NUMBER = '5511953826504';
@@ -16,8 +17,12 @@ export class CartView {
   private drawer!: HTMLElement;
   private cart: Cart;
 
-  constructor(cart: Cart) {
+  private onCheckout: (() => void) | null;
+
+  /** Sem `onCheckout` (ou sem VITE_API_URL) o pedido segue só pelo WhatsApp. */
+  constructor(cart: Cart, onCheckout: (() => void) | null = null) {
     this.cart = cart;
+    this.onCheckout = onCheckout;
   }
 
   mount(root: HTMLElement): void {
@@ -77,6 +82,8 @@ export class CartView {
       .filter((l) => l.product.available)
       .reduce((sum, l) => sum + l.product.priceCents * l.quantity, 0);
     const hasUnavailable = lines.some((l) => !l.product.available);
+    const online = this.onCheckout !== null && isApiConfigured();
+    const ready = online && !hasUnavailable && lines.every((l) => l.product.id);
     return `
       <ul class="cart-lines">
         ${lines.map(({ product, quantity }) => `
@@ -96,7 +103,9 @@ export class CartView {
       </ul>
       ${hasUnavailable ? '<p class="cart-warning">Remova os itens indisponíveis para continuar.</p>' : ''}
       <p class="cart-subtotal">Subtotal: <strong>${formatCents(subtotal)}</strong> <small>+ frete</small></p>
-      <button type="button" class="cart-checkout" disabled title="Em breve">Finalizar pedido (em breve)</button>
+      <button type="button" class="cart-checkout" data-action="checkout" ${ready ? '' : 'disabled'}>
+        Finalizar pedido${online ? '' : ' (em breve)'}
+      </button>
       <a class="cart-whatsapp" href="${this.whatsappLink(lines)}" target="_blank" rel="noopener">
         Encomendar pelo WhatsApp
       </a>
@@ -111,6 +120,11 @@ export class CartView {
 
   private onDrawerClick(event: Event): void {
     const target = (event.target as HTMLElement).closest<HTMLElement>('[data-action]');
+    if (target?.dataset.action === 'checkout') {
+      this.close();
+      this.onCheckout?.();
+      return;
+    }
     const slug = target?.closest<HTMLElement>('.cart-line')?.dataset.slug;
     if (!target || !slug) return;
     const quantity = this.cart.quantity(slug);

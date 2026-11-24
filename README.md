@@ -58,6 +58,11 @@ WhatsApp continua funcionando. A API só aceita chamadas do `SITE_URL` configura
 
 - `src/api/client.ts` - `fetch` com timeout (60 s: a API dorme no plano free do Render) e `ApiError`
 - `src/api/catalog.ts` - `GET /products`; textos e imagens continuam em `src/data`
+- `src/api/checkout.ts` - CEP, frete, vaga de produção, `POST /orders` e `POST /orders/{id}/payment`
+- `src/checkout/` - formulário do checkout; o "Finalizar pedido" do carrinho só liga com a API
+  configurada e o catálogo carregado. A `Idempotency-Key` é reaproveitada enquanto o pedido não muda,
+  então duplo clique ou retentativa não criam dois pedidos. O id do último pedido fica em
+  `localStorage['biscoidino-last-order']`.
 
 ## Project Structure
 
