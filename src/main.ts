@@ -9,6 +9,7 @@ import { loadMatter } from './physics';
 import { isApiConfigured } from './api/client';
 import { fetchProducts, formatCents } from './api/catalog';
 import { applyCatalog } from './data';
+import { Cart, CartView } from './cart';
 
 class BiscoidinoApp {
   private app: HTMLElement;
@@ -18,6 +19,7 @@ class BiscoidinoApp {
   private productModal: ProductModal | null = null;
   private galleryModal: GalleryModal | null = null;
   private catalog: Promise<void> = Promise.resolve();
+  private cartView = new CartView(new Cart());
 
   constructor() {
     inject();
@@ -139,7 +141,12 @@ class BiscoidinoApp {
 
     // Initialize all sections
     this.sections.forEach(section => section.init());
-    this.catalog.then(() => menuSection.refreshCatalog());
+    this.cartView.mount(document.body);
+    (window as any).addToCart = (slug: string) => this.cartView.add(slug);
+    this.catalog.then(() => {
+      menuSection.refreshCatalog();
+      this.cartView.update();
+    });
 
     // Setup navigation
     this.setupNavigation();
