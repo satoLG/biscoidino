@@ -6,6 +6,9 @@ import './style.css';
 import { HomeSection, MenuSection, AboutSection, GallerySection, ContactSection, Section } from './sections';
 import { ProductModal, GalleryModal } from './modals';
 import { loadMatter } from './physics';
+import { isApiConfigured } from './api/client';
+import { fetchProducts, formatCents } from './api/catalog';
+import { applyCatalog } from './data';
 
 class BiscoidinoApp {
   private app: HTMLElement;
@@ -14,13 +17,23 @@ class BiscoidinoApp {
   private activeSection: string = 'home';
   private productModal: ProductModal | null = null;
   private galleryModal: GalleryModal | null = null;
+  private catalog: Promise<void> = Promise.resolve();
 
   constructor() {
     inject();
     this.app = document.querySelector<HTMLDivElement>('#app')!;
     this.splashScreen = document.querySelector<HTMLDivElement>('#splash-screen')!;
+    this.loadCatalog();
     this.initializeSplashScreen();
     this.initializePWA();
+  }
+
+  /** Preços da API; se falhar, ficam os de src/data/products.ts. */
+  private loadCatalog(): void {
+    if (!isApiConfigured()) return;
+    this.catalog = fetchProducts()
+      .then((items) => applyCatalog(items, formatCents))
+      .catch((error) => console.warn('Catálogo da API indisponível; usando preços locais', error));
   }
 
   private initializeSplashScreen(): void {
@@ -126,6 +139,7 @@ class BiscoidinoApp {
 
     // Initialize all sections
     this.sections.forEach(section => section.init());
+    this.catalog.then(() => menuSection.refreshCatalog());
 
     // Setup navigation
     this.setupNavigation();

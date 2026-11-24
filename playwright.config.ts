@@ -3,6 +3,9 @@ import { defineConfig, devices } from '@playwright/test';
 /**
  * @see https://playwright.dev/docs/test-configuration
  */
+/** API falsa; tests/*.spec.ts usam page.route para responder. */
+export const API_URL = 'http://api.test';
+
 export default defineConfig({
   testDir: './tests',
   /* Run tests in files in parallel */
@@ -82,8 +85,10 @@ export default defineConfig({
   /* Run your local dev server before starting the tests */
   webServer: process.env.CI ? {
     // Use preview server in CI for better stability
-    command: 'npm run preview',
+    // rebuild com VITE_API_URL falsa: os testes interceptam as chamadas à API
+    command: 'npx vite build && npx vite preview',
     url: 'http://localhost:4173',
+    env: { VITE_API_URL: API_URL },
     reuseExistingServer: false,
     timeout: 120 * 1000,
     stdout: 'pipe',
@@ -92,6 +97,7 @@ export default defineConfig({
     // Use dev server locally for faster development
     command: 'npm run dev',
     url: 'http://localhost:3000',
+    env: { VITE_API_URL: API_URL },
     reuseExistingServer: true,
     timeout: 120 * 1000,
   },

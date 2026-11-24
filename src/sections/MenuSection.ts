@@ -19,7 +19,7 @@ export class MenuSection extends Section {
 
   private renderMenuItems(): string {
     return products.map((item, index) => `
-      <div class="menu-item">
+      <div class="menu-item" data-slug="${item.type}">
         <div class="product-image-container">
           <img src="${item.image}" alt="${item.name}" class="menu-item-image">
           <div class="image-actions">
@@ -45,6 +45,17 @@ export class MenuSection extends Section {
 
   init(): void {
     this.element = document.getElementById('menu');
+  }
+
+  /** Reaplica preço e disponibilidade depois que o catálogo da API chega. */
+  refreshCatalog(): void {
+    for (const item of products) {
+      const el = document.querySelector<HTMLElement>(`.menu-item[data-slug="${item.type}"]`);
+      if (!el) continue;
+      const price = el.querySelector<HTMLElement>('.price');
+      if (price) price.textContent = item.price;
+      el.classList.toggle('unavailable', !item.available);
+    }
   }
 
   getProduct(index: number): Product | undefined {
