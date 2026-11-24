@@ -10,6 +10,7 @@ import { isApiConfigured } from './api/client';
 import { fetchProducts, formatCents } from './api/catalog';
 import { applyCatalog } from './data';
 import { Cart, CartView } from './cart';
+import { Checkout } from './checkout';
 
 class BiscoidinoApp {
   private app: HTMLElement;
@@ -19,7 +20,14 @@ class BiscoidinoApp {
   private productModal: ProductModal | null = null;
   private galleryModal: GalleryModal | null = null;
   private catalog: Promise<void> = Promise.resolve();
-  private cartView = new CartView(new Cart());
+  private cart = new Cart();
+  private checkout: Checkout = new Checkout(this.cart, {
+    onProductsUnavailable: () => {
+      this.cartView.update();
+      this.cartView.open();
+    },
+  });
+  private cartView = new CartView(this.cart, () => this.checkout.open());
 
   constructor() {
     inject();
@@ -142,6 +150,7 @@ class BiscoidinoApp {
     // Initialize all sections
     this.sections.forEach(section => section.init());
     this.cartView.mount(document.body);
+    this.checkout.mount(document.body);
     (window as any).addToCart = (slug: string) => this.cartView.add(slug);
     this.catalog.then(() => {
       menuSection.refreshCatalog();
