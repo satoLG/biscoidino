@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Biscoidino — Jogo do dino</title>
+    <meta name="description" content="BISCOIDINO - Ajude o dinossauro Biscoidino a pular os biscoitos">
+    <meta name="robots" content="noindex">
+
+    <!-- Favicons - Multiple sizes for different platforms -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/pwa/favicon-16x16.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/pwa/favicon-32x32.png" />
+
+    <!-- Apple Touch Icons -->
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/pwa/apple-touch-icon.png" />
+
+    <meta name="theme-color" content="#ffb6bf">
+    <meta name="apple-mobile-web-app-title" content="Biscoidino">
+
+    <!-- Windows Metro -->
+    <meta name="msapplication-TileImage" content="/pwa/android-chrome-192x192.png">
+    <meta name="msapplication-TileColor" content="#ffb6bf">
+  </head>
+  <body>
+    <main class="game-page">
+      <header class="game-header">
+        <h1 class="game-title">
+          <span class="game-title-brand">BISCOIDINO</span>
+          <span class="game-title-sub">pula biscoito</span>
+        </h1>
+        <p class="game-score-box">Pontos: <span id="game-score">00000</span></p>
+        <a class="game-back" href="/">Voltar ao site</a>
+      </header>
+
+      <div class="game-stage" id="game-stage">
+        <canvas id="game-canvas" width="800" height="300" aria-label="Jogo: o dinossauro Biscoidino pula os biscoitos"></canvas>
+        <div id="game-overlay" class="game-overlay">
+          <p id="game-message">Aperte espaço ou clique para começar</p>
+          <p id="game-final-score" hidden></p>
+        </div>
+      </div>
+
+      <p class="game-help">Espaço, seta para cima ou clique: pular</p>
+    </main>
+    <script type="module" src="/src/game/main.ts"></script>
+  </body>
+</html>
