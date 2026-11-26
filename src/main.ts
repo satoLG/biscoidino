@@ -11,6 +11,7 @@ import { fetchProducts, formatCents } from './api/catalog';
 import { applyCatalog } from './data';
 import { Cart, CartView } from './cart';
 import { Checkout } from './checkout';
+import { OrderPage, orderIdFromPath } from './order';
 
 class BiscoidinoApp {
   private app: HTMLElement;
@@ -34,8 +35,21 @@ class BiscoidinoApp {
     this.app = document.querySelector<HTMLDivElement>('#app')!;
     this.splashScreen = document.querySelector<HTMLDivElement>('#splash-screen')!;
     this.loadCatalog();
-    this.initializeSplashScreen();
+    const orderId = orderIdFromPath(window.location.pathname);
+    if (orderId) {
+      this.showOrder(orderId);
+    } else {
+      this.initializeSplashScreen();
+    }
     this.initializePWA();
+  }
+
+  /** /pedido/{id}: página do pedido, sem splash (volta do Mercado Pago e links diretos). */
+  private showOrder(orderId: string): void {
+    this.splashScreen.style.display = 'none';
+    this.app.classList.remove('hidden');
+    this.app.classList.add('visible');
+    new OrderPage(orderId, this.catalog).mount(this.app);
   }
 
   /** Preços da API; se falhar, ficam os de src/data/products.ts. */

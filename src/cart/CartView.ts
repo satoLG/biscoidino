@@ -2,6 +2,9 @@
 import { Product, products } from '../data';
 import { formatCents } from '../api/catalog';
 import { isApiConfigured } from '../api/client';
+
+/** Mesmo valor de LAST_ORDER_KEY (src/checkout); repetido para não criar ciclo de import. */
+const LAST_ORDER_KEY = 'biscoidino-last-order';
 import { Cart, MAX_ITEMS } from './cart';
 
 const WHATSAPP_NUMBER = '5511953826504';
@@ -30,6 +33,7 @@ export class CartView {
       <button id="cart-button" class="cart-button" type="button" aria-label="Abrir carrinho" hidden>
         <span aria-hidden="true">🛒</span> <span class="cart-count">0</span>
       </button>
+      <a id="order-link" class="cart-button order-link" hidden>📦 Meu pedido</a>
       <aside id="cart-drawer" class="cart-drawer" aria-label="Carrinho" hidden>
         <div class="cart-header">
           <h2 class="trademark-name">CARRINHO</h2>
@@ -65,6 +69,10 @@ export class CartView {
     const count = this.cart.count;
     this.button.hidden = count === 0;
     this.button.querySelector('.cart-count')!.textContent = String(count);
+    const lastOrder = count === 0 ? readLastOrder() : null;
+    const orderLink = document.querySelector<HTMLAnchorElement>('#order-link')!;
+    orderLink.hidden = lastOrder === null;
+    if (lastOrder) orderLink.href = `/pedido/${lastOrder}`;
     this.drawer.querySelector('.cart-body')!.innerHTML = count === 0
       ? '<p class="cart-empty">Seu carrinho está vazio.</p>'
       : this.renderLines(this.lines());
@@ -141,5 +149,13 @@ export class CartView {
     el.textContent = message;
     document.body.appendChild(el);
     setTimeout(() => el.remove(), 2000);
+  }
+}
+
+function readLastOrder(): string | null {
+  try {
+    return window.localStorage.getItem(LAST_ORDER_KEY);
+  } catch {
+    return null;
   }
 }

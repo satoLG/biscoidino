@@ -145,7 +145,7 @@ test.describe('Checkout', () => {
     const quotesBefore = calls.quotes;
     await page.locator('.checkout-pay').click();
     await expect(page.locator('.checkout-error')).toContainText('frete mudou');
-    expect(calls.quotes).toBe(quotesBefore + 1);
+    await expect.poll(() => calls.quotes).toBe(quotesBefore + 1);
     await expect(page.locator('input[name="service"]:checked')).toHaveCount(0);
   });
 

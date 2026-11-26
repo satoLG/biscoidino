@@ -60,7 +60,8 @@ self.addEventListener('fetch', (event) => {
   const url = new URL(event.request.url);
   
   // For JS, CSS, and HTML files - ALWAYS try network first
-  if (url.pathname.endsWith('.js') || 
+  if (event.request.mode === 'navigate' ||
+      url.pathname.endsWith('.js') || 
       url.pathname.endsWith('.css') || 
       url.pathname.endsWith('.html') ||
       url.pathname === '/' ||
