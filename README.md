@@ -49,6 +49,18 @@ npm run build
 npm run preview
 ```
 
+## Jogo do dino (página à parte)
+
+Página isolada em `/jogo.html`, fora do menu do site por enquanto: o Biscoidino corre e pula os biscoitos que vêm rolando, no estilo do dino do Chrome offline. A pontuação é a distância percorrida.
+
+- **Controles**: espaço, seta para cima ou clique no jogo para começar e pular.
+- **Rodar**: `npm run dev` e abrir http://localhost:3000/jogo.html (no build fica em `dist/jogo.html`).
+- **Código**: `src/game/engine.ts` (regras e física, sem DOM), `src/game/render.ts` (desenho no canvas), `src/game/main.ts` (laço, controles), `src/game/game.css`.
+- **Imagens**: frames em `public/frames/` e biscoitos em `public/biscuits/`.
+- **Testes**: `npx playwright test tests/jogo.spec.ts --project=chromium` (com `?manual` na URL o jogo só avança pelo gancho `window.__dinoGame.step`).
+
+Fora por enquanto: link no site, som, placar salvo e toque no celular.
+
 ## API (biscoidino_api)
 
 O site lê preços e disponibilidade de [`biscoidino_api`](https://github.com/satoLG/biscoidino_api).

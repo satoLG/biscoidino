@@ -1,0 +1,177 @@
+@import url('https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;500;700;800;900&display=swap');
+
+/* Página do jogo do dino: estilo próprio, mesma paleta do site */
+:root {
+  --primary-color: #ffc7ce;
+  --primary-dark: #d68891;
+  --secondary-color: #DEB887;
+  --accent-color: #CD853F;
+  --text-dark: #2F2F2F;
+  --background: #FFF8DC;
+  --white: #FFFFFF;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+}
+
+body {
+  font-family: 'M PLUS Rounded 1c', sans-serif;
+  color: var(--text-dark);
+  background:
+    radial-gradient(circle at 12% 18%, rgba(255, 199, 206, 0.55) 0 12%, transparent 13%),
+    radial-gradient(circle at 88% 82%, rgba(222, 184, 135, 0.35) 0 14%, transparent 15%),
+    var(--background);
+  -webkit-font-smoothing: antialiased;
+}
+
+.game-page {
+  min-height: 100vh;
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 24px 16px 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+}
+
+.game-header {
+  width: 100%;
+  max-width: 800px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.game-title {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  line-height: 1.1;
+}
+
+.game-title-brand {
+  font-size: clamp(1.5rem, 4vw, 2.1rem);
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  color: var(--primary-dark);
+  text-shadow: 2px 2px 0 var(--primary-color);
+}
+
+.game-title-sub {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--accent-color);
+}
+
+.game-score-box {
+  margin: 0;
+  padding: 6px 16px;
+  border-radius: 999px;
+  background: var(--white);
+  border: 2px solid var(--primary-color);
+  box-shadow: 0 3px 0 var(--primary-dark);
+  font-weight: 800;
+}
+
+#game-score {
+  font-variant-numeric: tabular-nums;
+  color: var(--primary-dark);
+}
+
+.game-back {
+  padding: 6px 14px;
+  border-radius: 999px;
+  color: var(--text-dark);
+  text-decoration: none;
+  font-weight: 700;
+  background: var(--secondary-color);
+  box-shadow: 0 3px 0 var(--accent-color);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.game-back:hover,
+.game-back:focus-visible {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 0 var(--accent-color);
+}
+
+.game-stage {
+  position: relative;
+  width: 100%;
+  max-width: 800px;
+  border-radius: 24px;
+  overflow: hidden;
+  background: var(--white);
+  border: 3px solid var(--primary-color);
+  box-shadow: 0 8px 0 var(--primary-dark), 0 14px 30px rgba(214, 136, 145, 0.25);
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+#game-canvas {
+  display: block;
+  width: 100%;
+  max-width: 800px;
+  height: auto;
+  aspect-ratio: 8 / 3;
+  border-radius: 20px;
+  background: transparent;
+}
+
+.game-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 16px;
+  text-align: center;
+  background: rgba(255, 248, 220, 0.72);
+  backdrop-filter: blur(2px);
+}
+
+.game-overlay.is-hidden {
+  display: none;
+}
+
+#game-message {
+  margin: 0;
+  padding: 10px 22px;
+  border-radius: 999px;
+  background: var(--primary-color);
+  color: var(--text-dark);
+  font-size: clamp(0.95rem, 2.6vw, 1.25rem);
+  font-weight: 800;
+  box-shadow: 0 4px 0 var(--primary-dark);
+}
+
+#game-final-score {
+  margin: 0;
+  font-size: clamp(0.9rem, 2.4vw, 1.1rem);
+  font-weight: 700;
+  color: var(--accent-color);
+}
+
+.game-help {
+  margin: 0;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--accent-color);
+}
